@@ -1,0 +1,14 @@
+Run in  cmd
+
+pip install virtualenvwrapper-win
+
+python -m venv myenv
+
+myenv\Scripts\activate
+
+
+
+
+pip install -r backend/requirements.txt
+
+

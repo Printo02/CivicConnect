@@ -1,0 +1,31 @@
+#   To run 
+# ==>   pip install -r requirments.txt
+# --------------------------------------------------------------------------------------------------------------------------
+
+Django>=5.0,<6.0
+djangorestframework>=3.16.0
+
+# Database
+mysqlclient>=2.2.0
+
+# Environment Variables
+python-decouple>=3.8
+
+# CORS Support
+django-cors-headers>=4.7.0
+
+# Authentication
+djangorestframework-simplejwt>=5.5.0
+
+# API Documentation
+drf-yasg>=1.21.10
+
+# Image Uploads
+Pillow>=11.0.0
+
+# HTTP Requests
+requests>=2.32.0
+
+# Production Server
+gunicorn>=23.0.0
+whitenoise>=6.9.0
