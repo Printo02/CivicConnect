@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Horas";
+  src: url("./assets/fonts/Horas-Black.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Horas", serif;
+  /* font-family: 'Roboto', Arial, sans-serif; */
+   /* font-family:Verdana, Geneva, Tahoma, sans-serif; */
+  margin: 0;
+}
