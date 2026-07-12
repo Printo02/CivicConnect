@@ -16,14 +16,14 @@ import contactimg from '../assets/contactimg.png'
 import { FaEnvelope, FaPhoneAlt } from 'react-icons/fa'
 
 const departments = [
-  { img: waterdept, label: 'Water Supply' },
-  { img: wastedept, label: 'Waste Management' },
-  { img: road1dept, label: 'Roads' },
+  { img: waterdept, label: 'WATER SUPPLY' },
+  { img: wastedept, label: 'WASTE MANAGEMENT' },
+  { img: road1dept, label: 'ROADS' },
   // { img: road2dept, label: 'Public Infrastructure' },
-  { img: env1dept, label: 'Environment' },
-  { img: env3dept, label: 'Sanitation' },
-  { img: electricity1dept, label: 'Electricity' },
-  { img: disastermgmtdept, label: 'Disaster Management' },
+  { img: env1dept, label: 'ENVIRONMENT' },
+  { img: env3dept, label: 'SANITATION' },
+  { img: electricity1dept, label: 'ELECTRICITY' },
+  { img: disastermgmtdept, label: 'DISASTER MANAGEMENT' },
 ]
 
 function Header() {

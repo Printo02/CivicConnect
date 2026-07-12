@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './NavBar.module.css';
 import logo from '../assets/logo.png'
+import {HashLink} from 'react-router-hash-link'
 
 function NavBar(){
   return (
@@ -15,8 +16,8 @@ function NavBar(){
         <div className={styles.navbarLinks}>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><HashLink smooth to="/#about">About</HashLink></li>
+            <li><HashLink smooth to="/#contact">Contact</HashLink></li>
             <li><Link to="/login">Login</Link></li>
           </ul>
         </div>

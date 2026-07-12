@@ -12,12 +12,12 @@ function Footer() {
           <div className={styles.links}>
             <div className={styles.column}>
               <h4>Pages</h4>
-              <a href="/#">Home</a>
-              <a href="/">About</a>
-              <a href="/">Contact</a>
-              <a href="/">Departments</a>
-              <a href="/">Login</a>
-              <a href="/">Registrations</a>
+              <a href="/">Home</a>
+              <a href="/#about">About</a>
+              <a href="/#contact">Contact</a>
+              <a href="/#Departments">Departments</a>
+              <a href="/Login">Login</a>
+              <a href="/Login">Registrations</a>
             </div>
             <div className={styles.column}>
               <h4>Support</h4>

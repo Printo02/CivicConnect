@@ -169,11 +169,12 @@ html {
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease, filter 0.4s ease;
+  filter: brightness(0.6);
 }
 
 .deptCard:hover .deptImg {
   transform: scale(1.08);
-  filter: brightness(0.6);
+
 }
 
 .deptLabel {
