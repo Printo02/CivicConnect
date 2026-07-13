@@ -17,7 +17,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 60px; */
   max-width: 560px;
 }
 
@@ -35,7 +34,6 @@
   margin: 60px 40px 0 10px;
   background: #dcdada;
   border-radius: 15px;
-  /* box-shadow: 0 20px 60px rgba(29, 26, 26, 0.3); */
   overflow: hidden;
   align-self: center;
 }
@@ -127,6 +125,9 @@
   justify-content: flex-end;
   margin: -8px 0 20px;
 }
+.forgotRow a{
+  text-decoration: none;
+}
 
 .link {
   color: #111f32;
@@ -156,11 +157,6 @@
   margin-top: 8px;
   transition: background-color 0.2s ease, transform 0.15s ease;
 }
-
-/* .submitBtn:hover {
-  background: #E8BE6C;
-  transform: translateY(-2px);
-} */
 
 .switchText {
   text-align: center;

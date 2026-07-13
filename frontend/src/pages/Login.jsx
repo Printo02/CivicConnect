@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import NavBar from '../components/NavBar'
 import Styles from '../components/Login.module.css'
 import Loginimg from '../assets/login.png'
-import Footer from './../components/Footer';
+import { Link } from 'react-router-dom'
+
 
 const Login = () => {
   const [mode, setMode] = useState('login')
@@ -48,7 +49,9 @@ const Login = () => {
               </label>
 
               <div className={Styles.forgotRow}>
+                <Link to='/forgotpassword'>
                 <span className={Styles.link}>Forgot password?</span>
+                </Link>
               </div>
 
               <input type="submit" value="Login" className={Styles.submitBtn} />
@@ -94,7 +97,6 @@ const Login = () => {
           )}
         </div>
       </div>
-      {/* <Footer/> */}
     </div>
   )
 }
