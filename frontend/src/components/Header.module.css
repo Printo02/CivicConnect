@@ -144,7 +144,7 @@ html {
   display: flex;
   gap: 1.5rem;
   width: max-content;
-  animation: deptScroll 60s linear infinite;
+  animation: deptScroll 180s linear infinite;
   will-change: transform;
 }
 

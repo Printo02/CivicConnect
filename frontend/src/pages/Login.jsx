@@ -39,8 +39,8 @@ const Login = () => {
               <p className={Styles.formSubtitle}>Login to continue to CivicConnect</p>
 
               <label className={Styles.field}>
-                <span>Username</span>
-                <input type="text" name="username" placeholder="Enter email" />
+                <span>Email</span>
+                <input type="email" name="email" placeholder="abc@gmail.com" />
               </label>
 
               <label className={Styles.field}>
