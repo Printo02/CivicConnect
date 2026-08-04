@@ -166,6 +166,14 @@
   margin: 20px 0 0;
 }
 
+.errorText {
+  color: #D64545;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 16px;
+}
+
 @media (max-width: 860px) {
   .wrapper {
     flex-direction: column;

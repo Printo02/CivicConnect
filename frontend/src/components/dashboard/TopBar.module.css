@@ -1,0 +1,142 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 32px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #EDEFF3;
+  font-family: Arial, sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.searchWrapper {
+  position: relative;
+  flex: 1;
+  max-width: 480px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  font-size: 0.9rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 11px 16px 11px 42px;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #1E293B;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: #2563EB;
+}
+
+.searchInput::placeholder {
+  color: #94A3B8;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+.langBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.langBtn:hover {
+  border-color: #2563EB;
+}
+
+.iconBtn {
+  position: relative;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+}
+
+.notifDot {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #EF4444;
+  color: white;
+  font-size: 0.62rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.userName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1E293B;
+}
+
+.userRole {
+  font-size: 0.72rem;
+  color: #94A3B8;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #2563EB;
+  color: white;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

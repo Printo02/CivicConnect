@@ -6,6 +6,13 @@ import ErrorPage from '../pages/ErrorPage.jsx'
 import ForgotPassword from '../pages/ForgotPassword.jsx'
 import Otp from '../pages/Otp.jsx'
 import ChangePassword from '../pages/ChangePassword.jsx'
+import AdminDashboard from '../Admin/pages/AdminDashboard.jsx'
+import Departments from '../Admin/pages/Departments.jsx'
+import Representative from '../Admin/pages/Representative.jsx'
+import Feedback from '../Admin/pages/Feedback.jsx'
+import AdminSetting from '../Admin/pages/AdminSetting.jsx'
+import { District } from '../Admin/pages/District.jsx'
+import ViewUsers from './../Admin/pages/ViewUsers';
 
 
 
@@ -42,6 +49,34 @@ const Router = createBrowserRouter([
   {
     path: '/changepassword',
     element: <ChangePassword/>
+  },
+  {
+    path: '/admindashboard',
+    element: <AdminDashboard/>
+  },
+  {
+    path: '/department',
+    element: <Departments/>
+  },
+  {
+    path: '/representative',
+    element: <Representative/>
+  },
+  {
+    path: '/feedback',
+    element: <Feedback/>
+  },
+  {
+    path: '/adminsetting',
+    element: <AdminSetting/>
+  },
+  {
+    path: '/district',
+    element: <District/>
+  },
+  {
+    path: '/viewusers',
+    element: <ViewUsers/>
   },
   //
 ]);

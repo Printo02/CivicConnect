@@ -9,3 +9,6 @@ myenv\Scripts\activate
 pip install -r backend/requirements.txt
 
 
+
+# all passwords ==>  Civicconnect_2026
+
