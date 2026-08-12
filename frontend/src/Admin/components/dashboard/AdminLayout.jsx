@@ -1,6 +1,6 @@
 import React from 'react'
 import AdminSidebar from './AdminSidebar'
-import { useTheme } from '../../context/ThemeContext'
+import { useTheme } from '../../../context/ThemeContext'
 import Styles from './AdminLayout.module.css'
 import { FaSun, FaMoon } from 'react-icons/fa'
 

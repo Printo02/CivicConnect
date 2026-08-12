@@ -13,6 +13,14 @@ import Feedback from '../Admin/pages/Feedback.jsx'
 import AdminSetting from '../Admin/pages/AdminSetting.jsx'
 import { District } from '../Admin/pages/District.jsx'
 import ViewUsers from './../Admin/pages/ViewUsers';
+import DeptView from '../Admin/pages/DeptView.jsx'
+import DepartmentBranches from '../Admin/pages/DepartmentBranches.jsx'
+import ProtectedRoute from './ProtectedRoute.jsx'
+import Deptdashboard from './../Dept/pages/Deptdashboard';
+import DeptComplaints from '../Dept/pages/DeptComplaints.jsx'
+import DeptBranches from '../Dept/pages/DeptBranches.jsx'
+import DeptEmployees from './../Dept/pages/DeptEmployees';
+import DeptProfile from './../Dept/pages/DeptProfile';
 
 
 
@@ -50,35 +58,120 @@ const Router = createBrowserRouter([
     path: '/changepassword',
     element: <ChangePassword/>
   },
+
+  // Admin 
+
   {
-    path: '/admindashboard',
-    element: <AdminDashboard/>
+    path: '/admin/admindashboard',
+    element: (<ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+              </ProtectedRoute>)
   },
   {
-    path: '/department',
-    element: <Departments/>
+    path: '/admin/department',
+    element: (
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <Departments/>
+    </ProtectedRoute>
+    )
   },
   {
-    path: '/representative',
-    element: <Representative/>
+    path: '/admin/representative',
+    element: 
+    (<ProtectedRoute allowedRoles={["admin"]}>
+        <Representative/>
+      </ProtectedRoute>
+      )
   },
   {
-    path: '/feedback',
-    element: <Feedback/>
+    path: '/admin/feedback',
+    element:  (<ProtectedRoute allowedRoles={["admin"]}>
+      <Feedback/>
+    </ProtectedRoute>
+    )
   },
   {
-    path: '/adminsetting',
-    element: <AdminSetting/>
+    path: '/admin/adminsetting',
+    element:  (<ProtectedRoute allowedRoles={["admin"]}> 
+      <AdminSetting/> 
+    </ProtectedRoute>
+    )
   },
   {
-    path: '/district',
-    element: <District/>
+    path: '/admin/district',
+    element:  (<ProtectedRoute allowedRoles={["admin"]}>
+          <District/>
+      </ProtectedRoute>)
+    
   },
   {
-    path: '/viewusers',
-    element: <ViewUsers/>
+    path: '/admin/viewusers',
+    element:  (<ProtectedRoute allowedRoles={["admin"]}> 
+          <ViewUsers/>
+      </ProtectedRoute> )
+    
   },
-  //
+  {
+    path: '/admin/deptview',
+    element:  (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+        <DeptView/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/admin/departments/:id',
+    element:   (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+      <DepartmentBranches/> 
+    </ProtectedRoute>
+    )
+  },
+
+  //  ------------- Department ------------- \\
+
+  {
+    path: '/dept/deptdashboard',
+    element:   (
+    <ProtectedRoute allowedRoles={["dept"]}> 
+      <Deptdashboard/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/dept/complaints',
+    element:   (
+    <ProtectedRoute allowedRoles={["dept"]}> 
+      <DeptComplaints/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/dept/DeptBranches',
+    element:   (
+    <ProtectedRoute allowedRoles={["dept"]}> 
+      <DeptBranches/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/dept/DeptEmployees',
+    element:   (
+    <ProtectedRoute allowedRoles={["dept"]}> 
+      <DeptEmployees/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/dept/DeptProfile',
+    element:   (
+    <ProtectedRoute allowedRoles={["dept"]}> 
+      <DeptProfile/>
+    </ProtectedRoute>
+    )
+  },
+
+
 ]);
 
 

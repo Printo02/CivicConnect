@@ -151,7 +151,7 @@
 
 .userName {
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 300;
   color: var(--text-primary);
   margin: 0;
 }
@@ -162,7 +162,16 @@
   margin: 0;
 }
 
-
+.usercardbtn{
+  background-color:#7C5CFC;
+  color:white;
+  margin-top: 5px;
+  margin-left: 30px;
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
 
 
 

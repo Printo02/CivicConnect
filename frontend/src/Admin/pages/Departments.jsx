@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom'
 
 
 function  Departments() {
-
   return (
     <AdminLayout title="Departments">
       <div className={Styles.chartsRow}>
@@ -14,7 +13,9 @@ function  Departments() {
             <h3>Departments</h3>
             <p>Add and track departments</p>
           </div>
-          <button className={Styles.reportBtn}>View</button>
+          <NavLink to="/admin/deptview" >
+            <button className={Styles.reportBtn}>View</button>
+          </NavLink>
         </div>
         <div className={Styles.card}>
           <div className={Styles.cardHeader}>
@@ -28,7 +29,7 @@ function  Departments() {
             <h3>District</h3>
             <p>View districts</p>
           </div>
-          <NavLink to="/district">
+          <NavLink to="/admin/district">
             <button className={Styles.reportBtn}>View</button>
           </NavLink>
         </div>
@@ -38,6 +39,13 @@ function  Departments() {
 }
 
 export default Departments
+
+
+
+
+
+
+
 
 
 

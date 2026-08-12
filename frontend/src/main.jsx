@@ -3,7 +3,8 @@ import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import Router from './lib/Router.jsx'
 import { StrictMode } from 'react'
-import { ThemeProvider } from './Admin/context/ThemeContext'
+import { ThemeProvider } from './context/ThemeContext.jsx' 
+
 
 
 createRoot(document.getElementById('root')).render(

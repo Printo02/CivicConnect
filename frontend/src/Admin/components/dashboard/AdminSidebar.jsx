@@ -1,22 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Styles from './AdminSidebar.module.css'
-import {
-  FaHome, FaTachometerAlt, FaUsers, FaClipboardList,
-  FaBuilding, FaChartBar, FaCog, FaHeadset
-} from 'react-icons/fa'
+import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding, FaChartBar, FaCog, FaHeadset } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import ViewUsers from './../../pages/ViewUsers';
+import { useNavigate } from "react-router-dom";
+import { getProfile } from '../../../api/services/Admin/profileService.js'
 
 const navItems = [
   { icon: <FaHome />, label: 'Home', path: '/' },
-  { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/admindashboard' },
-  { icon: <FaUsers />, label: 'Representative', path: '/representative' },
-  { icon: <FaBuilding />, label: 'Departments', path: '/department' },
-  { icon: <FaChartBar />, label: 'Users List', path: '/ViewUsers' },
-  { icon: <FaClipboardList />, label: 'Feedback', path: '/feedback' },
+  { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/admin/admindashboard' },
+  { icon: <FaUsers />, label: 'Representative', path: '/admin/representative' },
+  { icon: <FaBuilding />, label: 'Departments', path: '/admin/department' },
+  { icon: <FaUsers />, label: 'Users List', path: '/admin/viewusers' },
+  { icon: <FaClipboardList />, label: 'Feedback', path: '/admin/feedback' },
 ]
 
 function AdminSidebar() {
+  const [ Pro, setPro] = useState() 
+
+  useEffect(()=>{
+    const fetchProfile = async () =>{
+      try {
+        const data = await getProfile()
+        setPro(data)
+      }
+      catch (err) {
+        console.error('Failed to load profile', err)
+      }
+    } 
+    fetchProfile()}, [])
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userRole");
+      navigate("/login");
+  };
+
   return (
     <aside className={Styles.sidebar}>
       <div className={Styles.brand}>
@@ -44,7 +65,7 @@ function AdminSidebar() {
         </ul>
         <p className={Styles.sectionLabel} />
         <ul className={Styles.navList}>
-          <NavLink to='/adminsetting'>
+          <NavLink to='/admin/adminsetting'>
             <li className={Styles.navItem}>
               <span className={Styles.navIcon}><FaCog /></span>
               Settings
@@ -54,11 +75,13 @@ function AdminSidebar() {
       </nav>
 
       <div className={Styles.userCard}>
-        <div className={Styles.avatar}>A</div>
-        <div>
-          <p className={Styles.userName}>Admin User</p>
-          <p className={Styles.userEmail}>admin@civicconnect.com</p>
-        </div>
+        {Pro &&
+          <div>
+              <p className={Styles.userName}>{Pro.name}</p>
+              <p className={Styles.userEmail}>{Pro.email}</p>
+          </div>
+          }
+        <span onClick={handleLogout} className={Styles.usercardbtn}>Logout</span>
       </div>
     </aside>
   )

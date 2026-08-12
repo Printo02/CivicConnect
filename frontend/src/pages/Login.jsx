@@ -23,9 +23,20 @@ const Login = () => {
       localStorage.setItem('accessToken', data.access)
       localStorage.setItem('userRole', data.role)
 
+        //       // Save tokens
+        // localStorage.setItem("access", response.data.access);
+        // localStorage.setItem("refresh", response.data.refresh);
+
+        // // Save other user data if needed
+        // localStorage.setItem("role", response.data.role);
+        // localStorage.setItem("name", response.data.name)
       if (data.role === 'admin') {
-        navigate('/admindashboard')
-      } else {
+        navigate('/admin/admindashboard')
+      } 
+      else if (data.role === 'dept'){
+        navigate('/Dept/deptdashboard')
+      }
+      else {
         alert('Login successful! Please log in.')
         navigate('/dashboard')
       }
@@ -45,7 +56,6 @@ const Login = () => {
 
     try {
       const data = await registerUser(name, email, password)
-      // depending on your backend flow: either auto-login them, or send to a "verify your email" step
       alert('Registration successful! Please log in.')
       setMode('login')
     } catch (err) {

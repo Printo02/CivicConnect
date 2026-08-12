@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import AdminLayout from '../../Admin/components/dashboard/AdminLayout'
 import Styles from './AdminSetting.module.css'
-import { useTheme } from '../context/ThemeContext'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { FaUser, FaPalette, FaLock, FaCamera, FaSun, FaMoon, FaCheck } from 'react-icons/fa'
+import { getProfile, updateProfile, changePassword } from '../../api/services/Admin/profileService.js'
 
 const TABS = [
   { id: 'profile', label: 'Profile', icon: <FaUser /> },
@@ -41,25 +42,53 @@ function AdminSetting() {
 }
 
 function ProfileTab() {
-  const [form, setForm] = useState({
-    name: 'Admin User',
-    email: 'admin@civicconnect.com',
-    phone: '',
-    address: '',
-  })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '' })
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getProfile()
+        setForm({
+          name: data.name || '',
+          email: data.email || '',
+          phone: data.phone || '',
+          address: data.address || '',
+        })
+      } catch (err) {
+        console.error('Failed to load profile', err)
+        setError('Could not load profile.')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProfile()
+  }, [])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
     setSaved(false)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // hook this up to your PATCH /api/profile/ endpoint
-    console.log('Profile update:', form)
-    setSaved(true)
+    setSaving(true)
+    setError('')
+    try {
+      await updateProfile(form)
+      setSaved(true)
+    } catch (err) {
+      console.error('Failed to update profile', err)
+      setError('Could not save changes. Please try again.')
+    } finally {
+      setSaving(false)
+    }
   }
+
+  if (loading) return <p>Loading profile...</p>
 
   return (
     <form className={Styles.form} onSubmit={handleSubmit}>
@@ -67,7 +96,7 @@ function ProfileTab() {
       <p className={Styles.panelSubtitle}>Update your personal details and photo.</p>
 
       <div className={Styles.avatarRow}>
-        <div className={Styles.avatarLarge}>A</div>
+        <div className={Styles.avatarLarge}>{form.name?.[0]?.toUpperCase() || 'A'}</div>
         <div>
           <button type="button" className={Styles.uploadBtn}>
             <FaCamera /> Change photo
@@ -98,9 +127,13 @@ function ProfileTab() {
         </label>
       </div>
 
+      {error && <p className={Styles.errorText}>{error}</p>}
+
       <div className={Styles.formFooter}>
         {saved && <span className={Styles.savedNote}><FaCheck /> Saved</span>}
-        <button type="submit" className={Styles.primaryBtn}>Save changes</button>
+        <button type="submit" className={Styles.primaryBtn} disabled={saving}>
+          {saving ? 'Saving...' : 'Save changes'}
+        </button>
       </div>
     </form>
   )
@@ -163,18 +196,30 @@ function PasswordTab() {
     return errs
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const errs = validate()
-    setErrors(errs)
-    if (Object.keys(errs).length === 0) {
-      // hook this up to your change-password endpoint
-      console.log('Password change submitted')
-      setSuccess(true)
-      setForm({ current: '', next: '', confirm: '' })
-    }
-  }
+const [submitting, setSubmitting] = useState(false)
 
+const handleSubmit = async (e) => {
+  e.preventDefault()
+  const errs = validate()
+  setErrors(errs)
+  if (Object.keys(errs).length > 0) return
+
+  setSubmitting(true)
+  try {
+    await changePassword(form.current, form.next, form.confirm)
+    setSuccess(true)
+    setForm({ current: '', next: '', confirm: '' })
+  } catch (err) {
+    const apiErrors = err.response?.data || {}
+    setErrors({
+      current: apiErrors.current_password?.[0],
+      next: apiErrors.new_password?.[0],
+      confirm: apiErrors.confirm_password?.[0],
+    })
+  } finally {
+    setSubmitting(false)
+  }
+}
   return (
     <form className={Styles.form} onSubmit={handleSubmit} noValidate>
       <h3 className={Styles.panelTitle}>Change password</h3>
@@ -220,7 +265,9 @@ function PasswordTab() {
 
       <div className={Styles.formFooter}>
         {success && <span className={Styles.savedNote}><FaCheck /> Password updated</span>}
-        <button type="submit" className={Styles.primaryBtn}>Update password</button>
+        <button type="submit" className={Styles.primaryBtn} disabled={submitting}>
+          {submitting ? 'Updating...' : 'Update password'}
+        </button>
       </div>
     </form>
   )

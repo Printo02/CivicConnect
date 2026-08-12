@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AdminLayout from '../components/dashboard/AdminLayout'
 import Styles from './District.module.css'
-import { getDistricts } from '../../api/services/districtService'
+import { getDistricts } from '../../api/services/Admin/districtService'
 import { FaMapMarkedAlt, FaPlus, FaSearch } from 'react-icons/fa'
 
 export function District() {
@@ -30,7 +30,7 @@ export function District() {
   )
 
   return (
-    <AdminLayout title="Departments">
+    <AdminLayout title="District">
       <div className={Styles.card}>
         <div className={Styles.cardHeader}>
           <div>

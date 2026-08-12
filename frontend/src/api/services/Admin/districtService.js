@@ -1,4 +1,4 @@
-import api from "../apiClient";
+import api from "../../apiClient";
 
 export const getDistricts = async () => {
   const response = await api.get("district/");

@@ -7,12 +7,18 @@ const api = axios.create({
   },
 })
 
-// Automatically attach JWT token to every request, if one exists
+const PUBLIC_ENDPOINTS = ['/login/', '/register/', '/forgot-password/', '/change-password-otp/']
+
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  const isPublic = PUBLIC_ENDPOINTS.some((path) => config.url?.includes(path))
+
+  if (!isPublic) {
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
   }
+
   return config
 })
 
