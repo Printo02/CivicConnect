@@ -16,11 +16,11 @@ import ViewUsers from './../Admin/pages/ViewUsers';
 import DeptView from '../Admin/pages/DeptView.jsx'
 import DepartmentBranches from '../Admin/pages/DepartmentBranches.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
-import Deptdashboard from './../Dept/pages/Deptdashboard';
-import DeptComplaints from '../Dept/pages/DeptComplaints.jsx'
-import DeptBranches from '../Dept/pages/DeptBranches.jsx'
-import DeptEmployees from './../Dept/pages/DeptEmployees';
-import DeptProfile from './../Dept/pages/DeptProfile';
+// import Deptdashboard from './../Dept/pages/Deptdashboard';
+// import DeptComplaints from '../Dept/pages/DeptComplaints.jsx'
+// import DeptBranches from '../Dept/pages/DeptBranches.jsx'
+// import DeptEmployees from './../Dept/pages/DeptEmployees';
+// import DeptProfile from './../Dept/pages/DeptProfile';
 
 
 
@@ -130,46 +130,46 @@ const Router = createBrowserRouter([
 
   //  ------------- Department ------------- \\
 
-  {
-    path: '/dept/deptdashboard',
-    element:   (
-    <ProtectedRoute allowedRoles={["dept"]}> 
-      <Deptdashboard/> 
-    </ProtectedRoute>
-    )
-  },
-  {
-    path: '/dept/complaints',
-    element:   (
-    <ProtectedRoute allowedRoles={["dept"]}> 
-      <DeptComplaints/> 
-    </ProtectedRoute>
-    )
-  },
-  {
-    path: '/dept/DeptBranches',
-    element:   (
-    <ProtectedRoute allowedRoles={["dept"]}> 
-      <DeptBranches/> 
-    </ProtectedRoute>
-    )
-  },
-  {
-    path: '/dept/DeptEmployees',
-    element:   (
-    <ProtectedRoute allowedRoles={["dept"]}> 
-      <DeptEmployees/>
-    </ProtectedRoute>
-    )
-  },
-  {
-    path: '/dept/DeptProfile',
-    element:   (
-    <ProtectedRoute allowedRoles={["dept"]}> 
-      <DeptProfile/>
-    </ProtectedRoute>
-    )
-  },
+  // {
+  //   path: '/dept/deptdashboard',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["dept"]}> 
+  //     <Deptdashboard/> 
+  //   </ProtectedRoute>
+  //   )
+  // },
+  // {
+  //   path: '/dept/complaints',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["dept"]}> 
+  //     <DeptComplaints/> 
+  //   </ProtectedRoute>
+  //   )
+  // },
+  // {
+  //   path: '/dept/DeptBranches',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["dept"]}> 
+  //     <DeptBranches/> 
+  //   </ProtectedRoute>
+  //   )
+  // },
+  // {
+  //   path: '/dept/DeptEmployees',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["dept"]}> 
+  //     <DeptEmployees/>
+  //   </ProtectedRoute>
+  //   )
+  // },
+  // {
+  //   path: '/dept/DeptProfile',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["dept"]}> 
+  //     <DeptProfile/>
+  //   </ProtectedRoute>
+  //   )
+  // },
 
 
 ]);

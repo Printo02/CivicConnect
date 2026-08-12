@@ -46,7 +46,7 @@ class DeptDetails(models.Model):
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-
+    placename = models.CharField(max_length=50, blank=True, null=True)
     def set_password(self, raw_password):
         from django.contrib.auth.hashers import make_password
         self.password = make_password(raw_password)
