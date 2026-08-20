@@ -210,6 +210,7 @@ function ViewUsers() {
                         Activate
                       </span>
                     )}
+                    {/* <span className={Styles.tagdelete} onClick={() => confirmDelete(c)}> Promote </span>  */}
                     </div>
                   </td>
                 </tr>

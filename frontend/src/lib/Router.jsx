@@ -16,6 +16,9 @@ import ViewUsers from './../Admin/pages/ViewUsers';
 import DeptView from '../Admin/pages/DeptView.jsx'
 import DepartmentBranches from '../Admin/pages/DepartmentBranches.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
+import AddRepresntatives from '../Admin/pages/AddRepresntatives.jsx'
+import AddConstitunency from '../Admin/pages/AddConstitunency.jsx'
+import Demo from '../Admin/pages/Demo.jsx'
 // import Deptdashboard from './../Dept/pages/Deptdashboard';
 // import DeptComplaints from '../Dept/pages/DeptComplaints.jsx'
 // import DeptBranches from '../Dept/pages/DeptBranches.jsx'
@@ -124,6 +127,30 @@ const Router = createBrowserRouter([
     element:   (
     <ProtectedRoute allowedRoles={["admin"]}> 
       <DepartmentBranches/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/admin/addrepresentatives',
+    element:   (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+      <AddRepresntatives/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/admin/addconstituencies',
+    element:   (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+      <AddConstitunency/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/admin/demo',
+    element:   (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+      <Demo/>
     </ProtectedRoute>
     )
   },

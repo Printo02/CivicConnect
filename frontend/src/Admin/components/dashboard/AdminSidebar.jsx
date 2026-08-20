@@ -13,6 +13,7 @@ const navItems = [
   { icon: <FaBuilding />, label: 'Departments', path: '/admin/department' },
   { icon: <FaUsers />, label: 'Users List', path: '/admin/viewusers' },
   { icon: <FaClipboardList />, label: 'Feedback', path: '/admin/feedback' },
+  { icon: <FaClipboardList />, label: 'demo', path: '/admin/demo' },
 ]
 
 function AdminSidebar() {

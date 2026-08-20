@@ -39,3 +39,7 @@ export const deleteDepartment = async (id) => {
 
 
 
+export const generateDeptCredentials = async (id) => {
+  const res = await api.post(`/admin/depts/${id}/generate/`);
+  return res.data;
+};

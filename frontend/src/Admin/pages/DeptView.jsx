@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../components/dashboard/AdminLayout";
 import Styles from "./Department.module.css";
-import { FaBuilding, FaSearch, FaArrowRight, FaPlus, FaTrash } from "react-icons/fa";
-import {  getDepartments, addDepartment, deleteDepartment } from "../../api/services/Admin/departmentService";
+import { FaBuilding, FaSearch, FaArrowRight, FaPlus, FaTrash, FaCheckCircle } from "react-icons/fa";
+import { getDepartments, addDepartment, deleteDepartment, generateDeptCredentials } from "../../api/services/Admin/departmentService";
 
 export default function DeptView() {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ export default function DeptView() {
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [generatingId, setGeneratingId] = useState(null);
 
   const fetchDepartments = async () => {
     setLoading(true);
@@ -35,7 +36,6 @@ export default function DeptView() {
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submit fires")
     if (!deptname.trim()) return;
 
     setAdding(true);
@@ -60,6 +60,22 @@ export default function DeptView() {
     } catch (err) {
       console.error(err);
       alert("Could not delete department. Please try again.");
+    }
+  };
+
+  const handleGenerate = async (id) => {
+    setGeneratingId(id);
+    try {
+      const updatedDept = await generateDeptCredentials(id);
+      setDepartments((prev) =>
+        prev.map((d) => (d.id === id ? { ...d, email: updatedDept.email } : d))
+      );
+    } catch (err) {
+      console.error(err);
+      const msg = err?.response?.data?.detail || "Could not generate credentials. Please try again.";
+      alert(msg);
+    } finally {
+      setGeneratingId(null);
     }
   };
 
@@ -136,13 +152,24 @@ export default function DeptView() {
                   <td>{dept.deptname}</td>
                   <td>
                     <div className={Styles.actionsRow}>
-                      <button
-                        className={Styles.viewBtn}
-                        onClick={() => navigate(`/admin/departments/${dept.id}`)}
-                      >
-                        View Branches
-
+                      <button className={Styles.viewBtn} onClick={() => navigate(`/admin/departments/${dept.id}`)}>
+                        Branches
                       </button>
+
+                      {dept.email ? (
+                        <span className={Styles.verifiedText}>
+                          <FaCheckCircle /> Verified
+                        </span>
+                      ) : (
+                        <button
+                          className={Styles.gtBtn}
+                          onClick={() => handleGenerate(dept.id)}
+                          disabled={generatingId === dept.id}
+                        >
+                          {generatingId === dept.id ? "Generating..." : "Generate"}
+                        </button>
+                      )}
+
                       <button
                         className={Styles.deleteIconBtn}
                         onClick={() => handleDelete(dept.id)}
@@ -150,6 +177,7 @@ export default function DeptView() {
                       >
                         <FaTrash />
                       </button>
+
                     </div>
                   </td>
                 </tr>

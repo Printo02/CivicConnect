@@ -1,15 +1,17 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status,generics, permissions
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import BasePermission, AllowAny, IsAuthenticated
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from .serializers import *
 from django.contrib.auth.models import User 
-from .models import UserDetail,District, Dept, DeptDetails, Complaint, DeptEmployees
-from .permissions import IsDeptEmployee
-
+from .models import *
+from rest_framework import generics, status, permissions
+from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
+from .utils import generate_dept_email
 
 
 ####################################### Permission #######################################
@@ -118,13 +120,34 @@ class ChangePasswordView(APIView):
 
 
 
+# class AdminUserViewAPI(APIView):
+#     permission_classes = [IsAuthenticated]
+#     def get(self,request):
+#         obj = User.objects.all().order_by('-date_joined')
+#         user = obj.filter(is_staff=False)
+#         serializer = AdminUserViewSerializers(user,many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
 class AdminUserViewAPI(APIView):
+
     permission_classes = [IsAuthenticated]
-    def get(self,request):
+
+    def get(self, request):
+
         obj = User.objects.all().order_by('-date_joined')
         user = obj.filter(is_staff=False)
-        serializer = AdminUserViewSerializers(user,many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        serializer = AdminUserViewSerializers(
+            user,
+            many=True
+        )
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+
 
 class AdminUserDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -243,8 +266,198 @@ class VerifyBranchAPIView(APIView):
         return Response(serializer.data)
     
     
+
+
+
+class DeptCreateView(generics.CreateAPIView):
+    """
+    Central admin only: creates a dept, auto-generates email + password.
+    """
+    queryset = Dept.objects.all()
+    serializer_class = DeptCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        dept = serializer.save()
+        return Response(
+            {
+                "id": dept.id,
+                "deptname": dept.deptname,
+                "email": dept.email,
+                "message": "Department created. Initial password = email (dept should change it after first login).",
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class DeptListView(generics.ListAPIView):
+    queryset = Dept.objects.all()
+    serializer_class = DeptSerializer
+    permission_classes = [IsAuthenticated] 
+    
+
+
+class DeptGenerateCredentialsView(APIView):
+    """
+    POST /depts/<id>/generate/
+    Called when admin clicks "Generate" — creates email + sets password = email.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        dept = get_object_or_404(Dept, pk=pk)
+
+        if dept.email:
+            return Response(
+                {"detail": "Credentials already generated for this department."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        email = generate_dept_email(dept.deptname)
+        dept.email = email
+        dept.set_password(email)
+        dept.save()
+
+        return Response(DeptSerializer(dept).data, status=status.HTTP_200_OK)
     
     
-    
-    
+
+class ConstituencyListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        constituencies = Constituency.objects.select_related('district', 'representative').all().order_by('name')
+        return Response(ConstituencySerializer(constituencies, many=True).data)
+
+    def post(self, request):
+        serializer = ConstituencySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ConstituencyDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        return Constituency.objects.filter(id=pk).first()
+
+    def patch(self, request, pk):
+        constituency = self.get_object(pk)
+        if not constituency:
+            return Response({'error': 'Constituency not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ConstituencySerializer(constituency, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        constituency = self.get_object(pk)
+        if not constituency:
+            return Response({'error': 'Constituency not found.'}, status=status.HTTP_404_NOT_FOUND)
+        constituency.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ConstituencyTypesView(APIView):
+    """Returns the ConstituencyType choices so the frontend dropdown stays in sync with the model automatically."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        choices = [{'value': val, 'label': label} for val, label in Constituency.ConstituencyType.choices]
+        return Response(choices)
+
+
+class AssignRepresentativeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, pk):
+        constituency = Constituency.objects.filter(id=pk).first()
+        if not constituency:
+            return Response({'error': 'Constituency not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        user_id = request.data.get('representative')  # None/null clears the assignment
+
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+            already_assigned = Constituency.objects.filter(representative=user).exclude(id=pk).first()
+            if already_assigned:
+                return Response(
+                    {'error': f'This user is already the representative for {already_assigned.name}.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            constituency.representative = user
+        else:
+            constituency.representative = None
+
+        constituency.save()
+        return Response(ConstituencySerializer(constituency).data)
+
+
+
+
+class RepresentativeListCreateView(generics.ListCreateAPIView):
+    queryset = Representative.objects.select_related(
+        "user_profile",
+        "constituency"
+    ).all()
+
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = RepresentativeSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        representative = serializer.save()
+
+        # Change the user's role to representative
+        user_profile = representative.user_profile
+        user_profile.role = "representative"
+        user_profile.save(update_fields=["role"])
+
+        # Return complete representative data
+        output = RepresentativeSerializer(
+            representative,
+            context={"request": request}
+        )
+
+        return Response(
+            output.data,
+            status=status.HTTP_201_CREATED
+        )
+
+
+class RepresentativeDetailView(generics.RetrieveDestroyAPIView):
+    queryset = Representative.objects.select_related("user_profile", "constituency").all()
+    serializer_class = RepresentativeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_destroy(self, instance):
+        user_profile = instance.user_profile
+        user_profile.role = "user"
+        user_profile.save(update_fields=["role"])
+        instance.delete()
+
+
+class RepresentativesByConstituencyView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, constituency_id):
+        rep = Representative.objects.select_related("user_profile", "constituency").filter(
+            constituency_id=constituency_id
+        ).first()
+        if not rep:
+            return Response(None, status=status.HTTP_200_OK)
+        return Response(RepresentativeSerializer(rep).data)
+
 ####################################### Departments #######################################

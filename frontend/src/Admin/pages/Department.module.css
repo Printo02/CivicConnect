@@ -132,6 +132,28 @@
   gap: 10px;
 }
 
+
+.gtBtn{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgb(66, 19, 66);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease
+}
+
+.gtBtn:hover {
+  background: rgb(66, 19, 66);
+}
+
+
+
 .viewBtn {
   display: flex;
   align-items: center;
@@ -191,5 +213,11 @@
 
 
 
-
-/*  */
+.verifiedText {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #16a34a;
+  font-weight: 600;
+  font-size: 0.85rem;
+}

@@ -3,18 +3,17 @@ from django.contrib.auth.models import User
 
 
 class UserDetail(models.Model):
-  user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
-  phone = models.CharField(max_length=10,blank=True,null=True)
-  dob = models.DateField(blank=True,null=True)
-  address = models.TextField(max_length=250,blank=True,null=True)
-  image = models.ImageField(upload_to= 'profile_imgs/',blank=True,null=True)
-  role = models.CharField(max_length=50,default="user",blank=True,null=True)
-  
-  def __str__(self):
-    return self.user.username    
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
+    phone = models.CharField(max_length=10,blank=True,null=True)
+    dob = models.DateField(blank=True,null=True)
+    address = models.TextField(max_length=250,blank=True,null=True)
+    image = models.ImageField(upload_to= 'profile_imgs/',blank=True,null=True)
+    role = models.CharField(max_length=50,default="user",blank=True,null=True)
+    def __str__(self):
+        return self.user.username    
 
 class District(models.Model):
-  dname = models.CharField(max_length=50,blank=True,null=True)
+    dname = models.CharField(max_length=50,blank=True,null=True)
 
 class Dept(models.Model):
     deptname = models.CharField(max_length=250, blank=True, null=True)
@@ -61,9 +60,9 @@ class DeptDetails(models.Model):
 
 
 class DeptEmployees(models.Model):
-  dept_details = models.ForeignKey(DeptDetails,on_delete=models.CASCADE,related_name="dept_details")
-  user_details = models.OneToOneField(User,on_delete=models.CASCADE,related_name="deptemps")
-  role = models.CharField(max_length=250,blank=True,null=True)
+    dept_details = models.ForeignKey(DeptDetails,on_delete=models.CASCADE,related_name="dept_details")
+    user_details = models.OneToOneField(User,on_delete=models.CASCADE,related_name="deptemps")
+    role = models.CharField(max_length=250,blank=True,null=True)
 
 
 class Complaint(models.Model):
@@ -85,3 +84,32 @@ class Complaint(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.branch})"
+
+
+
+class Constituency(models.Model):
+    class ConstituencyType(models.TextChoices):
+        GRAMA_PANCHAYAT = "GRAMA_PANCHAYAT", "Grama Panchayat"
+        BLOCK_PANCHAYAT = "BLOCK_PANCHAYAT", "Block Panchayat"
+        DISTRICT_PANCHAYAT = "DISTRICT_PANCHAYAT", "District Panchayat"
+        MUNICIPALITY = "MUNICIPALITY", "Municipality"
+        CORPORATION = "CORPORATION", "Corporation"
+        LEGISLATIVE_ASSEMBLY = "LEGISLATIVE_ASSEMBLY", "Niyama Sabha"
+        LOK_SABHA = "LOK_SABHA", "Lok Sabha"
+
+    name = models.CharField(max_length=200)
+    ward_name_no = models.CharField(max_length=200,blank=True,null=True)
+    type = models.CharField(max_length=30,choices=ConstituencyType.choices)
+    district = models.ForeignKey(District,on_delete=models.CASCADE,related_name="constituencies")
+    representative = models.OneToOneField(User,on_delete=models.SET_NULL,null=True,blank=True,related_name="represented_constituency")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Representative(models.Model):
+    user_profile = models.OneToOneField(UserDetail,on_delete=models.CASCADE,related_name="representative")
+    constituency = models.ForeignKey(Constituency,on_delete=models.SET_NULL,related_name="representatives",null=True,blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    is_current = models.BooleanField(default=True)
