@@ -18,7 +18,6 @@ import DepartmentBranches from '../Admin/pages/DepartmentBranches.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
 import AddRepresntatives from '../Admin/pages/AddRepresntatives.jsx'
 import AddConstitunency from '../Admin/pages/AddConstitunency.jsx'
-import Demo from '../Admin/pages/Demo.jsx'
 // import Deptdashboard from './../Dept/pages/Deptdashboard';
 // import DeptComplaints from '../Dept/pages/DeptComplaints.jsx'
 // import DeptBranches from '../Dept/pages/DeptBranches.jsx'
@@ -146,14 +145,7 @@ const Router = createBrowserRouter([
     </ProtectedRoute>
     )
   },
-  {
-    path: '/admin/demo',
-    element:   (
-    <ProtectedRoute allowedRoles={["admin"]}> 
-      <Demo/>
-    </ProtectedRoute>
-    )
-  },
+
 
   //  ------------- Department ------------- \\
 

@@ -76,7 +76,7 @@
   margin: 14px 6px;
 }
 
-.navItem {
+.navItem  ,a{
   display: flex;
   align-items: center;
   gap: 10px;
@@ -86,7 +86,7 @@
   font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
-  text-decoration: none; /* add this — <a> tags underline by default */
+  text-decoration: none; 
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 

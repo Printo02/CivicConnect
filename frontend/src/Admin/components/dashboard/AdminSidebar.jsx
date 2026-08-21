@@ -13,7 +13,6 @@ const navItems = [
   { icon: <FaBuilding />, label: 'Departments', path: '/admin/department' },
   { icon: <FaUsers />, label: 'Users List', path: '/admin/viewusers' },
   { icon: <FaClipboardList />, label: 'Feedback', path: '/admin/feedback' },
-  { icon: <FaClipboardList />, label: 'demo', path: '/admin/demo' },
 ]
 
 function AdminSidebar() {
@@ -65,14 +64,14 @@ function AdminSidebar() {
           ))}
         </ul>
         <p className={Styles.sectionLabel} />
+        <NavLink to='/admin/adminsetting'>
         <ul className={Styles.navList}>
-          <NavLink to='/admin/adminsetting'>
             <li className={Styles.navItem}>
               <span className={Styles.navIcon}><FaCog /></span>
               Settings
             </li>
-          </NavLink>
         </ul>
+        </NavLink>
       </nav>
 
       <div className={Styles.userCard}>
