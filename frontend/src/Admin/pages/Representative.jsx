@@ -6,9 +6,8 @@ import { Link, NavLink } from 'react-router-dom';
 
 function Representative(){
   const add = [
-    { title : 'Add Constituency', desc: 'Add local, state, Parliement Contitunecies', path: '/admin/addconstituencies'},
+    { title : 'Add & Assign  Constituency', desc: 'Add local, state, Parliement Contitunecies', path: '/admin/addconstituencies'},
     { title : 'Add Representative', desc: 'Add and track Representative', path: '/admin/addrepresentatives'},
-    { title : 'Assign Constituency', desc: 'Assign local, state, Parliement Contitunecies', path: '/admin/addrepresentatives'},
   ]
   return (
     <AdminLayout title="Representative">

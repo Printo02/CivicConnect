@@ -29,10 +29,15 @@ urlpatterns = [
     path("admin/representatives/", RepresentativeListCreateView.as_view(), name="representative-list-create"),
     path("admin/representatives/<int:pk>/", RepresentativeDetailView.as_view(), name="representative-detail"),
     path("admin/constituencies/<int:constituency_id>/representative/",RepresentativesByConstituencyView.as_view(),name="representative-by-constituency"),
+    path("admin/departments/add/",AddDepartmentAPIView.as_view(),name="add-department"),
+    path("admin/departments/",DepartmentListAPIView.as_view(),name="department-list"),
+    path("admin/departments/<int:pk>/",DepartmentDetailAPIView.as_view(),name="department-detail"),
+    path("admin/departments/<int:pk>/delete/",DeleteDepartmentAPI.as_view(),name="delete-department"),
 
 
 ###########################################################################################
     # Department
+
 
     
 ###########################################################################################

@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from .utils import generate_dept_email
-
+from django.db import transaction
 ####################################### Registration #######################################
 
 class RegistrationSerializers(serializers.ModelSerializer):
@@ -60,16 +60,7 @@ class LoginSerializers(serializers.Serializer):
     data['user'] = user
     return data
 
-
-
 ####################################### ADMIN #######################################
-# class AdminUserViewSerializers(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['id','first_name','email','is_active','date_joined','is_staff']
-
-
-
 class AdminUserViewSerializers(serializers.ModelSerializer):
 
     user_profile_id = serializers.SerializerMethodField()
@@ -188,7 +179,60 @@ class DistrictSerializer(serializers.ModelSerializer):
   
 
 
-####################################### DEPARTMENT #######################################
+####################################### DEPARTMENT #######################################'
+
+class DepartmentSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source="user_profile.user.email",read_only=True)
+    user_id = serializers.IntegerField(source="user_profile.user.id",read_only=True)
+    role = serializers.CharField(source="user_profile.role",read_only=True)
+
+    class Meta:
+        model = Dept
+        fields = ["id","user_id","deptname","deptadv","email","role"]
+
+
+
+
+class AddDepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dept
+        fields = ["id","deptname","deptadv"]
+
+    def validate_deptname(self, value):
+        value = value.strip()
+        if not value:
+            raise serializers.ValidationError("Department name is required.")
+        if Dept.objects.filter(deptname__iexact=value).exists():
+            raise serializers.ValidationError("This department already exists.")
+        return value
+
+    def validate_deptadv(self, value):
+        value = value.strip().upper()
+        if not value:
+            raise serializers.ValidationError("Department abbreviation is required.")
+        if Dept.objects.filter(deptadv__iexact=value).exists():
+            raise serializers.ValidationError("This abbreviation is already in use.")
+        return value
+
+    @transaction.atomic
+    def create(self, validated_data):
+        deptname = validated_data["deptname"]
+        deptadv = validated_data["deptadv"]
+        # Generate department email
+        email = f"{deptadv.lower()}@civicconnect.com"
+        # Make sure generated email is unique
+        if User.objects.filter(email__iexact=email).exists():
+            raise serializers.ValidationError({"deptadv": "This abbreviation already has an account."})
+        # Create Django User
+        user = User.objects.create_user(username=email,email=email,password=email,first_name=deptname,last_name=deptadv)
+        # Create UserDetail
+        user_detail = UserDetail.objects.create(user=user,role="dept")
+        # Create Department
+        department = Dept.objects.create(user_profile=user_detail,deptname=deptname,deptadv=deptadv)
+        return department
+
+
+
 class DeptCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dept
@@ -338,3 +382,7 @@ class RepresentativeSerializer(serializers.ModelSerializer):
             )
 
         return value
+    
+    
+    
+    

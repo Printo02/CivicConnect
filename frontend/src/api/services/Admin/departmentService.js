@@ -1,14 +1,14 @@
 import api from "../../apiClient";
 
-export const getDepartments = async () => {
-    const response = await api.get("/admin/departments/");
-    return response.data;
-};
+// export const getDepartments = async () => {
+//     const response = await api.get("/admin/departments/");
+//     return response.data;
+// };
 
-export const addDepartment = async(data)=>{
-    const response = await api.post("/admin/departments/",data);
-    return response.data;
-};
+// export const addDepartment = async(data)=>{
+//     const response = await api.post("/admin/departments/",data);
+//     return response.data;
+// };
 
 export const getDepartmentBranches = async(id)=>{
     const response = await api.get(`/admin/departments/${id}/branches/`);
@@ -32,14 +32,52 @@ export const addDepartmentBranch = async (deptId, data) => {
 
 
 
+// export const deleteDepartment = async (id) => {
+//   const response = await api.delete(`/admin/departments/${id}/`);
+//   return response.data;
+// };
+
+
+
+// export const generateDeptCredentials = async (id) => {
+//   const res = await api.post(`/admin/depts/${id}/generate/`);
+//   return res.data;
+// };
+
+
+
+
+
+
+
+// Add department
+export const addDepartment = async (departmentData) => {
+    const response = await api.post("/admin/departments/add/",departmentData);
+    return response.data;
+};
+
+
+// Get all departments
+export const getDepartments = async () => {
+    const response = await api.get("/admin/departments/");
+    return response.data;
+};
+
+
+// Get one department
+export const getDepartment = async (id) => {
+    const response = await api.get(`/admin/departments/${id}/`);
+    return response.data;
+};
+
+
 export const deleteDepartment = async (id) => {
-  const response = await api.delete(`/admin/departments/${id}/`);
+  const response = await api.delete(
+    `/admin/departments/${id}/delete/`
+  );
+
   return response.data;
 };
 
 
 
-export const generateDeptCredentials = async (id) => {
-  const res = await api.post(`/admin/depts/${id}/generate/`);
-  return res.data;
-};

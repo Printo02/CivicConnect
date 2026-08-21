@@ -16,46 +16,27 @@ class District(models.Model):
     dname = models.CharField(max_length=50,blank=True,null=True)
 
 class Dept(models.Model):
-    deptname = models.CharField(max_length=250, blank=True, null=True)
-    email = models.EmailField(max_length=100, unique=True, blank=True, null=True)
-    password = models.CharField(max_length=128, blank=True, null=True)  # hashed
-    is_active = models.BooleanField(default=True)
-
-    def set_password(self, raw_password):
-        from django.contrib.auth.hashers import make_password
-        self.password = make_password(raw_password)
-
-    def check_password(self, raw_password):
-        from django.contrib.auth.hashers import check_password
-        return check_password(raw_password, self.password)
+    user_profile = models.OneToOneField(UserDetail,on_delete=models.CASCADE,related_name="department",blank=True,null=True)
+    deptname = models.CharField(max_length=250,blank=True,null=True)
+    deptadv = models.CharField(max_length=250,blank=True,null=True)
 
     def __str__(self):
         return self.deptname
 
 
 class DeptDetails(models.Model):
-    dept = models.ForeignKey(Dept, on_delete=models.CASCADE, related_name="branches")
-    email = models.EmailField(max_length=100, unique=True, blank=True, null=True)  # auto-generated login
-    password = models.CharField(max_length=128, blank=True, null=True)  # hashed
-    phone = models.CharField(max_length=15, null=True, blank=True)
-    location = models.CharField(max_length=255, null=True, blank=True)
-    website = models.URLField(max_length=200, null=True, blank=True)
-    urls = models.URLField(max_length=200, null=True, blank=True)
-    region = models.ForeignKey(District, on_delete=models.CASCADE, related_name="regions", null=True, blank=True)
+    dept = models.ForeignKey(Dept,on_delete=models.CASCADE,related_name="branches")
+    phone = models.CharField(max_length=15,null=True,blank=True)
+    location = models.CharField(max_length=255,null=True,blank=True)
+    website = models.URLField(max_length=200,null=True,blank=True)
+    urls = models.URLField(max_length=200,null=True,blank=True)
+    district = models.ForeignKey(District,on_delete=models.CASCADE,related_name="regions",null=True,blank=True)
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    placename = models.CharField(max_length=50, blank=True, null=True)
-    def set_password(self, raw_password):
-        from django.contrib.auth.hashers import make_password
-        self.password = make_password(raw_password)
-
-    def check_password(self, raw_password):
-        from django.contrib.auth.hashers import check_password
-        return check_password(raw_password, self.password)
-
+    created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+    placename = models.CharField(max_length=50,blank=True,null=True)
     def __str__(self):
-        return f"{self.dept.deptname} - {self.region}"
+        return f"{self.dept.deptname} - {self.placename}"
 
 
 

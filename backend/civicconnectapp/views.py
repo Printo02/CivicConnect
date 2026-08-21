@@ -12,6 +12,7 @@ from rest_framework import generics, status, permissions
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .utils import generate_dept_email
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 
 
 ####################################### Permission #######################################
@@ -461,3 +462,41 @@ class RepresentativesByConstituencyView(APIView):
         return Response(RepresentativeSerializer(rep).data)
 
 ####################################### Departments #######################################
+
+
+
+class AddDepartmentAPIView(CreateAPIView):
+    queryset = Dept.objects.all()
+    serializer_class = AddDepartmentSerializer
+    permission_classes = [IsAuthenticated]
+
+class DepartmentListAPIView(ListAPIView):
+    queryset = Dept.objects.select_related("user_profile__user").all()
+    serializer_class = DepartmentSerializer
+    permission_classes = [IsAuthenticated]
+    
+    
+
+
+class DepartmentDetailAPIView(RetrieveAPIView):
+    queryset = Dept.objects.select_related("user_profile__user").all()
+    serializer_class = DepartmentSerializer
+    permission_classes = [IsAuthenticated]
+
+
+
+
+class DeleteDepartmentAPI(APIView):
+    def delete(self, request, pk):
+        try:
+            dept = Dept.objects.select_related("user_profile__user").get(pk=pk)
+        except Dept.DoesNotExist:
+            return Response({"detail": "Department not found."},status=status.HTTP_404_NOT_FOUND)
+
+        user_detail = dept.user_profile
+        user = user_detail.user
+        dept.delete()
+        user_detail.delete()
+        user.delete()
+
+        return Response({"detail": "Department, UserDetail and User account deleted successfully."},status=status.HTTP_200_OK)
