@@ -4,15 +4,14 @@ from django.urls import include, path
 from civicconnectapp.views import *
 
 urlpatterns = [
-    #Public - accessible to all users
+    ########## Public - accessible to all users ##########
     path('register/',RegisterAPI.as_view(),name='register'),
     path('login/',LoginAPI.as_view(),name='login'),
     path('district/',DistrictAPI.as_view(),name='district'),
     
-###########################################################################################
-    # Admin
-    path('profile/', ProfileView.as_view(), name='profile'),
-    path('change-password/', ChangePasswordView.as_view(), name='change-password'),
+    ########## Admin ##########
+    path('admin/profile/', ProfileView.as_view(), name='profile'),
+    path('admin/change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('admin/users/',AdminUserViewAPI.as_view(),name='adminusers'),
     path("admin/users/<int:pk>/", AdminUserDetailAPIView.as_view(), name="admin-user-detail"),
     path("admin/departments/",DepartmentAPIView.as_view(),name="admin-departments"),
@@ -34,27 +33,37 @@ urlpatterns = [
     path("admin/departments/<int:pk>/",DepartmentDetailAPIView.as_view(),name="department-detail"),
     path("admin/departments/<int:pk>/delete/",DeleteDepartmentAPI.as_view(),name="delete-department"),
 
+    ########## Department ##########
+    path("dept/profile/",DeptProfileView.as_view(),name="DeptProfile"),
+    path('dept/change-password/', DeptChangePasswordView.as_view(), name='Dept-Change-password'),
+    path('dept/branches/', DeptBranchListAPIView.as_view(), name='Dept-branch'),
+    path('dept/branches/addbranches/', DeptAddBranchAPIView.as_view(), name='Dept-add-branch'),
+    # path('dept/branches/<int:pk>/delete/', DeptAddBranchAPIView.as_view(), name='Dept-add-branch'),
+    path('dept/branches/<int:pk>/', DeptBranchDetailAPIView.as_view()),
 
-###########################################################################################
-    # Department
 
 
-    
-###########################################################################################
-    # Branches
-    
-###########################################################################################
-    # Dept-Employee
-    
-###########################################################################################
-    # Users
-    
-###########################################################################################
-    # Representatives
-    
-###########################################################################################
-    # myward
-    
+
+
+
+    ########## Branches ##########
+
+
+
+    ########## Dept-Employee ##########
+
+
+
+    ########## Representatives ##########
+
+
+
+    ########## Users ##########
+
+
+
+    ########## myward ##########
+
 
 ]
 

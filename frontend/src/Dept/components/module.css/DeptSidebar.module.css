@@ -133,6 +133,7 @@
   padding: 10px;
   border-radius: 10px;
   border: 1px solid var(--border);
+  flex-wrap: wrap;
 }
 
 .avatar {
@@ -171,6 +172,7 @@
   padding: 8px;
   font-size: 0.8rem;
   cursor: pointer;
+
 }
 
 

@@ -34,11 +34,19 @@ const Login = () => {
         navigate('/admin/admindashboard')
       } 
       else if (data.role === 'dept'){
-        navigate('/Dept/deptdashboard')
+        navigate('/dept/deptdashboard')
+      }
+      else if (data.role === 'Deptemployee'){
+        navigate('/deptemployee/deptemployeedashboard')
+      }
+      else if (data.role === 'representative'){
+        navigate('/representative/representativedashboard')
+      }
+      else if (data.role === 'branch'){
+        navigate('/branch/branchdashboard')
       }
       else {
-        alert('Login successful! Please log in.')
-        navigate('/dashboard')
+        navigate('/user/userdashboard')
       }
     } catch (err) {
       console.error('Login failed:', err.response?.data || err.message)

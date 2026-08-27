@@ -4,8 +4,12 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from .utils import generate_dept_email
 from django.db import transaction
-####################################### Registration #######################################
 
+
+####################################### COMMON PAGES  #######################################
+
+
+# ------------------- Registration ------------------- #
 class RegistrationSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -41,8 +45,7 @@ class RegistrationSerializers(serializers.ModelSerializer):
 
 
 
-
-####################################### Login #######################################
+# ------------------- Login ------------------- #
 class LoginSerializers(serializers.Serializer):
   email = serializers.EmailField()
   password = serializers.CharField()
@@ -60,7 +63,17 @@ class LoginSerializers(serializers.Serializer):
     data['user'] = user
     return data
 
-####################################### ADMIN #######################################
+# ------------------- District ------------------- #
+class DistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = District
+        fields = '__all__'
+
+
+
+####################################### ADMIN MODULE #######################################
+
+# -------------------  Admin - View Users ------------------- #
 class AdminUserViewSerializers(serializers.ModelSerializer):
 
     user_profile_id = serializers.SerializerMethodField()
@@ -110,6 +123,7 @@ class AdminUserViewSerializers(serializers.ModelSerializer):
         return profile.role if profile else None
 
 
+# -------------------  Admin Profile ------------------- #
 class ProfileSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='user.first_name', required=False)
     email = serializers.EmailField(source='user.email', required=False)
@@ -129,6 +143,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
+
+# -------------------  Admin Profile - change password ------------------- #
 class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(write_only=True)
     new_password = serializers.CharField(write_only=True, validators=[validate_password])
@@ -147,39 +163,6 @@ class DepartmentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
-class DeptDetailsSerializer(serializers.ModelSerializer):
-    region_name = serializers.CharField(source="region.dname", read_only=True)
-    dept_name = serializers.CharField(source="dept.deptname", read_only=True)
-    
-    class Meta:
-        model = DeptDetails
-        fields = [
-            "id",
-            # "dept",
-            "dept_name",
-            "phone",
-            "email",
-            "location",
-            "website",
-            "urls",
-            "region",
-            "region_name",
-            "is_verified",
-            "created_at",
-        ]
-
-
-
-####################################### District ####################################
-class DistrictSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = District
-    fields = '__all__'
-  
-
-
-####################################### DEPARTMENT #######################################'
 
 class DepartmentSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source="user_profile.user.email",read_only=True)
@@ -268,8 +251,6 @@ class DeptChangePasswordSerializer(serializers.Serializer):
 
 
 
-
-
 class ConstituencySerializer(serializers.ModelSerializer):
     district_name = serializers.CharField(source='district.dname', read_only=True)
     type_display = serializers.CharField(source='get_type_display', read_only=True)
@@ -278,8 +259,7 @@ class ConstituencySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Constituency
-        fields = [
-            'id', 'name', 'ward_name_no', 'type', 'type_display', 'district', 'district_name',
+        fields = [ 'id', 'name', 'ward_name_no', 'type', 'type_display', 'district', 'district_name',
             'representative', 'representative_name', 'representative_email',
             'is_active', 'created_at', 'updated_at',
         ]
@@ -298,10 +278,7 @@ class AddRepresentativeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Representative
-        fields = [
-            "user_profile",
-            "constituency",
-        ]
+        fields = [ "user_profile", "constituency"]
 
     def validate_user_profile(self, value):
         if Representative.objects.filter(user_profile=value).exists():
@@ -322,39 +299,13 @@ class AddRepresentativeSerializer(serializers.ModelSerializer):
 
 
 class RepresentativeSerializer(serializers.ModelSerializer):
-    user_profile = serializers.PrimaryKeyRelatedField(
-        queryset=UserDetail.objects.filter(role="user")
-    )
-
-    user_name = serializers.CharField(
-        source="user_profile.first_name",
-        read_only=True
-    )
-
-    user_email = serializers.EmailField(
-        source="user_profile.email",
-        read_only=True
-    )
-
-    constituency_name = serializers.CharField(
-        source="constituency.name",
-        read_only=True
-    )
-
-    constituency_ward = serializers.CharField(
-        source="constituency.ward_name_no",
-        read_only=True
-    )
-
-    constituency_type = serializers.CharField(
-        source="constituency.type",
-        read_only=True
-    )
-
-    district_name = serializers.CharField(
-        source="constituency.district.dname",
-        read_only=True
-    )
+    user_profile = serializers.PrimaryKeyRelatedField(queryset=UserDetail.objects.filter(role="user"))
+    user_name = serializers.CharField(source="user_profile.first_name",read_only=True)
+    user_email = serializers.EmailField(source="user_profile.email",read_only=True)
+    constituency_name = serializers.CharField(source="constituency.name",read_only=True)
+    constituency_ward = serializers.CharField(source="constituency.ward_name_no",read_only=True)
+    constituency_type = serializers.CharField(source="constituency.type",read_only=True)
+    district_name = serializers.CharField(source="constituency.district.dname",read_only=True)
 
     class Meta:
         model = Representative
@@ -374,15 +325,135 @@ class RepresentativeSerializer(serializers.ModelSerializer):
         ]
 
     def validate_user_profile(self, value):
-        if Representative.objects.filter(
-            user_profile=value
-        ).exists():
-            raise serializers.ValidationError(
-                "This user is already a representative."
-            )
-
+        if Representative.objects.filter(user_profile=value).exists():
+            raise serializers.ValidationError("This user is already a representative.")
         return value
     
     
+
+
+####################################### DEPARTMENT MODULE #######################################'
+
+
+# -------------------  Dept Profile ------------------- #
+class DeptProfileSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source="user_profile.user.first_name",required=False)
+    email = serializers.EmailField(source="user_profile.user.email",read_only=True)
+    role = serializers.CharField(source="user_profile.role",read_only=True)
+    user_id = serializers.IntegerField(source="user_profile.user.id",read_only=True)
+
+    class Meta:
+        model = Dept
+        fields = [
+            "id","user_id","name","email","deptname","deptadv","phone","location",
+            "website","urls","is_active","placename","created_at","role"
+        ]
+        read_only_fields = ["id","user_id","email","role","is_active","created_at"]
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user_profile", {})
+        user = instance.user_profile.user
+        if "first_name" in user_data:
+            user.first_name = user_data["first_name"]
+            user.save(update_fields=["first_name"])
+        return super().update(instance, validated_data)
+
+
+
+# -------------------  Dept Profile - change password ------------------- #
+class DeptChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True, validators=[validate_password])
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError({'confirm_password': 'Passwords do not match.'})
+        return data
     
     
+    
+    
+# -------------------  Dept add branches ------------------- #
+
+
+class DeptBranchSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source="user_details.user.email", read_only=True)
+    user_id = serializers.IntegerField(source="user_details.user.id", read_only=True)
+    role = serializers.CharField(source="user_details.role", read_only=True)
+    district_name = serializers.CharField(source="district.dname", read_only=True)
+
+    class Meta:
+        model = Branch
+        fields = [
+            "id", "deptid", "user_id", "branch_name", "placename",
+            "district", "district_name", "email", "role", "is_active",
+        ]
+
+
+
+class DeptAddBranchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ["id","branch_name","placename","district"]
+
+
+
+    @transaction.atomic
+    def create(self, validated_data):
+        branch_name = validated_data["branch_name"]
+        placename = validated_data.get("placename", "")
+        x = branch_name.strip()
+        y = placename.strip()
+        check = f"{x}{y}"
+        email = f"{check.lower()}@civicconnect.com"
+
+        if User.objects.filter(email__iexact=email).exists():
+            raise serializers.ValidationError({"email": "An account with this generated email already exists."})
+
+        user = User.objects.create_user(username=email, email=email, password=email, first_name=check)
+        user_detail = UserDetail.objects.create(user=user, role="branch")
+
+        request = self.context["request"]
+        logged_in_user = request.user
+
+        try:
+            dept = Dept.objects.get(user_profile__user=logged_in_user)
+        except Dept.DoesNotExist:
+            raise serializers.ValidationError({"detail": "No department account found for this login."})
+
+        branch = Branch.objects.create(user_details=user_detail,deptid=dept,**validated_data)
+        return branch
+
+
+class DeptEditBranchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ["id", "branch_name", "placename", "district"]
+        read_only_fields = ["id"]
+
+    def validate_placename(self, value):
+        value = value.strip() if value else value
+        if not value:
+            raise serializers.ValidationError("Place name is required.")
+        return value
+
+
+
+
+
+
+# =====================
+
+# branch edit profile
+# class DeptEditBranchSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Branch
+#         fields = ["id","branch_name" "placename", "district", "phone", "location", "website", "urls", "is_active"]
+#         read_only_fields = ["id"]
+
+#     def validate_placename(self, value):
+#         value = value.strip() if value else value
+#         if not value:
+#             raise serializers.ValidationError("Place name is required.")
+#         return value

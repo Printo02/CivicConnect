@@ -86,13 +86,10 @@
   font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
-  text-decoration: none; 
+  text-decoration: none; /* add this — <a> tags underline by default */
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-a{
-    text-decoration: none;
-}
 .navItem:hover {
   background: var(--surface-hover);
   color: var(--text-primary);

@@ -12,17 +12,11 @@ from rest_framework import generics, status, permissions
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .utils import generate_dept_email
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
-
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.exceptions import NotFound
 
 ####################################### Permission #######################################
-class IsAdmin(BasePermission):
-    def has_permission(self, request, view):
-        return (
-            request.user.is_authenticated and
-            hasattr(request.user, 'userdetails') and
-            request.user.userdetails.role == 'admin'
-        )
+
 
 
 
@@ -74,10 +68,7 @@ class DistrictAPI(APIView):
     
 
 
-####################################### ADMIN #######################################
-
-
-
+####################################### ADMIN MODULE  #######################################
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [JSONParser, MultiPartParser, FormParser]
@@ -120,17 +111,7 @@ class ChangePasswordView(APIView):
 
 
 
-
-# class AdminUserViewAPI(APIView):
-#     permission_classes = [IsAuthenticated]
-#     def get(self,request):
-#         obj = User.objects.all().order_by('-date_joined')
-#         user = obj.filter(is_staff=False)
-#         serializer = AdminUserViewSerializers(user,many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-
 class AdminUserViewAPI(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -461,9 +442,6 @@ class RepresentativesByConstituencyView(APIView):
             return Response(None, status=status.HTTP_200_OK)
         return Response(RepresentativeSerializer(rep).data)
 
-####################################### Departments #######################################
-
-
 
 class AddDepartmentAPIView(CreateAPIView):
     queryset = Dept.objects.all()
@@ -474,8 +452,7 @@ class DepartmentListAPIView(ListAPIView):
     queryset = Dept.objects.select_related("user_profile__user").all()
     serializer_class = DepartmentSerializer
     permission_classes = [IsAuthenticated]
-    
-    
+
 
 
 class DepartmentDetailAPIView(RetrieveAPIView):
@@ -500,3 +477,104 @@ class DeleteDepartmentAPI(APIView):
         user.delete()
 
         return Response({"detail": "Department, UserDetail and User account deleted successfully."},status=status.HTTP_200_OK)
+
+
+
+
+
+
+####################################### DEPT MODULE #######################################
+
+# -------- / Dept Profile \ -------- #
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+
+from .models import Dept
+from .serializers import DeptProfileSerializer
+
+
+class DeptProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [JSONParser,MultiPartParser,FormParser]
+    
+    def get(self, request):
+        try:
+            dept = Dept.objects.select_related("user_profile__user").get(user_profile__user=request.user)
+        except Dept.DoesNotExist:
+            return Response({"detail": "Department profile not found."},status=status.HTTP_404_NOT_FOUND)
+        serializer = DeptProfileSerializer(dept)
+        return Response(serializer.data)
+    
+    def patch(self, request):
+        try:
+            dept = Dept.objects.select_related("user_profile__user").get(user_profile__user=request.user)
+        except Dept.DoesNotExist:
+            return Response({"detail": "Department profile not found."},status=status.HTTP_404_NOT_FOUND)
+        serializer = DeptProfileSerializer(dept,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+# -------- / Dept Change Password \ -------- #
+class DeptChangePasswordView(APIView):
+    # permission_classes = [IsAuthenticated]
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        current_password = serializer.validated_data['current_password']
+        new_password = serializer.validated_data['new_password']
+
+        if not user.check_password(current_password):
+            return Response({'current_password': 'Current password is incorrect.'},status=status.HTTP_400_BAD_REQUEST)
+        user.set_password(new_password)
+        user.save()
+
+        return Response({'message': 'Password updated successfully.'}, status=status.HTTP_200_OK)
+
+
+class DeptAddBranchAPIView(CreateAPIView):
+    queryset = Branch.objects.all()
+    serializer_class = DeptAddBranchSerializer
+    permission_classes = [IsAuthenticated]
+
+
+
+class DeptBranchListAPIView(ListAPIView):
+    serializer_class = DeptBranchSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Branch.objects.filter(deptid__user_profile__user=self.request.user)
+
+
+
+class DeptBranchDetailAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = DeptEditBranchSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Branch.objects.filter(deptid__user_profile__user=self.request.user)
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        branch = queryset.filter(pk=self.kwargs["pk"]).first()
+        if not branch:
+            raise NotFound("Branch not found or you do not have access to it.")
+        return branch
+
+    def perform_destroy(self, instance):
+        user_detail = instance.user_details
+        user = user_detail.user if user_detail else None
+        instance.delete()
+        if user_detail:
+            user_detail.delete()
+        if user:
+            user.delete()

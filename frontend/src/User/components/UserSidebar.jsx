@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Styles from '../components/module.css/DeptSidebar.module.css'
+import Styles from '../components/module.css/UserSidebar.module.css'
 import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,
             FaCog } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
@@ -7,15 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { getProfile } from '../../api/services/Dept/ProfileService.js' 
 
 const navItems = [
-  { icon: <FaHome />, label: 'Home', path: '1' },
+  { icon: <FaHome />, label: 'Home', path: '' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/dept/deptdashboard' },
   { icon: <FaBuilding />, label: 'Branches', path: '/dept/branches' },
-  { icon: <FaUsers />, label: 'Employee List', path: '2' },
-  { icon: <FaClipboardList />, label: 'Complaints', path: '3' },
+  { icon: <FaUsers />, label: 'Employee List', path: '' },
+  { icon: <FaClipboardList />, label: 'Complaints', path: '' },
 ]
 
 
-function DeptSidebar() {
+function UserSidebar() {
   const [ Pro, setPro] = useState() 
 
   useEffect(()=>{
@@ -42,11 +42,11 @@ function DeptSidebar() {
     <aside className={Styles.sidebar}>
       <div className={Styles.brand}>
         <div className={Styles.brandIcon}>CC</div>
-        <span>CivicConnect </span>
+        <span>CivicConnect Admin</span>
       </div>
       <div className={Styles.search}>
-        {/* <input placeholder="Search" />
-        <span className={Styles.kbd}>⌘K</span> */}
+        <input placeholder="Search" />
+        <span className={Styles.kbd}>⌘K</span>
       </div>
       <nav>
         <ul className={Styles.navList}>
@@ -87,4 +87,4 @@ function DeptSidebar() {
   )
 }
 
-export default DeptSidebar
+export default UserSidebar

@@ -1,16 +1,15 @@
 import React from 'react' 
 import { useTheme } from '../../context/ThemeContext'
-import Styles from '../components/module.css/DeptLayout.module.css'
+import Styles from '../components/module.css/RepresentativeLayout.module.css'
 import { FaSun, FaMoon } from 'react-icons/fa'
-import DeptSidebar from './DeptSidebar';
+import RepresentativeSidebar from './RepresentativeSidebar';
 
-function DeptLayout({ title, actions, children }) {
+function RepresentativeLayout({ title, actions, children }) {
   const { theme, toggleTheme } = useTheme()
   
   return (
     <div className={Styles.layout}>
-      <DeptSidebar />
-
+      <RepresentativeSidebar />
       <div className={Styles.main}>
         <div className={Styles.topRow}>
           <h1 className={Styles.pageTitle}>{title}</h1>
@@ -28,5 +27,5 @@ function DeptLayout({ title, actions, children }) {
   )
 }
 
-export default DeptLayout
+export default RepresentativeLayout
 

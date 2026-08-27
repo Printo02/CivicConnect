@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { getProfile } from '../../../api/services/Admin/profileService.js'
 
 const navItems = [
-  { icon: <FaHome />, label: 'Home', path: '/' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/admin/admindashboard' },
   { icon: <FaUsers />, label: 'Representative', path: '/admin/representative' },
   { icon: <FaBuilding />, label: 'Departments', path: '/admin/department' },
