@@ -1,353 +1,84 @@
-import React, { useEffect, useState } from 'react'
-import DeptLayout from '../components/DeptLayout'
-import Styles from '../components/module.css/AddBranch.module.css'
-import { FaPlus, FaCopy, FaEdit, FaTrash, FaSearch } from 'react-icons/fa'
-import {
-  getDeptBranches,
-  addDeptBranch,
-  updateBranch,
-  deleteBranch,
-  getDistricts,
-} from '../../api/services/Dept/Branches.js'
+# ==================== Admin ==================== #
 
-const extractErrorMessage = (err, fallback) => {
-  const data = err.response?.data
-  if (!data) return fallback
-  if (typeof data === 'string') return data
-  if (data.detail) return data.detail
-  const firstKey = Object.keys(data)[0]
-  if (firstKey) {
-    const val = data[firstKey]
-    return Array.isArray(val) ? val[0] : String(val)
-  }
-  return fallback
-}
+admin123@mail.com | admin123@mail.com
 
-export default function AddBranch() {
-  const [branches, setBranches] = useState([])
-  const [districts, setDistricts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
 
-  // add-branch modal
-  const [showModal, setShowModal] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
-  const [newCreds, setNewCreds] = useState(null)
-  const [form, setForm] = useState({ branch_name: '', placename: '', district: '' })
+# ==================== Representative ==================== #
 
-  // edit-branch modal
-  const [editingBranch, setEditingBranch] = useState(null)
-  const [editForm, setEditForm] = useState({
-    branch_name: '',
-    placename: '',
-    district: '',
-  })
-  const [editSaving, setEditSaving] = useState(false)
-  const [editError, setEditError] = useState('')
+vds123@mail.com | vds123@mail.com
 
-  // delete confirmation
-  const [deletingBranch, setDeletingBranch] = useState(null)
-  const [deleting, setDeleting] = useState(false)
 
-  const fetchBranches = async () => {
-    setLoading(true)
-    try {
-      setBranches(await getDeptBranches())
-    } catch (err) {
-      console.error('Failed to load branches:', err)
-    } finally {
-      setLoading(false)
-    }
-  }
 
-  useEffect(() => {
-    fetchBranches()
-    getDistricts()
-      .then(setDistricts)
-      .catch((err) => console.error('Failed to load districts:', err))
-  }, [])
+# ==================== User ==================== #
 
-  // ---------- Add ----------
+CheckUser@mail.com | CheckUser@mail.com
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const openModal = () => {
-    setForm({ branch_name: '', placename: '', district: '' })
-    setNewCreds(null)
-    setError('')
-    setShowModal(true)
-  }
+# ==================== Branches ==================== #
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setSaving(true)
-    setError('')
-    try {
-      const branch = await addDeptBranch(form)
-      setNewCreds({ email: branch.email, password: branch.email })
-      fetchBranches()
-    } catch (err) {
-      setError(extractErrorMessage(err, 'Could not add branch.'))
-    } finally {
-      setSaving(false)
-    }
-  }
+ksebthengana@civicconnect.com | @civicconnect.comksebthengana
 
-  const copyToClipboard = (text) => navigator.clipboard.writeText(text)
 
-  // ---------- Edit ----------
+# ==================== Department ==================== #
 
-  const openEdit = (branch) => {
-    setEditingBranch(branch)
-    setEditForm({
-      branch_name: branch.branch_name || '',
-      placename: branch.placename || '',
-      district: branch.district || '',
-    })
-    setEditError('')
-  }
+kseb@civicconnect.com | kseb@civicconnect.com
 
-  const closeEdit = () => setEditingBranch(null)
 
-  const handleEditChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setEditForm({ ...editForm, [name]: type === 'checkbox' ? checked : value })
-  }
+# ==================== Dept-employee ==================== #
 
-  const handleEditSubmit = async (e) => {
-    e.preventDefault()
-    setEditSaving(true)
-    setEditError('')
-    try {
-      const updated = await updateBranch(editingBranch.id, editForm)
-      setBranches((prev) => prev.map((b) => (b.id === editingBranch.id ? { ...b, ...updated } : b)))
-      closeEdit()
-    } catch (err) {
-      setEditError(extractErrorMessage(err, 'Could not update branch.'))
-    } finally {
-      setEditSaving(false)
-    }
-  }
 
-  // ---------- Delete ----------
 
-  const confirmDelete = (branch) => setDeletingBranch(branch)
-  const cancelDelete = () => setDeletingBranch(null)
+# ========================================================================================================================================================================================= #
 
-  const handleDelete = async () => {
-    setDeleting(true)
-    try {
-      await deleteBranch(deletingBranch.id)
-      setBranches((prev) => prev.filter((b) => b.id !== deletingBranch.id))
-      setDeletingBranch(null)
-    } catch (err) {
-      alert(extractErrorMessage(err, 'Could not delete branch.'))
-    } finally {
-      setDeleting(false)
-    }
-  }
+Dept (Submodule: Branch , DeptEmployee ),  User,  Representative ==> module added.
+And  Profile , Change password, etc added 
 
-  const filteredBranches = branches.filter((b) => {
-    const query = search.trim().toLowerCase()
-    if (!query) return true
-    return (
-      b.branch_name?.toLowerCase().includes(query) ||
-      b.placename?.toLowerCase().includes(query) ||
-      b.district_name?.toLowerCase().includes(query) ||
-      b.email?.toLowerCase().includes(query)
-    )
-  })
 
-  return (
-    <DeptLayout title="My Branches">
-      <div className={Styles.card}>
-        <div className={Styles.cardHeader}>
-          <div>
-            <h3>Branches</h3>
-            <p>All branches under your department.</p>
-          </div>
-          <div className={Styles.headerActions}>
-            <div className={Styles.searchBox}>
-              <FaSearch className={Styles.searchIcon} />
-              <input
-                type="text"
-                placeholder="Search branch, place, district..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            <button className={Styles.addBtn} onClick={openModal}>
-              <FaPlus /> Add Branch
-            </button>
-          </div>
-        </div>
 
-        {loading ? (
-          <p>Loading...</p>
-        ) : filteredBranches.length === 0 ? (
-          <p className={Styles.emptyText}>
-            {search ? 'No branches match your search.' : 'No branches added yet.'}
-          </p>
-        ) : (
-          <table className={Styles.table}>
-            <thead>
-              <tr>
-                <th>Branch Name</th>
-                <th>Place</th>
-                <th>District</th>
-                <th>Contact</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredBranches.map((b) => (
-                <tr key={b.id}>
-                  <td>{b.branch_name}</td>
-                  <td>{b.placename}</td>
-                  <td>{b.district_name || b.district}</td>
-                  <td>{b.email}</td>
-                  <td>{b.is_active ? 'Active' : 'Inactive'}</td>
-                  <td>
-                    <div className={Styles.actionsRow}>
-                      <button className={Styles.iconBtn} onClick={() => openEdit(b)} aria-label="Edit branch">
-                        <FaEdit />
-                      </button>
-                      <button
-                        className={Styles.iconBtnDanger}
-                        onClick={() => confirmDelete(b)}
-                        aria-label="Delete branch"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+# ========================================================================================================================================================================================= #
 
-      {/* Add branch modal */}
-      {showModal && (
-        <div className={Styles.modalOverlay} onClick={() => setShowModal(false)}>
-          <div className={Styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h3 className={Styles.modalTitle}>Add branch</h3>
-              <form onSubmit={handleSubmit}>
-                <div className={Styles.inputGroup}>
-                  <label>Branch name</label>
-                  <input name="branch_name" value={form.branch_name} onChange={handleChange} required />
-                </div>
 
-                <div className={Styles.inputGroup}>
-                  <label>Place name</label>
-                  <input name="placename" value={form.placename} onChange={handleChange} required />
-                </div>
 
-                <div className={Styles.inputGroup}>
-                  <label>District</label>
-                  <select name="district" value={form.district} onChange={handleChange} required>
-                    <option value="">Select district</option>
-                    {districts.map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.dname}
-                      </option>
-                    ))}
-                  </select>
-                </div>
 
-                {error && <p className={Styles.errorText}>{error}</p>}
 
-                <div className={Styles.modalActions}>
-                  <button type="button" className={Styles.cancelBtn} onClick={() => setShowModal(false)}>
-                    Cancel
-                  </button>
-                  <button type="submit" className={Styles.submitBtn} disabled={saving}>
-                    {saving ? 'Saving...' : 'Save'}
-                  </button>
-                </div>
-              </form>
-          </div>
-        </div>
-      )}
 
-      {/* Edit branch modal */}
-      {editingBranch && (
-        <div className={Styles.modalOverlay} onClick={closeEdit}>
-          <div className={Styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h3 className={Styles.modalTitle}>Edit branch</h3>
 
-            <form onSubmit={handleEditSubmit}>
-              <div className={Styles.inputGroup}>
-                <label>Branch name</label>
-                <input
-                  name="branch_name"
-                  value={editForm.branch_name}
-                  onChange={handleEditChange}
-                  required
-                />
-              </div>
 
-              <div className={Styles.inputGroup}>
-                <label>Place name</label>
-                <input
-                  name="placename"
-                  value={editForm.placename}
-                  onChange={handleEditChange}
-                  required
-                />
-              </div>
 
-              <div className={Styles.inputGroup}>
-                <label>District</label>
-                <select name="district" value={editForm.district} onChange={handleEditChange} required>
-                  <option value="">Select district</option>
-                  {districts.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.dname}
-                    </option>
-                  ))}
-                </select>
-              </div>
 
-              {editError && <p className={Styles.errorText}>{editError}</p>}
 
-              <div className={Styles.modalActions}>
-                <button type="button" className={Styles.cancelBtn} onClick={closeEdit}>
-                  Cancel
-                </button>
-                <button type="submit" className={Styles.submitBtn} disabled={editSaving}>
-                  {editSaving ? 'Saving...' : 'Save changes'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
-      {/* Delete confirmation modal */}
-      {deletingBranch && (
-        <div className={Styles.modalOverlay} onClick={cancelDelete}>
-          <div className={Styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h3 className={Styles.modalTitle}>Delete branch?</h3>
-            <p className={Styles.modalText}>
-              This will permanently remove <strong>{deletingBranch.branch_name}</strong> and its
-              login account. This action can't be undone.
-            </p>
 
-            <div className={Styles.modalActions}>
-              <button type="button" className={Styles.cancelBtn} onClick={cancelDelete} disabled={deleting}>
-                Cancel
-              </button>
-              <button type="button" className={Styles.deleteBtn} onClick={handleDelete} disabled={deleting}>
-                {deleting ? 'Deleting...' : 'Delete branch'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </DeptLayout>
-  )
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

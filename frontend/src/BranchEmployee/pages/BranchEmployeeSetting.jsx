@@ -1,10 +1,8 @@
 import { useState , useEffect} from 'react'
-import Styles from '../components/module.css/DeptEmployeeSetting.module.css'
+import Styles from '../components/module.css/BranchEmployeeSetting.module.css'
 import { useTheme } from '../../context/ThemeContext.jsx'
 import { FaUser, FaPalette, FaLock, FaCamera, FaSun, FaMoon, FaCheck } from 'react-icons/fa'
-import { getProfile, updateProfile, changePassword } from '../../api/services/Dept/ProfileService.js' 
-
-import DeptEmployeeLayout from '../components/DeptEmployeeLayout';
+import BranchEmployeeLayout from '../components/BranchEmployeeLayout';
 
 const TABS = [
   { id: 'profile', label: 'Profile', icon: <FaUser /> },
@@ -13,11 +11,11 @@ const TABS = [
 ]
 
 
-function DeptEmployeeSetting() {
+function BranchEmployeeSetting() {
   const [activeTab, setActiveTab] = useState('profile')
 
   return (
-    <DeptEmployeeLayout title="Settings">
+    <BranchEmployeeLayout title="Settings">
       <div className={Styles.wrapper}>
         <div className={Styles.tabRail}>
           {TABS.map((tab) => (
@@ -39,7 +37,7 @@ function DeptEmployeeSetting() {
           {activeTab === 'password' && <PasswordTab />}
         </div>
       </div>
-    </DeptEmployeeLayout>
+    </BranchEmployeeLayout>
   )
 }
 
@@ -124,8 +122,8 @@ function ProfileTab() {
         </label>
 
         <label className={Styles.field}>
-          <span>Address</span>
-          <input type="text" name="address" value={form.address} onChange={handleChange} placeholder="Add an address" />
+          <span>Branch</span>
+          <input type="text" name="name" value={form.name} onChange={handleChange} />
         </label>
       </div>
 
@@ -275,4 +273,4 @@ const handleSubmit = async (e) => {
   )
 }
 
-export default DeptEmployeeSetting
+export default BranchEmployeeSetting

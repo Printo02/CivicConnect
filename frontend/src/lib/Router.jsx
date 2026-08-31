@@ -20,7 +20,7 @@ import AddRepresntatives from '../Admin/pages/AddRepresntatives.jsx'
 import AddConstitunency from '../Admin/pages/AddConstitunency.jsx'
 import DeptDashboard from '../Dept/pages/DeptDashboard.jsx'
 import DeptSetting from '../Dept/pages/DeptSetting.jsx'
-import Branches from '../Dept/pages/Branches.jsx'
+import EmployeeList from '../Dept/pages/EmployeeList.jsx'
 
 
 // import DeptComplaints from '../Dept/pages/DeptComplaints.jsx'
@@ -28,15 +28,27 @@ import Branches from '../Dept/pages/Branches.jsx'
 // import DeptEmployees from './../Dept/pages/DeptEmployees';
 // import DeptProfile from './../Dept/pages/DeptProfile';
 import BranchDashboard from './../Branch/pages/BranchDashboard';
-import DeptEmployeeDashboard from './../DeptEmployee/pages/DeptEmployeeDashboard';
+// import DeptEmployeeDashboard from './../DeptEmployee/pages/DeptEmployeeDashboard';
 import UserDashboard from './../User/pages/UserDashboard';
 import RepresentativeDashboard from './../Representative/pages/RepresentativeDashboard';
 import AddBranch from '../Dept/pages/AddBranch.jsx'
+import BranchSetting from './../Branch/pages/BranchSetting';
+import UserSetting from './../User/pages/UserSetting';
+import RepresentativeSetting from './../Representative/pages/RepresentativeSetting';
+import MyWardSidebar from '../Representative/components/MyWardSidebar.jsx'
+import BranchEmployeeDashboard from './../BranchEmployee/pages/BranchEmployeeDashboard';
+import BranchEmployeeSetting from './../BranchEmployee/pages/BranchEmployeeSetting';
+import BranchComplaint from './../BranchEmployee/pages/BranchComplaint.jsx';
+import AddEmployee from './../Branch/pages/AddEmployee';
+import ViewComplaints from './../Branch/pages/ViewComplaints';
+import UserMyWard from './../User/pages/UserMyWard';
+import UserComplaint from './../User/pages/UserComplaint';
+
 
 
 
 const Router = createBrowserRouter([
-  // Navbar Pages
+  // # ---------------/ COMMON PAGES \---------------- #
   {
     path: '/',
     element: <Home/>
@@ -70,8 +82,7 @@ const Router = createBrowserRouter([
     element: <ChangePassword/>
   },
 
-  // Admin 
-
+  // # ---------------/ ADMIN MODULE \---------------- #
   {
     path: '/admin/admindashboard',
     element: (<ProtectedRoute allowedRoles={["admin"]}>
@@ -156,8 +167,7 @@ const Router = createBrowserRouter([
   },
 
 
-  //  ------------- Department ------------- \\
-
+  // # ---------------/ DEPT MODULE \---------------- #
   {
     path: '/dept/deptdashboard',
     element:   (
@@ -175,10 +185,10 @@ const Router = createBrowserRouter([
     )
   },
   {
-    path: '/dept/branches',
+    path: '/dept/EmployeeList', 
     element: (
       <ProtectedRoute allowedRoles={["dept"]}> 
-        <Branches/>
+        <EmployeeList/>
       </ProtectedRoute>  
     )
   },
@@ -193,30 +203,57 @@ const Router = createBrowserRouter([
 
 
 
-
-  //  ------------- Branch ------------- \\
-
+  // # ---------------/ BRANCH MODULE \---------------- #
   {
     path: '/branch/branchdashboard',
-    element: <BranchDashboard/> 
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchDashboard/> 
+    </ProtectedRoute>
+    )
   },
-  // {
-  //   path: '/dept/deptdashboard',
-  //   element:   (
-  //   <ProtectedRoute allowedRoles={["dept"]}> 
-  //     <DeptDashboard/> 
-  //   </ProtectedRoute>
-  //   )
-  // },
-
-
-
-  //  ------------- Dept-employee ------------- \\
-
   {
-    path: '/deptemployee/deptemployeedashboard',
-    element: <DeptEmployeeDashboard/>
+    path: '/branch/branchsettings',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchSetting/> 
+    </ProtectedRoute>
+    )
   },
+  {
+    path: '/branch/addemployee',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <AddEmployee/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/branch/viewcomplaints',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <ViewComplaints/>
+    </ProtectedRoute>
+    )
+  },
+
+
+  // # ---------------/ BRANCH-EMPLOYEE MODULE \---------------- #
+  {
+    path: '/branchemployee/branchemployeedashboard',
+    element: <BranchEmployeeDashboard/>
+  },
+  {
+    path: '/branchemployee/branchemployeesetting',
+    element: <BranchEmployeeSetting/>
+  },
+  {
+    path: '/branchemployee/Complaints',
+    element: <BranchComplaint/>
+  },
+
+
+
   // {
   //   path: '/dept/deptdashboard',
   //   element:   (
@@ -229,39 +266,67 @@ const Router = createBrowserRouter([
 
 
 
-
-  //  ------------- User ------------- \\
+  // # ---------------/ USER MODULE \---------------- #
   {
     path: '/user/userdashboard',
-    element: <UserDashboard/>
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserDashboard/>
+    </ProtectedRoute>
+    )
   },
-  // {
-  //   path: '/dept/deptdashboard',
-  //   element:   (
-  //   <ProtectedRoute allowedRoles={["dept"]}> 
-  //     <DeptDashboard/> 
-  //   </ProtectedRoute>
-  //   )
-  // },
+  {
+    path: '/user/usersetting',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserSetting/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/user-myWard',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserMyWard/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/complaint',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserComplaint/>
+    </ProtectedRoute>
+    )
+  },
 
 
-
-  //  ------------- representative ------------- \\
+  // # ---------------/ REPRESENTATIVE MODULE \---------------- #
   {
     path: '/representative/representativedashboard',
-    element: <RepresentativeDashboard/>
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativeDashboard/> 
+    </ProtectedRoute>
+    )
   },
-  // {
-  //   path: '/dept/deptdashboard',
-  //   element:   (
-  //   <ProtectedRoute allowedRoles={["dept"]}> 
-  //     <DeptDashboard/> 
-  //   </ProtectedRoute>
-  //   )
-  // },
+  {
+    path: '/representative/representativesettings',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativeSetting/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/representative/myward',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <MyWardSidebar/>
+    </ProtectedRoute>
+    )
+  },
 
 
 ]);
-
-
 export default Router;

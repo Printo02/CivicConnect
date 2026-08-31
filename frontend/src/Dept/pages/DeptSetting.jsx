@@ -192,8 +192,6 @@ function ProfileTab() {
             <span>Account Name</span>
             <input type="text" name="name"  value={form.name} onChange={handleChange} placeholder="Department account name"/>
           </label>
-
-
           {/* Email */}
           <label className={Styles.field}>
             <span>Email</span>

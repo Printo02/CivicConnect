@@ -36,8 +36,8 @@ const Login = () => {
       else if (data.role === 'dept'){
         navigate('/dept/deptdashboard')
       }
-      else if (data.role === 'Deptemployee'){
-        navigate('/deptemployee/deptemployeedashboard')
+      else if (data.role === 'BranchEmployee'){
+        navigate('/branchemployee/branchemployeedashboard')
       }
       else if (data.role === 'representative'){
         navigate('/representative/representativedashboard')

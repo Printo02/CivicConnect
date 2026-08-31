@@ -1,619 +1,415 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './AddRepresntatives.module.css'
 import AdminLayout from '../components/dashboard/AdminLayout'
-import { FaSearch, FaUserTie, FaCheck } from 'react-icons/fa'
-
+import { FaSearch, FaUserTie, FaCheck, FaEdit, FaTrash, FaPowerOff } from 'react-icons/fa'
 import { getUsers } from '../../api/services/Admin/adminuserview.js'
-import {
-  promoteUser,
-} from '../../api/services/Admin/representativeService.js'
-
-
-// ======================================================
-// ERROR MESSAGE
-// ======================================================
+import {promoteUser,getRepresentatives,updateRepresentative,
+  deleteRepresentative,toggleRepresentativeStatus,} from '../../api/services/Admin/representativeService.js'
 
 const extractErrorMessage = (err, fallback) => {
   const data = err.response?.data
-
-  if (!data) {
-    return fallback
-  }
-
-  if (typeof data === 'string') {
-    return data
-  }
-
-  if (data.error) {
-    return data.error
-  }
-
-  if (data.detail) {
-    return data.detail
-  }
+  if (!data) return fallback
+  if (typeof data === 'string') return data
+  if (data.error) return data.error
+  if (data.detail) return data.detail
 
   const firstKey = Object.keys(data)[0]
-
   if (firstKey) {
     const value = data[firstKey]
-
-    return Array.isArray(value)
-      ? value[0]
-      : String(value)
+    return Array.isArray(value) ? value[0] : String(value)
   }
-
   return fallback
 }
 
-
-// ======================================================
-// COMPONENT
-// ======================================================
-
-export default function AssignRepresentative() {
-
+export default function AddRepresntatives() {
+  // ---------- promote-user state ----------
   const [users, setUsers] = useState([])
-
   const [email, setEmail] = useState('')
+  const [matchedUser, setMatchedUser] = useState(null)
+  const [promoting, setPromoting] = useState(false)
+  const [promoteError, setPromoteError] = useState('')
 
-  const [matchedUser, setMatchedUser] =
-    useState(null)
+  // ---------- representatives list state ----------
+  const [representatives, setRepresentatives] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [listError, setListError] = useState('')
+  const [search, setSearch] = useState('')
 
-  const [representatives, setRepresentatives] =
-    useState([])
+  // ---------- edit modal state ----------
+  const [editingRep, setEditingRep] = useState(null)
+  const [editForm, setEditForm] = useState({ start_date: '', end_date: '' })
+  const [savingEdit, setSavingEdit] = useState(false)
+  const [editError, setEditError] = useState('')
 
-  const [loading, setLoading] =
-    useState(true)
-
-  const [promoting, setPromoting] =
-    useState(false)
-
-  const [error, setError] =
-    useState('')
-
-
-  // ======================================================
-  // LOAD USERS
-  // ======================================================
-
+  // ---------- load users ----------
   const fetchUsers = async () => {
-
-    setLoading(true)
-    setError('')
-
     try {
-
       const data = await getUsers()
-
-      const userList =
-        Array.isArray(data)
-          ? data
-          : Array.isArray(data?.results)
-            ? data.results
-            : []
-
-      console.log(
-        'Users API response:',
-        userList
-      )
-
+      const userList = Array.isArray(data) ? data : Array.isArray(data?.results) ? data.results : []
       setUsers(userList)
-
-      // Only users whose role is representative
-      const representativeList =
-        userList.filter(
-          (user) =>
-            String(user.role || '')
-              .trim()
-              .toLowerCase() ===
-            'representative'
-        )
-
-      setRepresentatives(
-        representativeList
-      )
-
     } catch (err) {
+      console.error('Failed to load users:', err)
+      setPromoteError(extractErrorMessage(err, 'Could not load users.'))
+    }
+  }
 
-      console.error(
-        'Failed to load users:',
-        err
-      )
-
-      setError(
-        extractErrorMessage(
-          err,
-          'Could not load users.'
-        )
-      )
-
+  // ---------- load representatives ----------
+  const fetchRepresentatives = async () => {
+    setLoading(true)
+    try {
+      const data = await getRepresentatives()
+      const representativeList = Array.isArray(data) ? data : Array.isArray(data?.results) ? data.results : []
+      setRepresentatives(representativeList)
+    } catch (err) {
+      console.error('Failed to load representatives:', err)
+      setListError(extractErrorMessage(err, 'Could not load representatives.'))
     } finally {
-
       setLoading(false)
     }
   }
 
-
   useEffect(() => {
     fetchUsers()
+    fetchRepresentatives()
   }, [])
 
-
-  // ======================================================
-  // SEARCH USER BY EMAIL
-  // ======================================================
-
+  // ---------- search user by email (promote section) ----------
   const handleEmailChange = (value) => {
-
     setEmail(value)
-    setError('')
+    setPromoteError('')
 
-    const searchEmail =
-      value.trim().toLowerCase()
-
+    const searchEmail = value.trim().toLowerCase()
     if (!searchEmail) {
-
       setMatchedUser(null)
-
       return
     }
 
-    const user =
-      users.find(
-        (item) =>
-          String(item.email || '')
-            .trim()
-            .toLowerCase() ===
-          searchEmail
-      )
-
-    console.log(
-      'Matched user:',
-      user
-    )
-
-    setMatchedUser(
-      user || null
-    )
+    const user = users.find((item) => String(item.email || '').trim().toLowerCase() === searchEmail)
+    setMatchedUser(user || null)
   }
 
-
-  // ======================================================
-  // PROMOTE USER
-  // ======================================================
-
+  // ---------- promote user ----------
   const handlePromote = async () => {
-
     if (!matchedUser) {
-
-      setError(
-        'Enter the email address of a valid user.'
-      )
-
+      setPromoteError('Enter the email address of a valid user.')
       return
     }
 
-
-    // Already representative
-    if (
-      String(matchedUser.role || '')
-        .trim()
-        .toLowerCase() ===
-      'representative'
-    ) {
-
-      setError(
-        'This user is already a representative.'
-      )
-
+    if (String(matchedUser.role || '').trim().toLowerCase() === 'representative') {
+      setPromoteError('This user is already a representative.')
       return
     }
 
-
-    /*
-     * The representative API expects the
-     * UserDetail/UserProfile ID.
-     *
-     * Try all common names that may be returned
-     * by your users API.
-     */
-
-    const userProfileId =
-      matchedUser.user_profile_id ||
-      matchedUser.user_profile?.id ||
-      matchedUser.profile_id
-
+    const userProfileId = matchedUser.user_profile_id || matchedUser.user_profile?.id || matchedUser.profile_id
 
     if (!userProfileId) {
-
-      console.error(
-        'User profile ID missing. User returned by API:',
-        matchedUser
-      )
-
-      setError(
-        'User profile ID is not available from the users API. Please update the users API to return user_profile_id.'
-      )
-
+      console.error('User profile ID missing:', matchedUser)
+      setPromoteError('User profile ID is not available from the users API.')
       return
     }
 
-
     setPromoting(true)
-    setError('')
-
-
+    setPromoteError('')
     try {
-
-      console.log(
-        'Promoting user profile:',
-        userProfileId
-      )
-
-
-      // Promote using UserDetail ID
-      await promoteUser(
-        Number(userProfileId)
-      )
-
-
-      /*
-       * Reload users from backend.
-       *
-       * This is better than manually changing
-       * the local user object because the backend
-       * is the source of truth.
-       */
-
+      await promoteUser(Number(userProfileId))
       await fetchUsers()
-
-
-      // Clear search
+      await fetchRepresentatives()
       setEmail('')
-
       setMatchedUser(null)
-
     } catch (err) {
-
-      console.error(
-        'Promotion failed:',
-        err
-      )
-
-      setError(
-        extractErrorMessage(
-          err,
-          'Could not promote user.'
-        )
-      )
-
+      console.error('Promotion failed:', err)
+      setPromoteError(extractErrorMessage(err, 'Could not promote user.'))
     } finally {
-
       setPromoting(false)
     }
   }
 
+  // ---------- edit representative ----------
+  const handleEdit = (representative) => {
+    setEditingRep(representative)
+    setEditForm({
+      start_date: representative.start_date || '',
+      end_date: representative.end_date || '',
+    })
+    setEditError('')
+  }
 
-  // ======================================================
-  // RENDER
-  // ======================================================
+  const handleSaveEdit = async () => {
+    if (editForm.start_date && editForm.end_date && editForm.start_date > editForm.end_date) {
+      setEditError('Start date cannot be after end date.')
+      return
+    }
+
+    setSavingEdit(true)
+    setEditError('')
+    try {
+      await updateRepresentative(editingRep.id, {
+        start_date: editForm.start_date || null,
+        end_date: editForm.end_date || null,
+      })
+      await fetchRepresentatives()
+      setEditingRep(null)
+    } catch (err) {
+      console.error('Update representative failed:', err)
+      setEditError(extractErrorMessage(err, 'Could not update representative.'))
+    } finally {
+      setSavingEdit(false)
+    }
+  }
+
+  // ---------- delete representative ----------
+  const handleDelete = async (representative) => {
+    const name = representative.user_name || 'this representative'
+    const confirmed = window.confirm(`Are you sure you want to delete ${name}?`)
+    if (!confirmed) return
+
+    setListError('')
+    try {
+      await deleteRepresentative(representative.id)
+      await fetchRepresentatives()
+      await fetchUsers()
+    } catch (err) {
+      console.error('Delete representative failed:', err)
+      setListError(extractErrorMessage(err, 'Could not delete representative.'))
+    }
+  }
+
+  // ---------- toggle active/inactive ----------
+  const handleToggleStatus = async (representative) => {
+    const currentStatus = Boolean(representative.user_is_active)
+    const newStatus = !currentStatus
+    try {
+      setListError('')
+      await toggleRepresentativeStatus(representative.id, newStatus)
+      await fetchRepresentatives()
+      await fetchUsers()
+    } catch (err) {
+      console.error('Status update failed:', err)
+      setListError(extractErrorMessage(err, 'Could not change representative status.'))
+    }
+  }
+
+  // ---------- search filter (representatives section) ----------
+  const filteredRepresentatives = representatives.filter((rep) => {
+    const query = search.trim().toLowerCase()
+    if (!query) return true
+    return (
+      rep.user_name?.toLowerCase().includes(query) ||
+      rep.user_email?.toLowerCase().includes(query) ||
+      rep.constituency_name?.toLowerCase().includes(query) ||
+      rep.district_name?.toLowerCase().includes(query)
+    )
+  })
 
   return (
     <AdminLayout title="Representatives">
-
+      {/* ============================================================
+          SECTION 1 — Promote a user to representative
+      ============================================================ */}
       <div className={Styles.card}>
-
-        {/* ================================================
-            PROMOTE USER
-        ================================================ */}
-
-        <div
-          className={
-            Styles.cardHeader
-          }
-        >
-
+        <div className={Styles.cardHeader}>
           <div>
-
-            <h3>
-              Promote User
-            </h3>
-
-            <p>
-              Search a user by email and make
-              them a representative.
-            </p>
-
+            <h3>Promote User to Representative</h3>
+            <p>Search a user by email and make them a representative.</p>
           </div>
-
         </div>
 
-
-        {/* ================================================
-            EMAIL SEARCH
-        ================================================ */}
-
-        <div
-          className={
-            Styles.searchBox
-          }
-          style={{
-            maxWidth: '600px',
-            marginBottom: '20px',
-          }}
-        >
-
-          <FaSearch
-            className={
-              Styles.searchIcon
-            }
-          />
-
+        <div className={Styles.promoteSearchBox}>
+          <FaSearch className={Styles.searchIcon} />
           <input
             type="email"
             placeholder="Enter user's email"
             value={email}
-            onChange={(e) =>
-              handleEmailChange(
-                e.target.value
-              )
-            }
+            onChange={(e) => handleEmailChange(e.target.value)}
             autoComplete="email"
           />
-
         </div>
 
-
-        {/* ================================================
-            NO USER FOUND
-        ================================================ */}
-
-        {email &&
-          !matchedUser && (
-
-            <p
-              className={
-                Styles.assignHint
-              }
-            >
-              No user found with this email.
-            </p>
-
-          )}
-
-
-        {/* ================================================
-            USER FOUND
-        ================================================ */}
+        {email && !matchedUser && <p className={Styles.assignHint}>No user found with this email.</p>}
 
         {matchedUser && (
-
-          <div
-            className={
-              Styles.matchCard
-            }
-          >
-
-            <FaUserTie
-              className={
-                Styles.matchIcon
-              }
-            />
-
-
-            <div
-              className={
-                Styles.matchName
-              }
-            >
-
-              <strong>
-                {matchedUser.first_name ||
-                  'Unnamed User'}
-              </strong>
-
-
-              <span
-                className={
-                  Styles.matchEmail
-                }
-              >
-                {matchedUser.email}
-              </span>
-
-
-              <span
-                style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  marginTop: '4px',
-                }}
-              >
-                Current role:{' '}
-
-                {matchedUser.role ||
-                  'user'}
-
-              </span>
-
+          <div className={Styles.matchCard}>
+            <FaUserTie className={Styles.matchIcon} />
+            <div className={Styles.matchName}>
+              <strong>{matchedUser.first_name || 'Unnamed User'}</strong>
+              <span className={Styles.matchEmail}>{matchedUser.email}</span>
+              <span className={Styles.matchRole}>Current role: {matchedUser.role || 'user'}</span>
             </div>
-
 
             <button
               type="button"
-              className={
-                Styles.verifyBtn
-              }
-              onClick={
-                handlePromote
-              }
-              disabled={
-                promoting ||
-                String(
-                  matchedUser.role || ''
-                )
-                  .trim()
-                  .toLowerCase() ===
-                  'representative'
-              }
+              className={Styles.verifyBtn}
+              onClick={handlePromote}
+              disabled={promoting || String(matchedUser.role || '').trim().toLowerCase() === 'representative'}
             >
-
               <FaCheck />
-
               {promoting
                 ? 'Promoting...'
-                : String(
-                    matchedUser.role || ''
-                  )
-                    .trim()
-                    .toLowerCase() ===
-                  'representative'
-                  ? 'Already Representative'
-                  : 'Make Representative'}
-
+                : String(matchedUser.role || '').trim().toLowerCase() === 'representative'
+                ? 'Already Representative'
+                : 'Make Representative'}
             </button>
-
           </div>
-
         )}
 
-
-        {/* ================================================
-            ERROR
-        ================================================ */}
-
-        {error && (
-
-          <p
-            className={
-              Styles.errorText
-            }
-          >
-            {error}
-          </p>
-
-        )}
-
-
-        {/* ================================================
-            REPRESENTATIVES
-        ================================================ */}
-
-        <div
-          style={{
-            marginTop: '35px',
-          }}
-        >
-
-          <div
-            className={
-              Styles.cardHeader
-            }
-          >
-
-            <div>
-
-              <h3>
-                Representatives
-              </h3>
-
-              <p>
-                Users who have been promoted
-                to representative.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          {loading ? (
-
-            <p>
-              Loading...
-            </p>
-
-          ) : representatives.length ===
-            0 ? (
-
-            <p
-              className={
-                Styles.assignHint
-              }
-            >
-              No representatives found.
-            </p>
-
-          ) : (
-
-            <table
-              className={
-                Styles.table
-              }
-            >
-
-              <thead>
-
-                <tr>
-
-                  <th>
-                    Name
-                  </th>
-
-                  <th>
-                    Email
-                  </th>
-
-                  <th>
-                    Role
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody>
-
-                {representatives.map(
-                  (representative) => (
-
-                    <tr
-                      key={
-                        `representative-${representative.id}`
-                      }
-                    >
-
-                      <td>
-                        {representative.first_name ||
-                          'Unnamed User'}
-                      </td>
-
-
-                      <td>
-                        {representative.email}
-                      </td>
-
-
-                      <td>
-                        Representative
-                      </td>
-
-                    </tr>
-
-                  )
-                )}
-
-              </tbody>
-
-            </table>
-
-          )}
-
-        </div>
-
+        {promoteError && <p className={Styles.errorText}>{promoteError}</p>}
       </div>
 
+      {/* ============================================================
+          SECTION 2 — Manage existing representatives
+      ============================================================ */}
+      <div className={Styles.card}>
+        <div className={Styles.cardHeader}>
+          <div>
+            <h3>Representatives</h3>
+            <p>Manage representatives, constituency assignments and terms.</p>
+          </div>
+
+          <div className={Styles.searchBox}>
+            <FaSearch className={Styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Search name, email, constituency, district"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {listError && <p className={Styles.errorText}>{listError}</p>}
+
+        {loading ? (
+          <p>Loading representatives...</p>
+        ) : filteredRepresentatives.length === 0 ? (
+          <p className={Styles.assignHint}>
+            {search ? 'No representatives match your search.' : 'No representatives found.'}
+          </p>
+        ) : (
+          <div className={Styles.tableWrap}>
+            <table className={Styles.table}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Constituency</th>
+                  <th>Ward</th>
+                  <th>District</th>
+                  <th>Term</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredRepresentatives.map((representative) => (
+                  <tr key={`representative-${representative.id}`}>
+                    <td>
+                      <strong>{representative.user_name || 'Unnamed User'}</strong>
+                    </td>
+                    <td>{representative.user_email || '-'}</td>
+                    <td>
+                      {representative.constituency_name ? (
+                        representative.constituency_name
+                      ) : (
+                        <span className={Styles.muted}>Not assigned</span>
+                      )}
+                    </td>
+                    <td>{representative.constituency_ward || '-'}</td>
+                    <td>{representative.district_name || '-'}</td>
+                    <td>
+                      <div className={Styles.termCell}>
+                        <div>
+                          <strong>From:</strong> {representative.start_date || '-'}
+                        </div>
+                        <div>
+                          <strong>To:</strong> {representative.end_date || '-'}
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div className={Styles.actionsRow}>
+                        <button
+                          type="button"
+                          className={Styles.editBtn}
+                          onClick={() => handleEdit(representative)}
+                          title="Edit term"
+                        >
+                          <FaEdit />
+                        </button>
+
+
+
+                        <button
+                          type="button"
+                          className={Styles.deleteBtn}
+                          onClick={() => handleDelete(representative)}
+                          title="Delete representative"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* ============================================================
+          EDIT MODAL
+      ============================================================ */}
+      {editingRep && (
+        <div className={Styles.modalOverlay} onClick={() => setEditingRep(null)}>
+          <div className={Styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h3>Edit Representative</h3>
+            <p>{editingRep.user_name || 'Representative'}</p>
+
+            <div className={Styles.constituencyInfoBox}>
+              <div>
+                <strong>Constituency:</strong> {editingRep.constituency_name || 'Not assigned'}
+              </div>
+              <div>
+                <strong>Ward:</strong> {editingRep.constituency_ward || '-'}
+              </div>
+              <div>
+                <strong>District:</strong> {editingRep.district_name || '-'}
+              </div>
+            </div>
+
+            <div className={Styles.modalFields}>
+              <label>
+                <span>Term Started On</span>
+                <input
+                  type="date"
+                  value={editForm.start_date}
+                  onChange={(e) => setEditForm({ ...editForm, start_date: e.target.value })}
+                />
+              </label>
+              <label>
+                <span>Term Ends On</span>
+                <input
+                  type="date"
+                  value={editForm.end_date}
+                  onChange={(e) => setEditForm({ ...editForm, end_date: e.target.value })}
+                />
+              </label>
+            </div>
+
+            {editError && <p className={Styles.errorText}>{editError}</p>}
+
+            <div className={Styles.modalActions}>
+              <button type="button" onClick={() => setEditingRep(null)} disabled={savingEdit}>
+                Cancel
+              </button>
+              <button type="button" onClick={handleSaveEdit} disabled={savingEdit}>
+                {savingEdit ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminLayout>
   )
 }

@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import Styles from '../components/module.css/DeptEmployeeSidebar.module.css'
-import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,FaCog } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
+import Styles from '../components/module.css/RepresentativeSidebar.module.css'
+// import Styles from './module.css/MyWardSidebar.module.css'
+import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,FaCog, FaSignOutAlt } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
-import { getProfile } from '../../api/services/Dept/ProfileService.js' 
+import { getProfile } from '../../api/services/Representative/Profile.js' 
 
 const navItems = [
-  { icon: <FaHome />, label: 'Home', path: '' },
-  { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/dept/deptdashboard' },
-  { icon: <FaBuilding />, label: 'Branches', path: '/dept/branches' },
-  { icon: <FaUsers />, label: 'Employee List', path: '' },
-  { icon: <FaClipboardList />, label: 'Complaints', path: '' },
+  { icon: <FaHome />, label: 'Home', path: 'myward' },
+  { icon: <FaBuilding />, label: 'My ward', path: '1' },
+  { icon: <FaUsers />, label: 'Employee List', path: '3' },
+  { icon: <FaClipboardList />, label: 'Complaints', path: '2' },
 ]
 
 
-function DeptEmployeeSidebar() {
+function MyWardSidebar() {
   const [ Pro, setPro] = useState() 
 
   useEffect(()=>{
@@ -41,11 +41,11 @@ function DeptEmployeeSidebar() {
     <aside className={Styles.sidebar}>
       <div className={Styles.brand}>
         <div className={Styles.brandIcon}>CC</div>
-        <span>CivicConnect Admin</span>
+        <span>CivicConnect</span>
       </div>
       <div className={Styles.search}>
-        <input placeholder="Search" />
-        <span className={Styles.kbd}>⌘K</span>
+        {/* <input placeholder="Search" />
+        <span className={Styles.kbd}>⌘K</span> */}
       </div>
       <nav>
         <ul className={Styles.navList}>
@@ -64,7 +64,7 @@ function DeptEmployeeSidebar() {
         </ul>
         <p className={Styles.sectionLabel} />
         <ul className={Styles.navList}>
-          <NavLink to='/dept/deptsettings'>
+          <NavLink to='/representative/representativesettings'>
             <li className={Styles.navItem}>
               <span className={Styles.navIcon}><FaCog /></span>
               Settings
@@ -80,10 +80,11 @@ function DeptEmployeeSidebar() {
               <p className={Styles.userEmail}>{Pro.email}</p>
           </div>
           }
-        <span onClick={handleLogout} className={Styles.usercardbtn}>Logout</span>
+        <span onClick={handleLogout} className={Styles.usercardbtn}title='logout'><FaSignOutAlt/> Logout</span>
+
       </div>
     </aside>
   )
 }
 
-export default DeptEmployeeSidebar
+export default MyWardSidebar

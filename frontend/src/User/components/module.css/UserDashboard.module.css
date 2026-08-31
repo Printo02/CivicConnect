@@ -356,3 +356,42 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+.welcomeBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #7C5CFC 0%, #6D4DEB 100%);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.welcomeTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.welcomeSubtitle {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.welcomeClock {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.95;
+}
+
+@media (max-width: 600px) {
+  .welcomeBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

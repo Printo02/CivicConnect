@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import Styles from '../components/module.css/DeptSidebar.module.css'
 import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,
-            FaCog } from 'react-icons/fa'
+            FaCog, 
+            FaSignOutAlt} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { getProfile } from '../../api/services/Dept/ProfileService.js' 
 
 const navItems = [
-  { icon: <FaHome />, label: 'Home', path: '1' },
+  // { icon: <FaHome />, label: 'Home', path: '1' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/dept/deptdashboard' },
-  { icon: <FaBuilding />, label: 'Branches', path: '/dept/branches' },
-  { icon: <FaUsers />, label: 'Employee List', path: '2' },
-  { icon: <FaClipboardList />, label: 'Complaints', path: '3' },
+  { icon: <FaBuilding />, label: 'Branches', path: '/dept/branches/addbranch' },
+  { icon: <FaUsers />, label: 'Employee List', path: '/dept/EmployeeList' },
+  // { icon: <FaClipboardList />, label: 'Complaints', path: '3' },
 ]
 
 
@@ -81,7 +82,7 @@ function DeptSidebar() {
               <p className={Styles.userEmail}>{Pro.email}</p>
           </div>
           }
-        <span onClick={handleLogout} className={Styles.usercardbtn}>Logout</span>
+        <span onClick={handleLogout} className={Styles.usercardbtn} title='logout'><FaSignOutAlt/> Logout</span>
       </div>
     </aside>
   )

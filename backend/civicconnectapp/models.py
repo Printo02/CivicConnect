@@ -30,13 +30,6 @@ class Dept(models.Model):
         return f"{self.dept.deptname} - {self.placename}"
 
 
-
-class DeptEmployees(models.Model):
-    dept_details = models.ForeignKey(Dept,on_delete=models.CASCADE,related_name="deptemployee")
-    user_details = models.OneToOneField(User,on_delete=models.CASCADE,related_name="deptemps")
-    role = models.CharField(max_length=250,blank=True,null=True)
-
-
 # class Complaint(models.Model):
 #     STATUS_CHOICES = [
 #         ('pending', 'Pending'),
@@ -73,7 +66,6 @@ class Constituency(models.Model):
     ward_name_no = models.CharField(max_length=200,blank=True,null=True)
     type = models.CharField(max_length=30,choices=ConstituencyType.choices)
     district = models.ForeignKey(District,on_delete=models.CASCADE,related_name="constituencies")
-    representative = models.OneToOneField(User,on_delete=models.SET_NULL,null=True,blank=True,related_name="represented_constituency")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -81,13 +73,11 @@ class Constituency(models.Model):
 
 class Representative(models.Model):
     user_profile = models.OneToOneField(UserDetail,on_delete=models.CASCADE,related_name="representative")
-    constituency = models.ForeignKey(Constituency,on_delete=models.SET_NULL,related_name="representatives",null=True,blank=True)
+    constituency = models.ForeignKey(Constituency,on_delete=models.SET_NULL,related_name="constituency",null=True,blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     is_current = models.BooleanField(default=True)
-
-
-
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 
@@ -108,3 +98,7 @@ class Branch(models.Model):
 
 
 
+class BranchEmployees(models.Model):
+    branch_details = models.ForeignKey(Branch,on_delete=models.CASCADE,related_name="branchdetails")
+    user_details = models.OneToOneField(User,on_delete=models.CASCADE,related_name="branchemps")
+    branch_role = models.CharField(max_length=250,blank=True,null=True)

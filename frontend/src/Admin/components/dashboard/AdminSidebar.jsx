@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './AdminSidebar.module.css'
-import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding, FaChartBar, FaCog, FaHeadset } from 'react-icons/fa'
+import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding, FaChartBar, FaCog, FaHeadset, FaSignOutAlt } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import ViewUsers from './../../pages/ViewUsers';
 import { useNavigate } from "react-router-dom";
@@ -80,7 +80,7 @@ function AdminSidebar() {
               <p className={Styles.userEmail}>{Pro.email}</p>
           </div>
           }
-        <span onClick={handleLogout} className={Styles.usercardbtn}>Logout</span>
+        <span onClick={handleLogout} className={Styles.usercardbtn} title='logout'><FaSignOutAlt/> Logout</span>
       </div>
     </aside>
   )

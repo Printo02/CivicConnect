@@ -1,6 +1,6 @@
 import React from 'react'
-import DeptEmployeeLayout from '../components/DeptEmployeeLayout'
-import Styles from '../components/module.css/DeptEmployeeDashboard.module.css'
+import BranchEmployeeLayout from '../components/BranchEmployeeLayout'
+import Styles from '../components/module.css/BranchEmployeeDashboard.module.css'
 import { getProfile } from '../../api/services/Dept/ProfileService'
 import { FaFilter, FaSlidersH, FaDownload } from 'react-icons/fa'
 import { PieChart, Pie, Cell, ResponsiveContainer,LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
@@ -39,7 +39,7 @@ const complaints = [
 ]
 
 
-function DeptEmployeeDashboard() {
+function BranchEmployeeDashboard() {
   const actions = (
     <>
       <button className={Styles.ghostBtn}><FaFilter /> Filters <span className={Styles.countPill}>3</span></button>
@@ -49,7 +49,7 @@ function DeptEmployeeDashboard() {
   )
 
   return (
-    <DeptEmployeeLayout title={profile.first_name} actions={actions}>
+    <BranchEmployeeLayout title={profile.first_name} actions={actions}>
       <div className={Styles.chartsRow}>
         {/* donut card, line chart card — unchanged from before */}
 	{/* Donut card */}
@@ -167,8 +167,8 @@ function DeptEmployeeDashboard() {
           </table>
         </div>
       </div>
-    </DeptEmployeeLayout>
+    </BranchEmployeeLayout>
   )
 }
 
-export default DeptEmployeeDashboard
+export default BranchEmployeeDashboard

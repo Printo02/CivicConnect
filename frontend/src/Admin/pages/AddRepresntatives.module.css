@@ -360,3 +360,624 @@
   font-weight: 400;
   color: var(--text-muted);
 }
+
+
+/*  */
+
+/* ======================================================
+   REPRESENTATIVE ACTION BUTTONS
+====================================================== */
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+
+/* Edit */
+
+.editBtn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 7px 9px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.editBtn:hover {
+  background: var(--surface-hover);
+  color: #7C5CFC;
+  border-color: #7C5CFC;
+}
+
+
+/* Active / Inactive */
+
+.statusBtn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 7px 9px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.statusBtn:hover {
+  background: var(--surface-hover);
+  color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+
+/* Delete */
+
+.deleteBtn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 7px 9px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.deleteBtn:hover {
+  background: rgba(239, 68, 68, 0.08);
+  color: #EF4444;
+  border-color: #EF4444;
+}
+
+
+/* ======================================================
+   STATUS BADGES
+====================================================== */
+
+.activeBadge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.inactiveBadge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* ======================================================
+   MODAL
+====================================================== */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+
+  padding: 20px;
+}
+
+
+.modal {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  padding: 28px;
+
+  width: 100%;
+  max-width: 500px;
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+}
+
+
+.modal h3 {
+  color: var(--text-primary);
+
+  font-size: 1.05rem;
+
+  font-weight: 700;
+
+  margin: 0 0 6px;
+}
+
+
+.modal>p {
+  color: var(--text-muted);
+
+  font-size: 0.82rem;
+
+  margin: 0 0 20px;
+}
+
+
+/* ======================================================
+   MODAL FIELDS
+====================================================== */
+
+.modalFields {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 15px;
+
+  margin-top: 18px;
+}
+
+
+.modalFields label {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+
+.modalFields label span {
+  color: var(--text-primary);
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+}
+
+
+.modalFields input {
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  background: var(--surface-sunken);
+
+  color: var(--text-primary);
+
+  font-size: 0.85rem;
+
+  outline: none;
+
+  box-sizing: border-box;
+}
+
+
+.modalFields input:focus {
+  border-color: #7C5CFC;
+}
+
+
+/* ======================================================
+   MODAL ACTIONS
+====================================================== */
+
+.modalActions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+
+.modalActions button {
+  padding: 9px 16px;
+
+  border-radius: 8px;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.modalActions button:first-child {
+  background: var(--surface-sunken);
+
+  border: 1px solid var(--border);
+
+  color: var(--text-primary);
+}
+
+
+.modalActions button:first-child:hover {
+  background: var(--surface-hover);
+}
+
+
+.modalActions button:last-child {
+  background: #7C5CFC;
+
+  border: 1px solid #7C5CFC;
+
+  color: white;
+}
+
+
+.modalActions button:last-child:hover {
+  background: #6D4DEB;
+}
+
+
+.modalActions button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* ======================================================
+   MUTED TEXT
+====================================================== */
+
+.muted {
+  color: var(--text-muted);
+
+  font-size: 0.8rem;
+
+  font-style: italic;
+}
+
+
+/* ======================================================
+   REPRESENTATIVE TABLE
+====================================================== */
+
+.tableWrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+
+/* ======================================================
+   TERM DISPLAY
+====================================================== */
+
+.termInfo {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  font-size: 0.78rem;
+
+  color: var(--text-secondary);
+}
+
+.termInfo strong {
+  color: var(--text-primary);
+}
+
+
+/* ======================================================
+   CONSTITUENCY INFO
+====================================================== */
+
+.constituencyInfo {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.constituencyName {
+  font-weight: 600;
+
+  color: var(--text-primary);
+
+  font-size: 0.85rem;
+}
+
+.constituencyWard {
+  font-size: 0.75rem;
+
+  color: var(--text-muted);
+}
+
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 900px) {
+
+  .card {
+    padding: 20px;
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 1050px;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .card {
+    padding: 16px;
+  }
+
+  .modal {
+    padding: 20px;
+  }
+
+  .modalFields {
+    grid-template-columns: 1fr;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .modalActions button {
+    width: 100%;
+  }
+
+  .matchCard {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .verifyBtn {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .card {
+    padding: 12px;
+  }
+
+  .cardHeader h3 {
+    font-size: 1rem;
+  }
+
+  .cardHeader p {
+    font-size: 0.78rem;
+  }
+
+  .actionsRow {
+    gap: 5px;
+  }
+
+  .editBtn,
+  .statusBtn,
+  .deleteBtn {
+    padding: 6px 8px;
+  }
+
+}
+
+
+
+/* ============================================================
+   Two-section layout — Promote User card + Representatives card
+============================================================ */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.card:last-of-type {
+  margin-bottom: 0;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.cardHeader h3 {
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.cardHeader p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ============================================================
+   Promote User section — email search box
+============================================================ */
+
+.promoteSearchBox {
+  position: relative;
+  max-width: 420px;
+  margin-bottom: 16px;
+}
+
+.promoteSearchBox input {
+  width: 100%;
+  padding: 10px 14px 10px 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.promoteSearchBox input:focus {
+  border-color: #7C5CFC;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+/* Matched-user confirm card */
+
+.matchRole {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ============================================================
+   Representatives section — table search box
+============================================================ */
+
+.searchBox {
+  position: relative;
+}
+
+.searchBox input {
+  padding: 9px 14px 9px 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  width: 280px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.searchBox input:focus {
+  border-color: #7C5CFC;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.termCell {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   Edit modal — constituency info box
+============================================================ */
+
+.constituencyInfoBox {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+@media (max-width: 900px) {
+  .cardHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchBox input {
+    width: 100%;
+  }
+}

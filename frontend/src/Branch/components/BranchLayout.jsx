@@ -10,7 +10,6 @@ function BranchLayout({ title, actions, children }) {
   return (
     <div className={Styles.layout}>
       <BranchSidebar />
-
       <div className={Styles.main}>
         <div className={Styles.topRow}>
           <h1 className={Styles.pageTitle}>{title}</h1>

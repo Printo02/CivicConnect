@@ -184,14 +184,20 @@
   gap: 6px;
 }
 
-.dotPurple, .dotGray {
+.dotPurple,
+.dotGray {
   width: 8px;
   height: 8px;
   border-radius: 50%;
 }
 
-.dotPurple { background: #7C5CFC; }
-.dotGray { background: var(--text-muted); }
+.dotPurple {
+  background: #7C5CFC;
+}
+
+.dotGray {
+  background: var(--text-muted);
+}
 
 /* Table */
 .tableSection {
@@ -316,8 +322,17 @@
   background: #7C5CFC;
 }
 
-.trendUp { color: #22C55E; font-size: 0.72rem; font-weight: 700; }
-.trendDown { color: #EF4444; font-size: 0.72rem; font-weight: 700; }
+.trendUp {
+  color: #22C55E;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.trendDown {
+  color: #EF4444;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
 
 .dateCell {
   font-size: 0.8rem;
@@ -353,6 +368,220 @@
 
 @media (max-width: 1100px) {
   .chartsRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.welcomeBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #7C5CFC 0%, #6D4DEB 100%);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.welcomeTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.welcomeSubtitle {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.welcomeClock {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.95;
+}
+
+@media (max-width: 600px) {
+  .welcomeBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+
+.welcomeBanner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #7C5CFC 0%, #6D4DEB 100%);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.welcomeTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.welcomeSubtitle {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0 0 10px;
+}
+
+.constituency {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
+.welcomeClock {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.95;
+}
+
+.loadingBlock {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.errorText {
+  color: #EF4444;
+  font-size: 0.85rem;
+  margin: 0 0 16px;
+}
+
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.profileAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--surface-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  color: #7C5CFC;
+  font-size: 1.4rem;
+}
+
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileInfo h3 {
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  margin: 0 0 4px;
+}
+
+.profileInfo p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+.profileRole {
+  display: inline-block;
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.statValue {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.ghostBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ghostBtn:hover {
+  background: var(--surface-hover);
+}
+
+.countPill {
+  background: var(--surface-hover);
+  border-radius: 5px;
+  padding: 0 5px;
+  font-size: 0.7rem;
+}
+
+@media (max-width: 900px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .welcomeBanner {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  .statsGrid {
     grid-template-columns: 1fr;
   }
 }

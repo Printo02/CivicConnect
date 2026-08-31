@@ -1,26 +1,22 @@
 import api from "../../apiClient";
 
-export const getConstituencies = async () => (
-  await api.get('/admin/constituencies/')).data
+// GET 
+export const getConstituencies = async () => (await api.get('/admin/constituencies/')).data
+
+export const getConstituencyTypes = async () => (await api.get('/admin/constituencies/types/')).data
+
+// POST 
+export const createConstituency = async (data) => (await api.post('/admin/constituencies/', data)).data
 
 
-export const getConstituencyTypes = async () => (
-  await api.get('/admin/constituencies/types/')).data
+// PATCH 
+export const updateConstituency = async (id, data) => (await api.patch(`/admin/constituencies/${id}/`, data)).data
 
+export const assignRepresentative = async (constituencyId,userId) => {
+  const response = await api.patch(`/admin/constituencies/${constituencyId}/assign/`,{representative: userId,})
+  return response.data
+}
 
-export const createConstituency = async (data) => (
-  await api.post('/admin/constituencies/', data)).data
-
-
-export const updateConstituency = async (id, data) => (
-  await api.patch(`/admin/constituencies/${id}/`, data)).data
-
+// DELETE 
 export const deleteConstituency = async (id) => (
   await api.delete(`/admin/constituencies/${id}/`)).data
-  
-export const assignRepresentative = async (id, userId) =>
-  (await api.patch(`/admin/constituencies/${id}/assign/`, { representative: userId })).data
-
-
-
-

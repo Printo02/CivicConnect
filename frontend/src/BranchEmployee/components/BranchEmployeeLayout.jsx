@@ -1,15 +1,15 @@
 import React from 'react' 
 import { useTheme } from '../../context/ThemeContext'
-import Styles from '../components/module.css/DeptEmployeeLayout.module.css'
+import Styles from '../components/module.css/BranchEmployeeLayout.module.css'
 import { FaSun, FaMoon } from 'react-icons/fa'
-import DeptEmployeeSidebar from './DeptEmployeeSidebar';
+import BranchEmployeeSidebar from './BranchEmployeeSidebar';
 
-function DeptEmployeeLayout({ title, actions, children }) {
+function BranchEmployeeLayout({ title, actions, children }) {
   const { theme, toggleTheme } = useTheme()
   
   return (
     <div className={Styles.layout}>
-      <DeptEmployeeSidebar />
+      <BranchEmployeeSidebar />
 
       <div className={Styles.main}>
         <div className={Styles.topRow}>
@@ -28,5 +28,5 @@ function DeptEmployeeLayout({ title, actions, children }) {
   )
 }
 
-export default DeptEmployeeLayout
+export default BranchEmployeeLayout
 

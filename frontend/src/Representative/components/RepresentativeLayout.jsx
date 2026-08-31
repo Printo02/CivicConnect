@@ -20,7 +20,6 @@ function RepresentativeLayout({ title, actions, children }) {
             </button>
           </div>
         </div>
-
         {children}
       </div>
     </div>

@@ -1,15 +1,18 @@
 import api from '../../apiClient'
 
+// GET 
 export const getProfile = async () => {
   const response = await api.get('/admin/profile/')
   return response.data
 }
 
+// PATCH 
 export const updateProfile = async (data) => {
   const response = await api.patch('/admin/profile/', data)
   return response.data
 }
 
+// POST 
 export const changePassword = async (currentPassword, newPassword, confirmPassword) => {
   const response = await api.post('/admin/change-password/', {
     current_password: currentPassword,
