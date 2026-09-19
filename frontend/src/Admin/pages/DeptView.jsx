@@ -357,16 +357,8 @@ export default function DeptView() {
                         >
 
                           <button
-                            type="button"
-                            className={
-                              Styles.viewBtn
-                            }
-                            onClick={() =>
-                              navigate(
-                                `/admin/departments/${dept.id}`
-                              )
-                            }
-                          >
+                            type="button" className={Styles.viewBtn}
+                            onClick={() =>navigate(`/admin/deptview/${dept.id}/branches`)}>
                             Branches
                           </button>
 

@@ -1,0 +1,158 @@
+[data-theme='dark'] {
+  --bg: #0A0A0B;
+  --surface: #161618;
+  --surface-sunken: #1D1D20;
+  --surface-hover: #232326;
+  --border: #2A2A2E;
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+}
+
+[data-theme='light'] {
+  --bg: #F7F7F8;
+  --surface: #FFFFFF;
+  --surface-sunken: #F2F2F4;
+  --surface-hover: #EFEFF1;
+  --border: #E4E4E7;
+  --text-primary: #18181B;
+  --text-secondary: #52525B;
+  --text-muted: #A1A1AA;
+}
+
+.chartsRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* Card */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+/* Card Header */
+
+.cardHeader {
+  margin-bottom: 20px;
+}
+
+.cardHeader h3 {
+  margin: 0 0 7px;
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.cardHeader p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-family: Arial, sans-serif;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+/* Description */
+
+.cardDescription {
+  margin: 0 0 20px;
+  color: var(--text-muted);
+  font-family: Arial, sans-serif;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+/* Button */
+
+.reportBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 90px;
+  padding: 9px 17px;
+
+  border: 1px solid #7C5CFC;
+  border-radius: 8px;
+
+  background: #7C5CFC;
+  color: #FFFFFF;
+
+  font-family: Arial, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.reportBtn:hover {
+  background: #6D4DEB;
+  border-color: #6D4DEB;
+}
+
+.reportBtn:active {
+  transform: scale(0.98);
+}
+
+.reportBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
+/* Link */
+
+.card a {
+  text-decoration: none;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .chartsRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .chartsRow {
+    gap: 14px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .cardHeader h3 {
+    font-size: 0.95rem;
+  }
+
+  .cardHeader p {
+    font-size: 0.82rem;
+  }
+
+  .reportBtn {
+    width: 100%;
+  }
+}

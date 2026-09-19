@@ -7,7 +7,7 @@ import ForgotPassword from '../pages/ForgotPassword.jsx'
 import Otp from '../pages/Otp.jsx'
 import ChangePassword from '../pages/ChangePassword.jsx'
 import AdminDashboard from '../Admin/pages/AdminDashboard.jsx'
-import Departments from '../Admin/pages/Departments.jsx'
+// import Departments from '../Admin/pages/Departments.jsx'
 import Representative from '../Admin/pages/Representative.jsx'
 import Feedback from '../Admin/pages/Feedback.jsx'
 import AdminSetting from '../Admin/pages/AdminSetting.jsx'
@@ -21,14 +21,7 @@ import AddConstitunency from '../Admin/pages/AddConstitunency.jsx'
 import DeptDashboard from '../Dept/pages/DeptDashboard.jsx'
 import DeptSetting from '../Dept/pages/DeptSetting.jsx'
 import EmployeeList from '../Dept/pages/EmployeeList.jsx'
-
-
-// import DeptComplaints from '../Dept/pages/DeptComplaints.jsx'
-// import DeptBranches from '../Dept/pages/DeptBranches.jsx'
-// import DeptEmployees from './../Dept/pages/DeptEmployees';
-// import DeptProfile from './../Dept/pages/DeptProfile';
 import BranchDashboard from './../Branch/pages/BranchDashboard';
-// import DeptEmployeeDashboard from './../DeptEmployee/pages/DeptEmployeeDashboard';
 import UserDashboard from './../User/pages/UserDashboard';
 import RepresentativeDashboard from './../Representative/pages/RepresentativeDashboard';
 import AddBranch from '../Dept/pages/AddBranch.jsx'
@@ -38,11 +31,24 @@ import RepresentativeSetting from './../Representative/pages/RepresentativeSetti
 import MyWardSidebar from '../Representative/components/MyWardSidebar.jsx'
 import BranchEmployeeDashboard from './../BranchEmployee/pages/BranchEmployeeDashboard';
 import BranchEmployeeSetting from './../BranchEmployee/pages/BranchEmployeeSetting';
-import BranchComplaint from './../BranchEmployee/pages/BranchComplaint.jsx';
 import AddEmployee from './../Branch/pages/AddEmployee';
-import ViewComplaints from './../Branch/pages/ViewComplaints';
 import UserMyWard from './../User/pages/UserMyWard';
-import UserComplaint from './../User/pages/UserComplaint';
+import BranchEmployees from '../Admin/pages/BranchEmployees.jsx'
+import ConstituencyList from '../Admin/pages/ConstituencyList.jsx'
+import ConstituencyManagement from '../Admin/pages/AddConstitunency.jsx'
+import { Infos } from '../Admin/pages/infos.jsx'
+import { Complaints } from '../User/pages/Complaints.jsx'
+import UserComplaintHistory from '../User/pages/UserComplaintHistory.jsx'
+import UserFileComplaint from '../User/pages/UserFileComplaint.jsx'
+import NearbyAuths from './../User/pages/NearbyAuths';
+import ElectionBulkAssignment from '../Admin/pages/ElectionBulkAssignment.jsx'
+import RepresentativeComplaints from '../Representative/pages/RepresentativeComplaints.jsx'
+import RepresentativeComplaintDetail from '../Representative/pages/RepresentativeComplaintDetail.jsx'
+import UserComplaintDetail from './../User/pages/UserComplaintDetail';
+import BranchEmployeeComplaintDetail from '../BranchEmployee/pages/BranchEmployeeComplaintDetail.jsx'
+import BranchEmployeeComplaints from '../BranchEmployee/pages/BranchEmployeeComplaints.jsx'
+import BranchComplaints from '../Branch/pages/BranchComplaints.jsx'
+import BranchComplaintDetail from '../Branch/pages/BranchComplaintDetail.jsx'
 
 
 
@@ -90,10 +96,10 @@ const Router = createBrowserRouter([
               </ProtectedRoute>)
   },
   {
-    path: '/admin/department',
+    path: '/admin/infos',
     element: (
     <ProtectedRoute allowedRoles={["admin"]}>
-      <Departments/>
+      <Infos/>
     </ProtectedRoute>
     )
   },
@@ -142,13 +148,14 @@ const Router = createBrowserRouter([
     )
   },
   {
-    path: '/admin/departments/:id',
+    path: "/admin/deptview/:departmentId/branches",
     element:   (
     <ProtectedRoute allowedRoles={["admin"]}> 
       <DepartmentBranches/> 
     </ProtectedRoute>
     )
   },
+
   {
     path: '/admin/addrepresentatives',
     element:   (
@@ -157,11 +164,43 @@ const Router = createBrowserRouter([
     </ProtectedRoute>
     )
   },
+  // {
+  //   path: '/admin/addconstituencies',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["admin"]}> 
+  //     <AddConstitunency/>
+  //   </ProtectedRoute>
+  //   )
+  // },
   {
-    path: '/admin/addconstituencies',
+    path: '/admin/constituencies',
     element:   (
     <ProtectedRoute allowedRoles={["admin"]}> 
-      <AddConstitunency/>
+      <ConstituencyManagement/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/admin/constituencies/:government',
+    element:   (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+      <ConstituencyList/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/admin/rep-bulk-assignment',
+    element:   (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+      <ElectionBulkAssignment/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/admin/branches/:branchId/employees',
+    element:   (
+    <ProtectedRoute allowedRoles={["admin"]}> 
+      <BranchEmployees/>
     </ProtectedRoute>
     )
   },
@@ -229,13 +268,23 @@ const Router = createBrowserRouter([
     )
   },
   {
-    path: '/branch/viewcomplaints',
+    path: '/branch/complaints',
     element:   (
     <ProtectedRoute allowedRoles={["branch"]}> 
-      <ViewComplaints/>
+      <BranchComplaints/>
     </ProtectedRoute>
     )
   },
+  {
+    path: '/branch/complaints/:id',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchComplaintDetail/>
+    </ProtectedRoute>
+    )
+  },
+
+
 
 
   // # ---------------/ BRANCH-EMPLOYEE MODULE \---------------- #
@@ -243,14 +292,35 @@ const Router = createBrowserRouter([
     path: '/branchemployee/branchemployeedashboard',
     element: <BranchEmployeeDashboard/>
   },
+
   {
     path: '/branchemployee/branchemployeesetting',
     element: <BranchEmployeeSetting/>
   },
   {
-    path: '/branchemployee/Complaints',
-    element: <BranchComplaint/>
+    path: '/branchemployee/complaints/',
+    element: <BranchEmployeeComplaints/>
   },
+  {
+    path: '/branchemployee/complaints/:id',
+    element: <BranchEmployeeComplaintDetail/>
+  },
+  // {
+  //   path: '/representative/complaints/',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["representative"]}> 
+  //     <RepresentativeComplaints/>
+  //   </ProtectedRoute>
+  //   )
+  // },
+  // {
+  //   path: '/representative/complaints/:id',
+  //   element:   (
+  //   <ProtectedRoute allowedRoles={["representative"]}> 
+  //     <RepresentativeComplaintDetail/>
+  //   </ProtectedRoute>
+  //   )
+  // },
 
 
 
@@ -292,10 +362,42 @@ const Router = createBrowserRouter([
     )
   },
   {
-    path: '/user/complaint',
+    path: '/user/complaintviews',
     element:   (
     <ProtectedRoute allowedRoles={["user"]}> 
-      <UserComplaint/>
+      <Complaints/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/complaint-history',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserComplaintHistory/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/complaint-history/:id',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserComplaintDetail/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/file-complaint',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserFileComplaint/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/nearby-auths',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <NearbyAuths/>
     </ProtectedRoute>
     )
   },
@@ -315,6 +417,22 @@ const Router = createBrowserRouter([
     element:   (
     <ProtectedRoute allowedRoles={["representative"]}> 
       <RepresentativeSetting/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/representative/complaints/',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativeComplaints/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/representative/complaints/:id',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativeComplaintDetail/>
     </ProtectedRoute>
     )
   },

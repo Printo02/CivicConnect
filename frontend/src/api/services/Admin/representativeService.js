@@ -1,8 +1,5 @@
 import api from '../../apiClient.js'
 
-
-
-
 // GET
 export const getRepresentatives = async () => {const response = await api.get("/admin/representatives/");
     return response.data;
@@ -18,9 +15,9 @@ export const promoteUser = async (userProfileId) => {
 
 // PATCH
 export const updateRepresentative = async (representativeId,data) => {
-    const response = await api.patch(`/admin/representatives/${representativeId}/`,data);
-    return response.data;
-};
+    const response = await api.patch(`/admin/representatives/${representativeId}/`,data)
+    return response.data
+}
 
 export const toggleRepresentativeStatus = async (representativeId,isActive) => {
     const response = await api.patch(`/admin/representatives/${representativeId}/status/`,{is_active: isActive});
@@ -41,3 +38,13 @@ export const deleteRepresentative = async (representativeId) => {
 };
 
 
+export const getAvailableRepresentativeUsers = async () => {
+    const response = await api.get("/admin/representatives/available-users/")
+    return response.data
+}
+
+
+export const createRepresentative = async (data) => {
+    const response = await api.post("/admin/representatives/",data)
+    return response.data
+}

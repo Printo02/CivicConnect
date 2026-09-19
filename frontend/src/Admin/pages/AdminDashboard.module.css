@@ -1,358 +1,623 @@
-/* Theme variables */
-[data-theme='dark'] {
-  --bg: #0A0A0B;
-  --surface: #161618;
-  --surface-sunken: #1D1D20;
-  --surface-hover: #232326;
-  --border: #2A2A2E;
-  --text-primary: #F4F4F5;
-  --text-secondary: #A1A1AA;
-  --text-muted: #71717A;
+/* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+
+.dashboard {
+  width: 100%;
 }
 
-[data-theme='light'] {
-  --bg: #F7F7F8;
-  --surface: #FFFFFF;
-  --surface-sunken: #F2F2F4;
-  --surface-hover: #EFEFF1;
-  --border: #E4E4E7;
-  --text-primary: #18181B;
-  --text-secondary: #52525B;
-  --text-muted: #A1A1AA;
+
+/* ============================================================
+   STATISTICS GRID
+   ============================================================ */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-.layout {
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.statCard:hover {
+  background: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+
+.statTop {
   display: flex;
-  min-height: 100vh;
-  background: var(--bg);
-  font-family: Arial, sans-serif;
-}
-
-.main {
-  flex: 1;
-  padding: 24px 32px 60px;
-  min-width: 0;
-}
-
-.topRow {
-  display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 17px;
 }
 
-.pageTitle {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
 
-.topActions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.statIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
 
-.ghostBtn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 7px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.ghostBtn:hover {
-  background: var(--surface-hover);
-}
-
-.countPill {
-  background: var(--surface-hover);
-  border-radius: 5px;
-  padding: 0 5px;
-  font-size: 0.7rem;
-}
-
-.themeToggle {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.15s ease;
+
+  font-size: 15px;
 }
 
-.themeToggle:hover {
-  background: var(--surface-hover);
+
+.purple {
+  color: #7C5CFC;
+  background: rgba(124, 92, 252, 0.15);
 }
+
+
+.green {
+  color: #22C55E;
+  background: rgba(34, 197, 94, 0.15);
+}
+
+
+.red {
+  color: #EF4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+
+.blue {
+  color: #3B82F6;
+  background: rgba(59, 130, 246, 0.15);
+}
+
+
+.statLabel {
+  margin: 0 0 7px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+
+.statValue {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+
+.statMeta {
+  margin: 7px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.74rem;
+}
+
+
+.successBadge,
+.growthBadge {
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+
+.successBadge {
+  color: #22C55E;
+  background: rgba(34, 197, 94, 0.15);
+}
+
+
+.growthBadge {
+  color: #3B82F6;
+  background: rgba(59, 130, 246, 0.15);
+}
+
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
 
 .chartsRow {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 18px;
-  margin-bottom: 24px;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+
+  margin-bottom: 20px;
 }
+
 
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
+  border-radius: 12px;
+
+  padding: 22px;
 }
 
-.cardHeader h3 {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0 0 4px;
-}
 
-.cardHeader p {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin: 0 0 14px;
-}
-
-.donutWrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.legend {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-}
-
-.legend li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 0;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.reportBtn {
-  width: 100%;
-  margin-top: 16px;
-  padding: 9px 0;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface-sunken);
-  color: var(--text-primary);
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.reportBtn:hover {
-  background: var(--surface-hover);
-}
-
-.lineLegend {
-  display: flex;
-  gap: 16px;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-
-.lineLegend span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.dotPurple, .dotGray {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.dotPurple { background: #7C5CFC; }
-.dotGray { background: var(--text-muted); }
-
-/* Table */
-.tableSection {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.tableHeader {
+.cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+
+  margin-bottom: 18px;
 }
 
-.tableHeader h3 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0 0 4px;
-}
 
-.tableHeader p {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+.cardHeader h3 {
   margin: 0;
-}
 
-.tableSearch {
-  position: relative;
-}
-
-.tableSearch input {
-  padding: 7px 40px 7px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface-sunken);
   color: var(--text-primary);
-  font-size: 0.8rem;
-  outline: none;
-  width: 180px;
+
+  font-size: 0.98rem;
+  font-weight: 700;
 }
 
-.kbd {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.65rem;
+
+.cardHeader p {
+  margin: 5px 0 0;
+
   color: var(--text-muted);
+
+  font-size: 0.76rem;
+}
+
+
+.chartBadge {
+  padding: 6px 9px;
+
+  color: var(--text-secondary);
+  background: var(--surface-sunken);
+
   border: 1px solid var(--border);
-  padding: 1px 5px;
-  border-radius: 4px;
+  border-radius: 7px;
+
+  font-size: 0.7rem;
 }
 
-.table {
+
+.chartContainer {
   width: 100%;
-  border-collapse: collapse;
+  min-height: 260px;
 }
 
-.table th {
-  text-align: left;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
-}
 
-.table td {
-  padding: 12px 10px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
-}
+.emptyChart {
+  min-height: 220px;
 
-.complaintCell {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
+  justify-content: center;
 
-.complaintAvatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--surface-sunken);
-  flex-shrink: 0;
-}
-
-.complaintName {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.complaintDept {
-  font-size: 0.72rem;
   color: var(--text-muted);
-  margin: 0;
+
+  font-size: 0.8rem;
 }
 
-.ratingCell {
+
+/* ============================================================
+   ROLE CHART
+   ============================================================ */
+
+.roleChart {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8rem;
-  color: var(--text-primary);
+
+  min-height: 220px;
 }
 
-.ratingBar {
-  width: 60px;
-  height: 5px;
-  border-radius: 4px;
-  background: var(--surface-sunken);
+
+.roleLegend {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+.roleItem {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 0.78rem;
+}
+
+
+.roleDot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+}
+
+
+.roleName {
+  flex: 1;
+
+  color: var(--text-secondary);
+
+  text-transform: capitalize;
+}
+
+
+.roleItem strong {
+  color: var(--text-primary);
+
+  font-size: 0.78rem;
+}
+
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+
+.tableSection {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
   overflow: hidden;
 }
 
-.ratingFill {
-  height: 100%;
-  background: #7C5CFC;
+
+.tableHeader {
+  padding: 20px 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--border);
 }
 
-.trendUp { color: #22C55E; font-size: 0.72rem; font-weight: 700; }
-.trendDown { color: #EF4444; font-size: 0.72rem; font-weight: 700; }
+
+.tableHeader h3 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+
+.tableHeader p {
+  margin: 5px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.75rem;
+}
+
+
+.viewAllBtn {
+  padding: 8px 13px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--surface-sunken);
+
+  color: var(--text-secondary);
+
+  font-size: 0.76rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.viewAllBtn:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+.table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+
+.table th {
+  padding: 12px 20px;
+
+  color: var(--text-muted);
+
+  background: var(--surface);
+
+  text-align: left;
+
+  font-size: 0.71rem;
+  font-weight: 600;
+}
+
+
+.table td {
+  padding: 14px 20px;
+
+  color: var(--text-secondary);
+
+  border-top: 1px solid var(--border);
+
+  font-size: 0.78rem;
+}
+
+
+.table tbody tr {
+  transition: background 0.15s ease;
+}
+
+
+.table tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+
+/* ============================================================
+   USER CELL
+   ============================================================ */
+
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+
+.userAvatar {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(124, 92, 252, 0.15);
+
+  color: #7C5CFC;
+
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+
+.userName {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+
+.userEmail {
+  margin: 3px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.7rem;
+}
+
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+.roleBadge {
+  display: inline-flex;
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  color: var(--text-secondary);
+  background: var(--surface-sunken);
+
+  border: 1px solid var(--border);
+
+  font-size: 0.69rem;
+  font-weight: 600;
+
+  text-transform: capitalize;
+}
+
+
+.activeBadge,
+.inactiveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+
+.activeBadge {
+  color: #22C55E;
+}
+
+
+.inactiveBadge {
+  color: #EF4444;
+}
+
+
+.activeBadge span,
+.inactiveBadge span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+}
+
+
+.activeBadge span {
+  background: #22C55E;
+}
+
+
+.inactiveBadge span {
+  background: #EF4444;
+}
+
 
 .dateCell {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  white-space: nowrap;
+
+  color: var(--text-muted) !important;
 }
 
-.tagRow {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
 
-.tag {
-  background: var(--surface-sunken);
-  color: var(--text-secondary);
-  font-size: 0.68rem;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
+.emptyTable {
+  padding: 30px !important;
 
-.tagMore {
-  color: var(--text-muted);
-  font-size: 0.68rem;
-  padding: 3px 4px;
-}
-
-.actionsCell {
-  color: var(--text-muted);
-  cursor: pointer;
   text-align: center;
+
+  color: var(--text-muted) !important;
 }
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.ghostBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 12px;
+
+  background: var(--surface-sunken);
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  color: var(--text-secondary);
+
+  font-family: Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.ghostBtn:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+
+.ghostBtn svg {
+  font-size: 12px;
+  color: #7C5CFC;
+}
+
+
+/* ============================================================
+   LOADING / ERROR
+   ============================================================ */
+
+.loadingState,
+.errorState {
+  min-height: 300px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--surface);
+
+  font-size: 0.85rem;
+}
+
+
+.loadingState {
+  color: var(--text-muted);
+}
+
+
+.errorState {
+  color: #EF4444;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 
 @media (max-width: 1100px) {
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .chartsRow {
     grid-template-columns: 1fr;
   }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tableHeader {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .roleChart {
+    flex-direction: column;
+  }
+
 }

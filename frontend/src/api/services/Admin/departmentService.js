@@ -1,7 +1,5 @@
 import api from "../../apiClient";
 
-
-
 // GET 
 
 export const getDepartmentBranches = async(id)=>{
@@ -19,13 +17,6 @@ export const getDepartment = async (id) => {
     return response.data;
 };
 
-// export const getDepartments = async () => {
-//     const response = await api.get("/admin/departments/");
-//     return response.data;
-// };
-
-
-
 // POST 
 
 export const addDepartment = async (departmentData) => {
@@ -42,18 +33,6 @@ export const addDepartmentBranch = async (deptId, data) => {
 
   return response.data;
 };
-
-// export const generateDeptCredentials = async (id) => {
-//   const res = await api.post(`/admin/depts/${id}/generate/`);
-//   return res.data;
-// };
-
-// export const addDepartment = async(data)=>{
-//     const response = await api.post("/admin/departments/",data);
-//     return response.data;
-// };
-
-
 
 
 // PATCH 

@@ -9,8 +9,8 @@ const navItems = [
   { icon: <FaHome />, label: 'Home', path: '/representative/representativedashboard' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/representative/representativedashboard' },
   { icon: <FaBuilding />, label: 'My ward', path: '/representative/1' },
-  { icon: <FaUsers />, label: 'Employee List', path: '/representative/myward' },
-  { icon: <FaClipboardList />, label: 'Complaints', path: '2' },
+  { icon: <FaUsers />, label: 'Departments', path: '/representative/myward' },
+  { icon: <FaClipboardList />, label: 'Complaints', path: '/representative/complaints/' },
 ]
 
 

@@ -1,7 +1,16 @@
 import api from "../../apiClient";
 
 // GET 
-export const getConstituencies = async () => (await api.get('/admin/constituencies/')).data
+export const getConstituencies = async (params = {}) => {
+    const response = await api.get(
+        '/admin/constituencies/',
+        {
+            params,
+        }
+    )
+
+    return response.data
+}
 
 export const getConstituencyTypes = async () => (await api.get('/admin/constituencies/types/')).data
 

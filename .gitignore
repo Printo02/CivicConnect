@@ -14,6 +14,7 @@ frontend/dist/
 
 # Environment variables
 .env
+.venv
 
 # VS Code
 .vscode/
@@ -21,3 +22,18 @@ frontend/dist/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Files 
+Fnd.md
+NewTextDocument.txt
+Problems.txt
+prompt-for-ai.txt
+Tasks.md
+Theme.md
+voice.md
+commands.txt
+README.md
+runprogram.txt
+requirements_voice_additions.txt
+
+

@@ -1,983 +1,624 @@
+[data-theme='dark'] {
+  --bg: #0A0A0B;
+  --surface: #161618;
+  --surface-sunken: #1D1D20;
+  --surface-hover: #232326;
+  --border: #2A2A2E;
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+}
+
+[data-theme='light'] {
+  --bg: #F7F7F8;
+  --surface: #FFFFFF;
+  --surface-sunken: #F2F2F4;
+  --surface-hover: #EFEFF1;
+  --border: #E4E4E7;
+  --text-primary: #18181B;
+  --text-secondary: #52525B;
+  --text-muted: #A1A1AA;
+}
+
+:global(*) {
+  box-sizing: border-box;
+}
+
+:global(body) {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+.container,
+.card,
+.modal,
+.searchableDropdown,
+.searchableDropdownMenu {
+  box-sizing: border-box
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 25px;
-  box-sizing: border-box;
+  padding: 22px;
+  margin-bottom: 20px;
+  color: var(--text-primary)
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px
 }
 
 .cardHeader h3 {
-  color: var(--text-primary);
-  margin: 0 0 4px;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700
 }
 
 .cardHeader p {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin: 0;
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: .84rem
 }
 
-.headerActions {
+.addRepForm {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  gap: 16px;
+  align-items: end
+}
+
+.addRepForm label,
+.modalFields label {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 7px
 }
 
-.searchBox {
-  position: relative;
+.addRepForm span,
+.modalFields span {
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--text-secondary)
 }
 
-.searchBox input {
-  padding: 9px 14px 9px 34px;
+.addRepForm input,
+.modalFields input,
+.searchBox input,
+.dropdownSearchBox input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  padding: 11px 12px;
+  outline: none
+}
+
+.addRepForm input:focus,
+.modalFields input:focus,
+.searchBox input:focus,
+.dropdownSearchBox input:focus {
+  border-color: #7C5CFC;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, .15)
+}
+
+.primaryBtn {
+  border: 0;
+  border-radius: 8px;
+  background: #7C5CFC;
+  color: #fff;
+  padding: 11px 17px;
+  font-weight: 700;
+  cursor: pointer
+}
+
+.primaryBtn:hover {
+  background: #6D4DEB
+}
+
+.primaryBtn:disabled,
+.secondaryBtn:disabled {
+  opacity: .55;
+  cursor: not-allowed
+}
+
+.secondaryBtn {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface-sunken);
   color: var(--text-primary);
-  font-size: 0.85rem;
-  outline: none;
-  width: 200px;
-  box-sizing: border-box;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer
 }
 
-.searchIcon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 0.78rem;
-}
-
-.addBtn {
+.searchBox {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #7C5CFC;
-  color: white;
-  border: none;
-  padding: 10px 18px;
+  gap: 9px;
+  min-width: 320px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
+  padding: 0 11px
+}
+
+.searchBox input {
+  border: 0;
+  background: transparent;
+  padding: 10px 0;
+  box-shadow: none
+}
+
+.searchBox svg {
+  color: var(--text-muted);
+  flex: none
+}
+
+.typeFilterWrapper {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px
+}
+
+.typeFilterBtn {
+  border: 1px solid var(--border);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 8px 11px;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.15s ease;
+  font-size: .78rem
 }
 
-.addBtn:hover {
-  background: #6D4DEB;
+.typeFilterBtn span {
+  margin-left: 7px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--surface-hover);
+  color: var(--text-primary)
 }
 
-.addBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.activeTypeFilter {
+  background: #7C5CFC;
+  color: #fff;
+  border-color: #7C5CFC
+}
+
+.activeTypeFilter span {
+  background: rgba(255, 255, 255, .18);
+  color: #fff
+}
+
+.tableWrap {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 9px
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 1050px
 }
 
 .table th {
+  padding: 12px;
   text-align: left;
   color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+  font-size: .74rem;
+  font-weight: 700;
+  background: var(--surface-sunken);
+  white-space: nowrap
 }
 
 .table td {
-  padding: 14px 12px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-primary);
-  font-size: 0.88rem;
-  vertical-align: middle;
+  padding: 13px 12px;
+  border-top: 1px solid var(--border);
+  font-size: .79rem;
+  color: var(--text-secondary);
+  vertical-align: middle
 }
 
-.table tr:last-child td {
-  border-bottom: none;
+.table td strong {
+  color: var(--text-primary)
 }
 
-.table select {
-  padding: 6px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface-sunken);
-  color: var(--text-primary);
-  font-size: 0.8rem;
-  outline: none;
+.muted {
+  color: var(--text-muted)
+}
+
+.typeBadge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 5px 8px;
+  background: rgba(124, 92, 252, .12);
+  color: #7C5CFC;
+  font-size: .7rem;
+  font-weight: 700;
+  white-space: nowrap
+}
+
+.termCell {
+  font-size: .72rem;
+  line-height: 1.6
+}
+
+.termCell strong {
+  color: var(--text-secondary)
+}
+
+.statusToggle {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 6px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: .72rem;
+  font-weight: 700
+}
+
+.statusActive {
+  background: rgba(34, 197, 94, .15);
+  color: #22C55E;
+  border-color: rgba(34, 197, 94, .25)
+}
+
+.statusInactive {
+  background: rgba(239, 68, 68, .15);
+  color: #EF4444;
+  border-color: rgba(239, 68, 68, .25)
+}
+
+.toggleDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor
 }
 
 .actionsRow {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 7px
 }
 
-.deleteIconBtn {
-  background: none;
+.editBtn,
+.deleteBtn,
+.paginationBtn,
+.pageNumber {
   border: 1px solid var(--border);
+  background: var(--surface-sunken);
   color: var(--text-secondary);
-  padding: 7px 9px;
   border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  cursor: pointer
 }
 
-.deleteIconBtn:hover {
+.editBtn:hover,
+.deleteBtn:hover,
+.paginationBtn:hover,
+.pageNumber:hover {
   background: var(--surface-hover);
-  color: var(--text-primary);
+  color: var(--text-primary)
 }
 
-.verifyBtn {
-  background: #16a34a;
-  color: white;
-  border: none;
-  padding: 7px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.78rem;
-  font-weight: 600;
-  white-space: nowrap;
+.deleteBtn {
+  color: #EF4444
 }
 
-.verifyBtn:hover {
-  background: #128a3e;
+.editBtn {
+  color: #7C5CFC
 }
 
-.cancelBtn {
-  background: var(--surface-sunken);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  padding: 7px 12px;
-  border-radius: 6px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.cancelBtn:hover {
-  background: var(--surface-hover);
-}
-
-.stateBlock {
+.paginationWrapper {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 50px 0;
-  color: var(--text-muted);
-  font-size: 0.88rem;
+  gap: 15px;
+  margin-top: 18px;
+  color: var(--text-secondary);
+  font-size: .76rem
 }
 
-/* Modal */
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+.paginationControls {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  padding: 20px;
+  gap: 6px
 }
 
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+.activePage {
+  background: #7C5CFC;
+  color: #fff;
+  border-color: #7C5CFC
+}
+
+.loadingState,
+.assignHint {
   padding: 28px;
-  width: 100%;
-  max-width: 440px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.modalTitle {
-  color: var(--text-primary);
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 0 0 18px;
-}
-
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.inputGroup label {
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.82rem;
-}
-
-.inputGroup input,
-.inputGroup select {
-  border: 1px solid var(--border);
-  background: var(--surface-sunken);
-  color: var(--text-primary);
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 0.88rem;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
-}
-
-.inputGroup input:focus,
-.inputGroup select:focus {
-  border-color: #7C5CFC;
+  text-align: center;
+  color: var(--text-muted)
 }
 
 .errorText {
   color: #EF4444;
-  font-size: 0.82rem;
-  margin: 0 0 12px;
-}
-
-.modalActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.submitBtn {
-  background: #7C5CFC;
-  color: #fff;
-  border: none;
+  background: rgba(239, 68, 68, .1);
+  border: 1px solid rgba(239, 68, 68, .2);
   border-radius: 8px;
-  padding: 9px 18px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 700;
-  transition: background-color 0.15s ease;
+  padding: 10px;
+  font-size: .8rem
 }
 
-.submitBtn:hover {
-  background: #6D4DEB;
+.searchableDropdown {
+  position: relative;
+  width: 100%
 }
 
-.submitBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-@media (max-width: 900px) {
-  .cardHeader {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .headerActions {
-    justify-content: space-between;
-  }
-
-  .searchBox input {
-    width: 100%;
-  }
-
-  .table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-}
-
-.formSection {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.formSection:last-of-type {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.sectionTitle {
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  margin: 0 0 12px;
-}
-
-
-
-.assignBox {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 260px;
-}
-
-.assignHint {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin: 0;
-}
-
-.matchCard {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 8px 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+.searchableDropdownControl {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
   background: var(--surface-sunken);
-}
-
-.matchName {
-  font-size: 0.85rem;
-  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  cursor: pointer
 }
 
-.matchEmail {
-  font-weight: 400;
-  color: var(--text-muted);
+.searchableDropdownOpen {
+  border-color: #7C5CFC;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, .15)
 }
 
+.dropdownPlaceholder {
+  color: var(--text-muted)
+}
 
-/*  */
+.selectedDropdownText {
+  color: var(--text-primary)
+}
 
-/* ======================================================
-   REPRESENTATIVE ACTION BUTTONS
-====================================================== */
+.dropdownArrow {
+  color: var(--text-muted)
+}
 
-.actionsRow {
+.dropdownArrowOpen {
+  color: #7C5CFC;
+  transform: rotate(180deg)
+}
+
+.searchableDropdownMenu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .2);
+  overflow: hidden
+}
+
+.dropdownSearchBox {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: nowrap;
+  padding: 9px;
+  border-bottom: 1px solid var(--border)
 }
 
+.dropdownSearchBox svg {
+  color: var(--text-muted)
+}
 
-/* Edit */
+.dropdownOptions {
+  max-height: 230px;
+  overflow: auto;
+  padding: 5px
+}
 
-.editBtn {
-  background: none;
-  border: 1px solid var(--border);
+.dropdownOption {
+  width: 100%;
+  border: 0;
+  background: transparent;
   color: var(--text-secondary);
-  padding: 7px 9px;
-  border-radius: 8px;
-  cursor: pointer;
-
+  padding: 10px;
+  border-radius: 7px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+  font-size: .8rem
 }
 
-.editBtn:hover {
+.dropdownOption:hover,
+.dropdownOptionSelected {
   background: var(--surface-hover);
-  color: #7C5CFC;
-  border-color: #7C5CFC;
+  color: var(--text-primary)
 }
 
-
-/* Active / Inactive */
-
-.statusBtn {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 7px 9px;
-  border-radius: 8px;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
+.dropdownOptionSelected svg {
+  color: #7C5CFC
 }
 
-.statusBtn:hover {
-  background: var(--surface-hover);
-  color: #f59e0b;
-  border-color: #f59e0b;
+.dropdownEmpty {
+  padding: 15px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .78rem
 }
-
-
-/* Delete */
-
-.deleteBtn {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 7px 9px;
-  border-radius: 8px;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
-}
-
-.deleteBtn:hover {
-  background: rgba(239, 68, 68, 0.08);
-  color: #EF4444;
-  border-color: #EF4444;
-}
-
-
-/* ======================================================
-   STATUS BADGES
-====================================================== */
-
-.activeBadge {
-  display: inline-flex;
-  align-items: center;
-
-  padding: 5px 10px;
-
-  border-radius: 20px;
-
-  background: rgba(22, 163, 74, 0.12);
-  color: #16a34a;
-
-  font-size: 0.75rem;
-  font-weight: 700;
-
-  white-space: nowrap;
-}
-
-.inactiveBadge {
-  display: inline-flex;
-  align-items: center;
-
-  padding: 5px 10px;
-
-  border-radius: 20px;
-
-  background: rgba(239, 68, 68, 0.12);
-  color: #EF4444;
-
-  font-size: 0.75rem;
-  font-weight: 700;
-
-  white-space: nowrap;
-}
-
-
-/* ======================================================
-   MODAL
-====================================================== */
 
 .modalOverlay {
   position: fixed;
   inset: 0;
-
-  background: rgba(0, 0, 0, 0.5);
-
+  background: rgba(0, 0, 0, .55);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  z-index: 1000;
-
   padding: 20px;
+  z-index: 100
 }
-
 
 .modal {
-  background: var(--surface);
-
-  border: 1px solid var(--border);
-
-  border-radius: 12px;
-
-  padding: 28px;
-
-  width: 100%;
-  max-width: 500px;
-
+  width: min(600px, 100%);
   max-height: 90vh;
-
-  overflow-y: auto;
-
-  box-sizing: border-box;
-
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+  color: var(--text-primary);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .3)
 }
-
 
 .modal h3 {
-  color: var(--text-primary);
-
-  font-size: 1.05rem;
-
-  font-weight: 700;
-
-  margin: 0 0 6px;
+  margin: 0;
+  font-size: 1rem
 }
 
-
-.modal>p {
-  color: var(--text-muted);
-
-  font-size: 0.82rem;
-
-  margin: 0 0 20px;
+.modalSubtitle {
+  margin: 5px 0 17px;
+  color: var(--text-secondary);
+  font-size: .8rem
 }
 
+.constituencyInfoBox {
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 13px;
+  display: grid;
+  gap: 8px;
+  font-size: .79rem;
+  color: var(--text-secondary)
+}
 
-/* ======================================================
-   MODAL FIELDS
-====================================================== */
+.constituencyInfoBox strong {
+  color: var(--text-primary)
+}
+
+.warningBox {
+  margin-top: 3px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(245, 158, 11, .15);
+  border: 1px solid rgba(245, 158, 11, .25);
+  color: #F59E0B;
+  font-size: .76rem;
+  line-height: 1.45
+}
 
 .modalFields {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
-  gap: 15px;
-
-  margin-top: 18px;
+  gap: 14px;
+  margin-top: 16px
 }
 
-
-.modalFields label {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 6px;
+.modalFields:first-of-type {
+  grid-template-columns: 1fr
 }
-
-
-.modalFields label span {
-  color: var(--text-primary);
-
-  font-size: 0.82rem;
-
-  font-weight: 600;
-}
-
-
-.modalFields input {
-  width: 100%;
-
-  padding: 10px 12px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 8px;
-
-  background: var(--surface-sunken);
-
-  color: var(--text-primary);
-
-  font-size: 0.85rem;
-
-  outline: none;
-
-  box-sizing: border-box;
-}
-
-
-.modalFields input:focus {
-  border-color: #7C5CFC;
-}
-
-
-/* ======================================================
-   MODAL ACTIONS
-====================================================== */
 
 .modalActions {
   display: flex;
-
   justify-content: flex-end;
-
-  gap: 10px;
-
-  margin-top: 22px;
+  gap: 9px;
+  margin-top: 20px
 }
 
+@media(max-width:800px) {
 
-.modalActions button {
-  padding: 9px 16px;
-
-  border-radius: 8px;
-
-  font-size: 0.82rem;
-
-  font-weight: 600;
-
-  cursor: pointer;
-}
-
-
-.modalActions button:first-child {
-  background: var(--surface-sunken);
-
-  border: 1px solid var(--border);
-
-  color: var(--text-primary);
-}
-
-
-.modalActions button:first-child:hover {
-  background: var(--surface-hover);
-}
-
-
-.modalActions button:last-child {
-  background: #7C5CFC;
-
-  border: 1px solid #7C5CFC;
-
-  color: white;
-}
-
-
-.modalActions button:last-child:hover {
-  background: #6D4DEB;
-}
-
-
-.modalActions button:disabled {
-  opacity: 0.6;
-
-  cursor: not-allowed;
-}
-
-
-/* ======================================================
-   MUTED TEXT
-====================================================== */
-
-.muted {
-  color: var(--text-muted);
-
-  font-size: 0.8rem;
-
-  font-style: italic;
-}
-
-
-/* ======================================================
-   REPRESENTATIVE TABLE
-====================================================== */
-
-.tableWrapper {
-  width: 100%;
-
-  overflow-x: auto;
-}
-
-
-/* ======================================================
-   TERM DISPLAY
-====================================================== */
-
-.termInfo {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 3px;
-
-  font-size: 0.78rem;
-
-  color: var(--text-secondary);
-}
-
-.termInfo strong {
-  color: var(--text-primary);
-}
-
-
-/* ======================================================
-   CONSTITUENCY INFO
-====================================================== */
-
-.constituencyInfo {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 3px;
-}
-
-.constituencyName {
-  font-weight: 600;
-
-  color: var(--text-primary);
-
-  font-size: 0.85rem;
-}
-
-.constituencyWard {
-  font-size: 0.75rem;
-
-  color: var(--text-muted);
-}
-
-
-/* ======================================================
-   RESPONSIVE
-====================================================== */
-
-@media (max-width: 900px) {
-
-  .card {
-    padding: 20px;
-  }
-
-  .tableWrapper {
-    overflow-x: auto;
-  }
-
-  .table {
-    min-width: 1050px;
-  }
-
-}
-
-
-@media (max-width: 650px) {
-
-  .card {
-    padding: 16px;
-  }
-
-  .modal {
-    padding: 20px;
-  }
-
-  .modalFields {
-    grid-template-columns: 1fr;
-  }
-
-  .modalActions {
-    flex-direction: column;
-  }
-
-  .modalActions button {
-    width: 100%;
-  }
-
-  .matchCard {
-    align-items: flex-start;
-
-    flex-direction: column;
-  }
-
-  .verifyBtn {
-    width: 100%;
-  }
-
-}
-
-
-@media (max-width: 450px) {
-
-  .card {
-    padding: 12px;
-  }
-
-  .cardHeader h3 {
-    font-size: 1rem;
-  }
-
-  .cardHeader p {
-    font-size: 0.78rem;
-  }
-
-  .actionsRow {
-    gap: 5px;
-  }
-
-  .editBtn,
-  .statusBtn,
-  .deleteBtn {
-    padding: 6px 8px;
-  }
-
-}
-
-
-
-/* ============================================================
-   Two-section layout — Promote User card + Representatives card
-============================================================ */
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 25px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-}
-
-.card:last-of-type {
-  margin-bottom: 0;
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-}
-
-.cardHeader h3 {
-  color: var(--text-primary);
-  margin: 0 0 4px;
-  font-size: 1rem;
-}
-
-.cardHeader p {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin: 0;
-}
-
-/* ============================================================
-   Promote User section — email search box
-============================================================ */
-
-.promoteSearchBox {
-  position: relative;
-  max-width: 420px;
-  margin-bottom: 16px;
-}
-
-.promoteSearchBox input {
-  width: 100%;
-  padding: 10px 14px 10px 34px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-sunken);
-  color: var(--text-primary);
-  font-size: 0.88rem;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
-}
-
-.promoteSearchBox input:focus {
-  border-color: #7C5CFC;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 0.78rem;
-}
-
-/* Matched-user confirm card */
-
-.matchRole {
-  display: block;
-  font-size: 0.76rem;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-/* ============================================================
-   Representatives section — table search box
-============================================================ */
-
-.searchBox {
-  position: relative;
-}
-
-.searchBox input {
-  padding: 9px 14px 9px 34px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-sunken);
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  outline: none;
-  width: 280px;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
-}
-
-.searchBox input:focus {
-  border-color: #7C5CFC;
-}
-
-.tableWrap {
-  overflow-x: auto;
-}
-
-.termCell {
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-/* ============================================================
-   Edit modal — constituency info box
-============================================================ */
-
-.constituencyInfoBox {
-  margin-bottom: 20px;
-  padding: 12px 14px;
-  background: var(--surface-sunken);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-@media (max-width: 900px) {
-  .cardHeader {
-    flex-direction: column;
+  .cardHeader,
+  .paginationWrapper {
     align-items: stretch;
+    flex-direction: column
   }
 
-  .searchBox input {
+  .searchBox {
+    min-width: 0;
     width: 100%;
+    box-sizing: border-box
   }
+
+  .addRepForm,
+  .modalFields {
+    grid-template-columns: 1fr
+  }
+
+  .typeFilterWrapper {
+    gap: 6px
+  }
+
+  .typeFilterBtn {
+    font-size: .72rem
+  }
+}
+
+
+
+.statusFilterWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 4px;
+}
+
+.statusFilterBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.statusFilterBtn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.statusFilterBtn span {
+  min-width: 22px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--secondary-bg);
+  color: var(--muted-text);
+  font-size: 11px;
+  text-align: center;
+}
+
+.activeStatusFilter {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.activeStatusFilter span {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }

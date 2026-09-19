@@ -1,0 +1,985 @@
+.container {
+  min-height: 100%;
+  padding: 24px;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0 0 6px;
+  color: var(--text-primary);
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   CARD
+============================================================ */
+
+.formCard {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+/* ============================================================
+   SECTIONS
+============================================================ */
+
+.section {
+  margin-bottom: 28px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.section h2 {
+  margin: 0 0 6px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.subsectionHeader {
+  margin-bottom: 12px;
+}
+
+.subsectionHeader h3 {
+  margin: 0 0 4px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.helpText {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   ALERTS
+============================================================ */
+
+.errorMessage,
+.successMessage {
+  margin-bottom: 16px;
+  padding: 11px 13px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.errorMessage {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.successMessage {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+/* ============================================================
+   AUTHORITY METHOD
+============================================================ */
+
+.authorityMethod {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.locationButton,
+.manualButton,
+.submitButton,
+.cancelButton,
+.searchBranchButton,
+.recordButton,
+.stopRecordButton,
+.removeVoiceButton,
+.uploadOption {
+  min-height: 42px;
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    border-color 0.18s,
+    color 0.18s,
+    transform 0.18s;
+}
+
+.locationButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #7c5cfc;
+  color: #fff;
+}
+
+.locationButton:hover {
+  background: #6d4deb;
+}
+
+.manualButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--surface-sunken);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.manualButton:hover {
+  background: var(--surface-hover);
+  border-color: #7c5cfc;
+}
+
+.locationButton:disabled,
+.manualButton:disabled,
+.submitButton:disabled,
+.recordButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.methodDivider {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ============================================================
+   SEARCH
+============================================================ */
+
+.searchRow,
+.districtSearchItem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 11px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+}
+
+.searchRow:focus-within,
+.districtSearchItem:focus-within {
+  border-color: #7c5cfc;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
+.searchRow input,
+.districtInput,
+.districtSearchInput {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+  font-size: 0.82rem;
+}
+
+.searchRow input::placeholder,
+.districtInput::placeholder,
+.districtSearchInput::placeholder {
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   DISTRICT
+============================================================ */
+
+.districtSearchBox {
+  position: relative;
+  margin-top: 14px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.districtDropdownWrapper {
+  position: relative;
+}
+
+.districtDropdown {
+  position: absolute;
+  z-index: 50;
+  width: 100%;
+  max-height: 260px;
+  margin-top: 6px;
+  padding: 5px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.districtOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.districtOption:hover {
+  background: var(--surface-hover);
+}
+
+.districtOption svg {
+  color: #7c5cfc;
+}
+
+.clearSearchButton {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.clearSearchButton:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.loadingHint {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+/* ============================================================
+   LOCATION DETECTED
+============================================================ */
+
+.locationDetected {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 8px;
+  color: #22c55e;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.locationDetected strong {
+  color: #22c55e;
+}
+
+/* ============================================================
+   DISTRICT AUTHORITY SELECTION
+============================================================ */
+
+.districtSearchSection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.selectionField {
+  min-width: 0;
+}
+
+.selectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.selectionLabel svg {
+  color: #7c5cfc;
+}
+
+.searchDropdown {
+  position: relative;
+}
+
+.selectionDropdown {
+  max-height: 220px;
+  margin-top: 6px;
+  padding: 5px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.selectionOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.selectionOption:hover {
+  background: var(--surface-hover);
+}
+
+.selectionOptionSelected {
+  background: rgba(124, 92, 252, 0.12);
+  outline: 1px solid rgba(124, 92, 252, 0.35);
+}
+
+.optionIcon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(124, 92, 252, 0.12);
+  color: #7c5cfc;
+}
+
+.optionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.optionContent strong {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.optionContent small {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.71rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selectionOption>svg:last-child {
+  flex: 0 0 auto;
+  color: #7c5cfc;
+}
+
+.noDistrictResults,
+.noSelectionResults {
+  padding: 14px 10px;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+/* ============================================================
+   AUTHORITY CARDS
+============================================================ */
+
+.authorityGroup {
+  margin-top: 16px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.groupTitle svg {
+  color: #7c5cfc;
+}
+
+.authorityList {
+  display: grid;
+  gap: 8px;
+}
+
+.authorityCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+}
+
+.authorityCard:hover {
+  background: var(--surface-hover);
+  border-color: #7c5cfc;
+}
+
+.selectedAuthority {
+  background: rgba(124, 92, 252, 0.1);
+  border-color: #7c5cfc;
+}
+
+.authorityIcon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: rgba(124, 92, 252, 0.12);
+  color: #7c5cfc;
+}
+
+.authorityInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.authorityName {
+  margin-bottom: 4px;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.authorityDetail {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.authorityDetail strong {
+  color: var(--text-primary);
+}
+
+.selectedIcon {
+  flex: 0 0 auto;
+  color: #7c5cfc;
+}
+
+.distance {
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.formGroup {
+  margin-bottom: 18px;
+}
+
+.formGroup:last-child {
+  margin-bottom: 0;
+}
+
+.formGroup label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+  font-size: 0.82rem;
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+}
+
+.formGroup textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.formGroup input::placeholder,
+.formGroup textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  border-color: #7c5cfc;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
+.formGroup small {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.71rem;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   BRANCH SEARCH
+============================================================ */
+
+.branchSearchBox {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.noAuthorities {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+}
+
+.noAuthorities>svg {
+  color: #7c5cfc;
+  font-size: 1rem;
+}
+
+.noAuthorities div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.noAuthorities strong {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+}
+
+.noAuthorities span {
+  font-size: 0.72rem;
+}
+
+.branchSearch {
+  display: grid;
+  gap: 8px;
+}
+
+.searchBranchButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #7c5cfc;
+  color: #fff;
+}
+
+.searchBranchButton:hover {
+  background: #6d4deb;
+}
+
+.searchResults {
+  display: grid;
+  gap: 8px;
+}
+
+/* ============================================================
+   ATTACHMENTS
+============================================================ */
+
+.uploadOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uploadOption {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-sunken);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.uploadOption:hover {
+  background: var(--surface-hover);
+  border-color: #7c5cfc;
+}
+
+.attachmentList {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.attachmentCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.attachmentPreview {
+  width: 80px;
+  height: 60px;
+  flex: 0 0 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.fileIcon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 7px;
+  background: rgba(124, 92, 252, 0.1);
+  color: #7c5cfc;
+}
+
+.attachmentInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 3px;
+}
+
+.attachmentInfo strong {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachmentInfo span {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.removeFileButton {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.removeFileButton:hover {
+  background: var(--surface-hover);
+  color: #ef4444;
+}
+
+/* ============================================================
+   VOICE
+============================================================ */
+
+.voicePanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.voiceInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.voiceIcon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 9px;
+  background: rgba(124, 92, 252, 0.12);
+  color: #7c5cfc;
+}
+
+.voiceInfo>div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.voiceInfo strong {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+}
+
+.voiceInfo span {
+  color: var(--text-muted);
+  font-size: 0.71rem;
+}
+
+.voiceControls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recordButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #7c5cfc;
+  color: #fff;
+}
+
+.recordButton:hover {
+  background: #6d4deb;
+}
+
+.stopRecordButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #ef4444;
+  color: #fff;
+}
+
+.stopRecordButton:hover {
+  filter: brightness(0.92);
+}
+
+.voicePreview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.voicePreview audio {
+  width: 100%;
+  min-width: 0;
+}
+
+.removeVoiceButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 7px 10px;
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.removeVoiceButton:hover {
+  background: var(--surface-hover);
+  color: #ef4444;
+}
+
+/* ============================================================
+   ACTIONS
+============================================================ */
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #7c5cfc;
+  color: #fff;
+}
+
+.submitButton:hover {
+  background: #6d4deb;
+}
+
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: var(--surface-sunken);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.cancelButton:hover {
+  background: var(--surface-hover);
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 720px) {
+  .container {
+    padding: 14px;
+  }
+
+  .formCard {
+    padding: 16px;
+  }
+
+  .authorityMethod {
+    grid-template-columns: 1fr;
+  }
+
+  .methodDivider {
+    justify-content: center;
+  }
+
+  .districtSearchSection {
+    grid-template-columns: 1fr;
+  }
+
+  .voicePanel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .recordButton,
+  .stopRecordButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .voicePreview {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .attachmentCard {
+    align-items: flex-start;
+  }
+
+  .attachmentPreview {
+    width: 64px;
+    height: 50px;
+    flex-basis: 64px;
+  }
+}

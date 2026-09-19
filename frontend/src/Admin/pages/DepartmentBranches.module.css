@@ -1,230 +1,460 @@
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
 .card {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 22px;
+
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 25px;
-  box-sizing: border-box;
+
+  color: var(--text-primary);
 }
+
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .cardHeader {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  gap: 16px;
-  flex-wrap: wrap;
+
+  gap: 20px;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid var(--border);
 }
 
+.cardHeader>div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 14px;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: var(--text-secondary);
+
+  font-family: Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.backBtn:hover {
+  color: #7C5CFC;
+  transform: translateX(-2px);
+}
+
+.backBtn svg {
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   HEADER TITLE
+========================================================= */
+
 .cardHeader h3 {
+  margin: 0;
+
   color: var(--text-primary);
-  margin: 0 0 4px;
+
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .cardHeader p {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin: 0;
+  margin: 6px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
-.headerRight {
-  display: flex;
-  gap: 15px;
-}
+
+/* =========================================================
+   SEARCH
+========================================================= */
 
 .searchBox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface-sunken);
-  border-radius: 8px;
-  padding: 10px;
-  color: var(--text-muted);
+  position: relative;
+
+  width: 240px;
+
+  flex-shrink: 0;
 }
 
 .searchBox input {
-  border: none;
-  outline: none;
-  background: none;
-  color: var(--text-primary);
-  font-size: 0.85rem;
-}
+  width: 100%;
+  height: 38px;
 
-.addBtn {
-  background: #7C5CFC;
-  color: white;
-  border: none;
-  padding: 12px 18px;
+  box-sizing: border-box;
+
+  padding: 0 12px 0 36px;
+
+  background: var(--surface-sunken);
+
+  border: 1px solid var(--border);
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 0.85rem;
-  transition: background-color 0.15s ease;
+
+  color: var(--text-primary);
+
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.addBtn:hover {
-  background: #6D4DEB;
+.searchBox input::placeholder {
+  color: var(--text-muted);
 }
+
+.searchBox input:focus {
+  border-color: #7C5CFC;
+
+  box-shadow:
+    0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
+.searchIcon {
+  position: absolute;
+
+  left: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.tableWrap {
+  width: 100%;
+
+  margin-top: 20px;
+
+  overflow-x: auto;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
 
 .table {
   width: 100%;
+
   border-collapse: collapse;
+
+  color: var(--text-primary);
+
+  font-family: Arial, sans-serif;
+  font-size: 0.82rem;
 }
 
 .table th {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 12px 14px;
+  padding: 13px 15px;
+
+  background: var(--surface-sunken);
+
   border-bottom: 1px solid var(--border);
+
+  color: var(--text-muted);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
   text-align: left;
+  text-transform: uppercase;
+
+  letter-spacing: 0.035em;
+
+  white-space: nowrap;
 }
 
 .table td {
-  color: var(--text-primary);
-  padding: 14px;
+  padding: 14px 15px;
+
   border-bottom: 1px solid var(--border);
-  text-align: left;
-  font-size: 0.88rem;
+
+  color: var(--text-secondary);
+
+  vertical-align: middle;
 }
 
-.emptyText {
-  color: var(--text-muted);
-  text-align: center;
-  padding: 40px 0;
+.table tbody tr:last-child td {
+  border-bottom: none;
 }
 
-.verifyBtn {
-  background: #16a34a;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 600;
+.table tbody tr {
+  transition: background 0.15s ease;
 }
 
-.verifyBtn:hover {
-  background: #128a3e;
+.table tbody tr:hover {
+  background: var(--surface-hover);
 }
 
-.verified {
-  color: #22C55E;
+
+/* =========================================================
+   BRANCH CELL
+========================================================= */
+
+.branchCell {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  font-size: 0.85rem;
+
+  gap: 11px;
+
+  min-width: 220px;
 }
 
-.pending {
-  color: #dc2626;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  font-size: 0.85rem;
-}
+.branchAvatar {
+  width: 38px;
+  height: 38px;
 
-/* Modal */
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
-  padding: 20px;
-}
 
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px;
-  width: 100%;
-  max-width: 460px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
+  border-radius: 9px;
 
-.modalTitle {
-  color: var(--text-primary);
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 0 0 18px;
-}
+  background: rgba(124, 92, 252, 0.12);
 
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
-}
+  border: 1px solid rgba(124, 92, 252, 0.2);
 
-.inputGroup label {
-  font-weight: 600;
-  color: var(--text-primary);
+  color: #7C5CFC;
+
   font-size: 0.82rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
 }
 
-.inputGroup input,
-.inputGroup select {
-  border: 1px solid var(--border);
-  background: var(--surface-sunken);
+.branchName {
+  margin: 0 0 3px;
+
   color: var(--text-primary);
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 0.88rem;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
+
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
-.inputGroup input:focus,
-.inputGroup select:focus {
+.branchMeta {
+  margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.7rem;
+}
+
+
+/* =========================================================
+   LOCATION / PHONE
+========================================================= */
+
+.table td:nth-child(2),
+.table td:nth-child(3) {
+  white-space: nowrap;
+
+  font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.activeTag,
+.inactiveTag {
+  display: inline-flex;
+  align-items: center;
+
+  min-width: 58px;
+
+  justify-content: center;
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.activeTag {
+  background: rgba(34, 197, 94, 0.10);
+
+  border: 1px solid rgba(34, 197, 94, 0.2);
+
+  color: #22C55E;
+}
+
+.inactiveTag {
+  background: rgba(239, 68, 68, 0.08);
+
+  border: 1px solid rgba(239, 68, 68, 0.18);
+
+  color: #EF4444;
+}
+
+
+/* =========================================================
+   EMPLOYEE BUTTON
+========================================================= */
+
+.employeeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  height: 32px;
+
+  padding: 0 12px;
+
+  border: 1px solid rgba(124, 92, 252, 0.35);
+  border-radius: 7px;
+
+  background: rgba(124, 92, 252, 0.10);
+
+  color: #7C5CFC;
+
+  font-family: Arial, sans-serif;
+  font-size: 0.73rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.employeeBtn:hover {
+  background: rgba(124, 92, 252, 0.17);
+
   border-color: #7C5CFC;
+
+  transform: translateY(-1px);
+}
+
+.employeeBtn:active {
+  transform: translateY(0);
+}
+
+.employeeBtn svg {
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   LOADING / EMPTY / ERROR
+========================================================= */
+
+.stateBlock {
+  min-height: 230px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-muted);
+
+  text-align: center;
+}
+
+.stateBlock p {
+  margin: 0;
+
+  font-size: 0.82rem;
 }
 
 .errorText {
-  color: #EF4444;
-  font-size: 0.82rem;
-  margin: 0 0 12px;
+  color: #EF4444 !important;
 }
 
-.modalActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .cardHeader {
+    flex-direction: column;
+  }
+
+  .searchBox {
+    width: 100%;
+  }
 }
 
-.cancelBtn {
-  background: var(--surface-sunken);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  padding: 9px 18px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-}
 
-.submitBtn {
-  background: #7C5CFC;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 9px 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
+@media (max-width: 600px) {
+
+  .card {
+    padding: 16px;
+  }
+
+  .table {
+    min-width: 760px;
+  }
+
+  .cardHeader h3 {
+    font-size: 0.98rem;
+  }
+
+  .cardHeader p {
+    font-size: 0.78rem;
+  }
+
 }

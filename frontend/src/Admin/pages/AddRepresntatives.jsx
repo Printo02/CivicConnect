@@ -1,415 +1,1399 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Styles from './AddRepresntatives.module.css'
 import AdminLayout from '../components/dashboard/AdminLayout'
-import { FaSearch, FaUserTie, FaCheck, FaEdit, FaTrash, FaPowerOff } from 'react-icons/fa'
+import {
+  FaSearch,
+  FaCheck,
+  FaTrash,
+  FaChevronLeft,
+  FaChevronRight,
+  FaChevronDown
+} from 'react-icons/fa'
+
 import { getUsers } from '../../api/services/Admin/adminuserview.js'
-import {promoteUser,getRepresentatives,updateRepresentative,
-  deleteRepresentative,toggleRepresentativeStatus,} from '../../api/services/Admin/representativeService.js'
+import { getConstituencies } from '../../api/services/Admin/constituencyService.js'
+
+import {
+  getRepresentatives,
+  deleteRepresentative,
+  toggleRepresentativeStatus,
+  getAvailableRepresentativeUsers,
+  createRepresentative
+} from '../../api/services/Admin/representativeService.js'
+
+
+const TYPE_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'GRAMA_PANCHAYAT', label: 'Grama Panchayat' },
+  { value: 'BLOCK_PANCHAYAT', label: 'Block Panchayat' },
+  { value: 'DISTRICT_PANCHAYAT', label: 'District Panchayat' },
+  { value: 'MUNICIPALITY', label: 'Municipality' },
+  { value: 'CORPORATION', label: 'Corporation' },
+  { value: 'LEGISLATIVE_ASSEMBLY', label: 'Niyama Sabha' },
+  { value: 'LOK_SABHA', label: 'Lok Sabha' }
+]
+
+
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'Inactive' }
+]
+
 
 const extractErrorMessage = (err, fallback) => {
   const data = err.response?.data
+
   if (!data) return fallback
   if (typeof data === 'string') return data
   if (data.error) return data.error
   if (data.detail) return data.detail
 
-  const firstKey = Object.keys(data)[0]
-  if (firstKey) {
-    const value = data[firstKey]
-    return Array.isArray(value) ? value[0] : String(value)
+  const key = Object.keys(data)[0]
+
+  if (key) {
+    return Array.isArray(data[key])
+      ? data[key][0]
+      : String(data[key])
   }
+
   return fallback
 }
 
-export default function AddRepresntatives() {
-  // ---------- promote-user state ----------
-  const [users, setUsers] = useState([])
-  const [email, setEmail] = useState('')
-  const [matchedUser, setMatchedUser] = useState(null)
-  const [promoting, setPromoting] = useState(false)
-  const [promoteError, setPromoteError] = useState('')
 
-  // ---------- representatives list state ----------
-  const [representatives, setRepresentatives] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [listError, setListError] = useState('')
-  const [search, setSearch] = useState('')
+const getType = (rep) =>
+  String(
+    rep?.constituency_type ||
+    rep?.representative_type ||
+    rep?.constituency?.type ||
+    rep?.type ||
+    ''
+  )
+    .trim()
+    .toUpperCase()
 
-  // ---------- edit modal state ----------
-  const [editingRep, setEditingRep] = useState(null)
-  const [editForm, setEditForm] = useState({ start_date: '', end_date: '' })
-  const [savingEdit, setSavingEdit] = useState(false)
-  const [editError, setEditError] = useState('')
 
-  // ---------- load users ----------
-  const fetchUsers = async () => {
-    try {
-      const data = await getUsers()
-      const userList = Array.isArray(data) ? data : Array.isArray(data?.results) ? data.results : []
-      setUsers(userList)
-    } catch (err) {
-      console.error('Failed to load users:', err)
-      setPromoteError(extractErrorMessage(err, 'Could not load users.'))
-    }
-  }
+const getTypeLabel = (rep) =>
+  TYPE_OPTIONS.find(
+    (x) => x.value === getType(rep)
+  )?.label || 'Unassigned'
 
-  // ---------- load representatives ----------
-  const fetchRepresentatives = async () => {
-    setLoading(true)
-    try {
-      const data = await getRepresentatives()
-      const representativeList = Array.isArray(data) ? data : Array.isArray(data?.results) ? data.results : []
-      setRepresentatives(representativeList)
-    } catch (err) {
-      console.error('Failed to load representatives:', err)
-      setListError(extractErrorMessage(err, 'Could not load representatives.'))
-    } finally {
-      setLoading(false)
-    }
-  }
 
-  useEffect(() => {
-    fetchUsers()
-    fetchRepresentatives()
-  }, [])
+const getActiveStatus = (rep) =>
+  Boolean(
+    rep?.user_is_active ??
+    rep?.is_active ??
+    rep?.is_current
+  )
 
-  // ---------- search user by email (promote section) ----------
-  const handleEmailChange = (value) => {
-    setEmail(value)
-    setPromoteError('')
 
-    const searchEmail = value.trim().toLowerCase()
-    if (!searchEmail) {
-      setMatchedUser(null)
-      return
-    }
+function SearchableDropdown({
+  value,
+  options,
+  placeholder,
+  searchPlaceholder,
+  onChange,
+  getOptionValue,
+  getOptionLabel,
+  emptyMessage
+}) {
+  const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
 
-    const user = users.find((item) => String(item.email || '').trim().toLowerCase() === searchEmail)
-    setMatchedUser(user || null)
-  }
+  const selected = options.find(
+    (o) =>
+      String(getOptionValue(o)) ===
+      String(value)
+  )
 
-  // ---------- promote user ----------
-  const handlePromote = async () => {
-    if (!matchedUser) {
-      setPromoteError('Enter the email address of a valid user.')
-      return
-    }
-
-    if (String(matchedUser.role || '').trim().toLowerCase() === 'representative') {
-      setPromoteError('This user is already a representative.')
-      return
-    }
-
-    const userProfileId = matchedUser.user_profile_id || matchedUser.user_profile?.id || matchedUser.profile_id
-
-    if (!userProfileId) {
-      console.error('User profile ID missing:', matchedUser)
-      setPromoteError('User profile ID is not available from the users API.')
-      return
-    }
-
-    setPromoting(true)
-    setPromoteError('')
-    try {
-      await promoteUser(Number(userProfileId))
-      await fetchUsers()
-      await fetchRepresentatives()
-      setEmail('')
-      setMatchedUser(null)
-    } catch (err) {
-      console.error('Promotion failed:', err)
-      setPromoteError(extractErrorMessage(err, 'Could not promote user.'))
-    } finally {
-      setPromoting(false)
-    }
-  }
-
-  // ---------- edit representative ----------
-  const handleEdit = (representative) => {
-    setEditingRep(representative)
-    setEditForm({
-      start_date: representative.start_date || '',
-      end_date: representative.end_date || '',
-    })
-    setEditError('')
-  }
-
-  const handleSaveEdit = async () => {
-    if (editForm.start_date && editForm.end_date && editForm.start_date > editForm.end_date) {
-      setEditError('Start date cannot be after end date.')
-      return
-    }
-
-    setSavingEdit(true)
-    setEditError('')
-    try {
-      await updateRepresentative(editingRep.id, {
-        start_date: editForm.start_date || null,
-        end_date: editForm.end_date || null,
-      })
-      await fetchRepresentatives()
-      setEditingRep(null)
-    } catch (err) {
-      console.error('Update representative failed:', err)
-      setEditError(extractErrorMessage(err, 'Could not update representative.'))
-    } finally {
-      setSavingEdit(false)
-    }
-  }
-
-  // ---------- delete representative ----------
-  const handleDelete = async (representative) => {
-    const name = representative.user_name || 'this representative'
-    const confirmed = window.confirm(`Are you sure you want to delete ${name}?`)
-    if (!confirmed) return
-
-    setListError('')
-    try {
-      await deleteRepresentative(representative.id)
-      await fetchRepresentatives()
-      await fetchUsers()
-    } catch (err) {
-      console.error('Delete representative failed:', err)
-      setListError(extractErrorMessage(err, 'Could not delete representative.'))
-    }
-  }
-
-  // ---------- toggle active/inactive ----------
-  const handleToggleStatus = async (representative) => {
-    const currentStatus = Boolean(representative.user_is_active)
-    const newStatus = !currentStatus
-    try {
-      setListError('')
-      await toggleRepresentativeStatus(representative.id, newStatus)
-      await fetchRepresentatives()
-      await fetchUsers()
-    } catch (err) {
-      console.error('Status update failed:', err)
-      setListError(extractErrorMessage(err, 'Could not change representative status.'))
-    }
-  }
-
-  // ---------- search filter (representatives section) ----------
-  const filteredRepresentatives = representatives.filter((rep) => {
-    const query = search.trim().toLowerCase()
-    if (!query) return true
-    return (
-      rep.user_name?.toLowerCase().includes(query) ||
-      rep.user_email?.toLowerCase().includes(query) ||
-      rep.constituency_name?.toLowerCase().includes(query) ||
-      rep.district_name?.toLowerCase().includes(query)
+  const filtered = options.filter((o) =>
+    String(
+      getOptionLabel(o) || ''
     )
-  })
+      .toLowerCase()
+      .includes(
+        query.trim().toLowerCase()
+      )
+  )
 
   return (
+    <div className={Styles.searchableDropdown}>
+
+      <button
+        type="button"
+        className={`${Styles.searchableDropdownControl} ${
+          open
+            ? Styles.searchableDropdownOpen
+            : ''
+        }`}
+        onClick={() =>
+          setOpen((v) => !v)
+        }
+      >
+
+        <span
+          className={
+            selected
+              ? Styles.selectedDropdownText
+              : Styles.dropdownPlaceholder
+          }
+        >
+          {selected
+            ? getOptionLabel(selected)
+            : placeholder}
+        </span>
+
+        <FaChevronDown
+          className={
+            open
+              ? Styles.dropdownArrowOpen
+              : Styles.dropdownArrow
+          }
+        />
+
+      </button>
+
+
+      {open && (
+
+        <div
+          className={
+            Styles.searchableDropdownMenu
+          }
+        >
+
+          <div
+            className={
+              Styles.dropdownSearchBox
+            }
+          >
+
+            <FaSearch />
+
+            <input
+              autoFocus
+              value={query}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
+              placeholder={
+                searchPlaceholder
+              }
+            />
+
+          </div>
+
+
+          <div
+            className={
+              Styles.dropdownOptions
+            }
+          >
+
+            {filtered.length ? (
+
+              filtered.map((option) => {
+
+                const optionValue =
+                  String(
+                    getOptionValue(option)
+                  )
+
+                const selectedNow =
+                  optionValue ===
+                  String(value)
+
+                return (
+
+                  <button
+                    type="button"
+                    key={optionValue}
+                    className={`${Styles.dropdownOption} ${
+                      selectedNow
+                        ? Styles.dropdownOptionSelected
+                        : ''
+                    }`}
+                    onClick={() => {
+
+                      onChange(
+                        optionValue
+                      )
+
+                      setQuery('')
+                      setOpen(false)
+
+                    }}
+                  >
+
+                    <span>
+                      {getOptionLabel(option)}
+                    </span>
+
+                    {selectedNow && (
+                      <FaCheck />
+                    )}
+
+                  </button>
+
+                )
+              })
+
+            ) : (
+
+              <div
+                className={
+                  Styles.dropdownEmpty
+                }
+              >
+                {emptyMessage}
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+  )
+}
+
+
+export default function AddRepresntatives() {
+
+  const [
+    representatives,
+    setRepresentatives
+  ] = useState([])
+
+  const [
+    availableRepresentatives,
+    setAvailableRepresentatives
+  ] = useState([])
+
+  const [
+    constituencies,
+    setConstituencies
+  ] = useState([])
+
+  const [
+    loading,
+    setLoading
+  ] = useState(true)
+
+  const [
+    listError,
+    setListError
+  ] = useState('')
+
+  const [
+    search,
+    setSearch
+  ] = useState('')
+
+  const [
+    representativeType,
+    setRepresentativeType
+  ] = useState('all')
+
+  const [
+    representativeStatus,
+    setRepresentativeStatus
+  ] = useState('all')
+
+  const [
+    currentPage,
+    setCurrentPage
+  ] = useState(1)
+
+  const PAGE_SIZE = 10
+
+
+  // ============================================================
+  // ADD REPRESENTATIVE
+  // ============================================================
+
+  const [
+    newRepForm,
+    setNewRepForm
+  ] = useState({
+    name: ''
+  })
+
+  const [
+    creatingRepresentative,
+    setCreatingRepresentative
+  ] = useState(false)
+
+
+  // ============================================================
+  // LOAD REPRESENTATIVES
+  // ============================================================
+
+  const fetchRepresentatives =
+    async () => {
+
+      setLoading(true)
+      setListError('')
+
+      try {
+
+        const data =
+          await getRepresentatives()
+
+        setRepresentatives(
+          Array.isArray(data)
+            ? data
+            : (
+                data?.results || []
+              )
+        )
+
+      } catch (err) {
+
+        console.error(err)
+
+        setListError(
+          extractErrorMessage(
+            err,
+            'Could not load representatives.'
+          )
+        )
+
+      } finally {
+
+        setLoading(false)
+
+      }
+    }
+
+
+  const fetchAvailableRepresentatives =
+    async () => {
+
+      try {
+
+        const data =
+          await getAvailableRepresentativeUsers()
+
+        setAvailableRepresentatives(
+          Array.isArray(data)
+            ? data
+            : (
+                data?.results || []
+              )
+        )
+
+      } catch (err) {
+
+        console.error(err)
+
+      }
+    }
+
+
+  const fetchConstituencies =
+    async () => {
+
+      try {
+
+        const data =
+          await getConstituencies()
+
+        setConstituencies(
+          Array.isArray(data)
+            ? data
+            : (
+                data?.results || []
+              )
+        )
+
+      } catch (err) {
+
+        console.error(err)
+
+        setConstituencies([])
+
+      }
+    }
+
+
+  useEffect(() => {
+
+    fetchRepresentatives()
+    fetchAvailableRepresentatives()
+    fetchConstituencies()
+
+    getUsers().catch(() => {})
+
+  }, [])
+
+
+  // ============================================================
+  // CREATE REPRESENTATIVE
+  // ============================================================
+
+  const handleCreateRepresentative =
+    async () => {
+
+      const name =
+        newRepForm.name.trim()
+
+      if (!name) {
+
+        setListError(
+          'Representative name is required.'
+        )
+
+        return
+      }
+
+      setCreatingRepresentative(true)
+      setListError('')
+
+      try {
+
+        const created =
+          await createRepresentative({
+            name
+          })
+
+        await Promise.all([
+          fetchRepresentatives(),
+          fetchAvailableRepresentatives()
+        ])
+
+        setNewRepForm({
+          name: ''
+        })
+
+        window.alert(
+          `Representative created successfully.\n\n` +
+          `Login email: ${created.generated_email}`
+        )
+
+      } catch (err) {
+
+        setListError(
+          extractErrorMessage(
+            err,
+            'Could not create representative.'
+          )
+        )
+
+      } finally {
+
+        setCreatingRepresentative(false)
+
+      }
+    }
+
+
+  // ============================================================
+  // DELETE
+  // ============================================================
+
+  const handleDelete =
+    async (rep) => {
+
+      const confirmed =
+        window.confirm(
+          `Are you sure you want to delete ${
+            rep.user_name ||
+            'this representative'
+          }?`
+        )
+
+      if (!confirmed) return
+
+      try {
+
+        setListError('')
+
+        await deleteRepresentative(
+          rep.id
+        )
+
+        await fetchRepresentatives()
+
+      } catch (err) {
+
+        setListError(
+          extractErrorMessage(
+            err,
+            'Could not delete representative.'
+          )
+        )
+
+      }
+    }
+
+
+  // ============================================================
+  // ACTIVE / INACTIVE TOGGLE
+  // ============================================================
+
+  const handleToggleStatus =
+    async (rep) => {
+
+      const currentStatus =
+        getActiveStatus(rep)
+
+      const newStatus =
+        !currentStatus
+
+      try {
+
+        setListError('')
+
+        await toggleRepresentativeStatus(
+          rep.id,
+          newStatus
+        )
+
+        await fetchRepresentatives()
+
+      } catch (err) {
+
+        setListError(
+          extractErrorMessage(
+            err,
+            'Could not change representative status.'
+          )
+        )
+
+      }
+    }
+
+
+  // ============================================================
+  // FILTER
+  // ============================================================
+
+  const filteredRepresentatives =
+    useMemo(() => {
+
+      const q =
+        search
+          .trim()
+          .toLowerCase()
+
+      return representatives.filter(
+        (rep) => {
+
+          const matchesSearch =
+            !q ||
+            [
+              rep.user_name,
+              rep.user_email,
+              rep.constituency_name,
+              rep.district_name
+            ].some((value) =>
+              String(value || '')
+                .toLowerCase()
+                .includes(q)
+            )
+
+
+          const matchesType =
+            representativeType ===
+              'all' ||
+            getType(rep) ===
+              representativeType
+
+
+          const active =
+            getActiveStatus(rep)
+
+          const matchesStatus =
+            representativeStatus ===
+              'all' ||
+            (
+              representativeStatus ===
+                'active' &&
+              active
+            ) ||
+            (
+              representativeStatus ===
+                'inactive' &&
+              !active
+            )
+
+
+          return (
+            matchesSearch &&
+            matchesType &&
+            matchesStatus
+          )
+
+        }
+      )
+
+    }, [
+      representatives,
+      search,
+      representativeType,
+      representativeStatus
+    ])
+
+
+  // ============================================================
+  // COUNTS
+  // ============================================================
+
+  const allCount =
+    representatives.length
+
+  const activeCount =
+    representatives.filter(
+      (rep) =>
+        getActiveStatus(rep)
+    ).length
+
+  const inactiveCount =
+    representatives.filter(
+      (rep) =>
+        !getActiveStatus(rep)
+    ).length
+
+
+  // ============================================================
+  // TYPE COUNTS
+  // ============================================================
+
+  const getTypeCount =
+    (type) =>
+      representatives.filter(
+        (rep) =>
+          getType(rep) === type
+      ).length
+
+
+  // ============================================================
+  // PAGINATION
+  // ============================================================
+
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        filteredRepresentatives.length /
+          PAGE_SIZE
+      )
+    )
+
+
+  useEffect(() => {
+
+    setCurrentPage(1)
+
+  }, [
+    search,
+    representativeType,
+    representativeStatus
+  ])
+
+
+  useEffect(() => {
+
+    if (
+      currentPage >
+      totalPages
+    ) {
+
+      setCurrentPage(
+        totalPages
+      )
+
+    }
+
+  }, [
+    currentPage,
+    totalPages
+  ])
+
+
+  const rows =
+    filteredRepresentatives.slice(
+      (currentPage - 1) *
+        PAGE_SIZE,
+
+      currentPage *
+        PAGE_SIZE
+    )
+
+
+  // ============================================================
+  // RENDER
+  // ============================================================
+
+  return (
+
     <AdminLayout title="Representatives">
-      {/* ============================================================
-          SECTION 1 — Promote a user to representative
-      ============================================================ */}
-      <div className={Styles.card}>
-        <div className={Styles.cardHeader}>
+
+      {/* ======================================================
+          ADD REPRESENTATIVE
+      ====================================================== */}
+
+      <div
+        className={Styles.card}
+      >
+
+        <div
+          className={Styles.cardHeader}
+        >
+
           <div>
-            <h3>Promote User to Representative</h3>
-            <p>Search a user by email and make them a representative.</p>
+
+            <h3>
+              Add Representative
+            </h3>
+
+            <p>
+              Create a representative account.
+              The login email is generated
+              automatically.
+            </p>
+
           </div>
+
         </div>
 
-        <div className={Styles.promoteSearchBox}>
-          <FaSearch className={Styles.searchIcon} />
-          <input
-            type="email"
-            placeholder="Enter user's email"
-            value={email}
-            onChange={(e) => handleEmailChange(e.target.value)}
-            autoComplete="email"
-          />
+
+        <div
+          className={Styles.addRepForm}
+        >
+
+          <label>
+
+            <span>
+              Representative Name
+            </span>
+
+            <input
+              value={
+                newRepForm.name
+              }
+              onChange={(e) =>
+                setNewRepForm({
+                  name:
+                    e.target.value
+                })
+              }
+              placeholder="Enter representative name"
+            />
+
+          </label>
+
+
+          <button
+            className={
+              Styles.primaryBtn
+            }
+            type="button"
+            onClick={
+              handleCreateRepresentative
+            }
+            disabled={
+              creatingRepresentative
+            }
+          >
+
+            {creatingRepresentative
+              ? 'Creating...'
+              : 'Add Representative'}
+
+          </button>
+
         </div>
 
-        {email && !matchedUser && <p className={Styles.assignHint}>No user found with this email.</p>}
-
-        {matchedUser && (
-          <div className={Styles.matchCard}>
-            <FaUserTie className={Styles.matchIcon} />
-            <div className={Styles.matchName}>
-              <strong>{matchedUser.first_name || 'Unnamed User'}</strong>
-              <span className={Styles.matchEmail}>{matchedUser.email}</span>
-              <span className={Styles.matchRole}>Current role: {matchedUser.role || 'user'}</span>
-            </div>
-
-            <button
-              type="button"
-              className={Styles.verifyBtn}
-              onClick={handlePromote}
-              disabled={promoting || String(matchedUser.role || '').trim().toLowerCase() === 'representative'}
-            >
-              <FaCheck />
-              {promoting
-                ? 'Promoting...'
-                : String(matchedUser.role || '').trim().toLowerCase() === 'representative'
-                ? 'Already Representative'
-                : 'Make Representative'}
-            </button>
-          </div>
-        )}
-
-        {promoteError && <p className={Styles.errorText}>{promoteError}</p>}
       </div>
 
-      {/* ============================================================
-          SECTION 2 — Manage existing representatives
-      ============================================================ */}
-      <div className={Styles.card}>
-        <div className={Styles.cardHeader}>
+
+      {/* ======================================================
+          MANAGE REPRESENTATIVES
+      ====================================================== */}
+
+      <div
+        className={Styles.card}
+      >
+
+        <div
+          className={Styles.cardHeader}
+        >
+
           <div>
-            <h3>Representatives</h3>
-            <p>Manage representatives, constituency assignments and terms.</p>
+
+            <h3>
+              Representatives
+            </h3>
+
+            <p>
+              Manage representative accounts
+              and their active status.
+            </p>
+
           </div>
 
-          <div className={Styles.searchBox}>
-            <FaSearch className={Styles.searchIcon} />
+
+          <div
+            className={Styles.searchBox}
+          >
+
+            <FaSearch />
+
             <input
-              type="text"
-              placeholder="Search name, email, constituency, district"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value
+                )
+              }
+              placeholder="Search name, email, constituency, district"
             />
+
           </div>
+
         </div>
 
-        {listError && <p className={Styles.errorText}>{listError}</p>}
+
+        {/* ====================================================
+            STATUS FILTER
+        ==================================================== */}
+
+        <div
+          className={
+            Styles.statusFilterWrapper
+          }
+        >
+
+          {STATUS_OPTIONS.map(
+            (status) => (
+
+              <button
+                key={
+                  status.value
+                }
+                type="button"
+                className={`${Styles.statusFilterBtn} ${
+                  representativeStatus ===
+                  status.value
+                    ? Styles.activeStatusFilter
+                    : ''
+                }`}
+                onClick={() =>
+                  setRepresentativeStatus(
+                    status.value
+                  )
+                }
+              >
+
+                {status.label}
+
+                <span>
+
+                  {status.value ===
+                    'all'
+                    ? allCount
+                    : status.value ===
+                      'active'
+                      ? activeCount
+                      : inactiveCount}
+
+                </span>
+
+              </button>
+
+            )
+          )}
+
+        </div>
+
+
+        {/* ====================================================
+            TYPE FILTER
+        ==================================================== */}
+
+        <div
+          className={
+            Styles.typeFilterWrapper
+          }
+        >
+
+          {TYPE_OPTIONS.map(
+            (type) => (
+
+              <button
+                key={
+                  type.value
+                }
+                type="button"
+                className={`${Styles.typeFilterBtn} ${
+                  representativeType ===
+                  type.value
+                    ? Styles.activeTypeFilter
+                    : ''
+                }`}
+                onClick={() =>
+                  setRepresentativeType(
+                    type.value
+                  )
+                }
+              >
+
+                {type.label}
+
+                <span>
+
+                  {type.value ===
+                    'all'
+                    ? allCount
+                    : getTypeCount(
+                        type.value
+                      )}
+
+                </span>
+
+              </button>
+
+            )
+          )}
+
+        </div>
+
+
+        {listError && (
+
+          <p
+            className={
+              Styles.errorText
+            }
+          >
+            {listError}
+          </p>
+
+        )}
+
+
+        {/* ====================================================
+            TABLE
+        ==================================================== */}
 
         {loading ? (
-          <p>Loading representatives...</p>
-        ) : filteredRepresentatives.length === 0 ? (
-          <p className={Styles.assignHint}>
-            {search ? 'No representatives match your search.' : 'No representatives found.'}
-          </p>
-        ) : (
-          <div className={Styles.tableWrap}>
-            <table className={Styles.table}>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Constituency</th>
-                  <th>Ward</th>
-                  <th>District</th>
-                  <th>Term</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredRepresentatives.map((representative) => (
-                  <tr key={`representative-${representative.id}`}>
-                    <td>
-                      <strong>{representative.user_name || 'Unnamed User'}</strong>
-                    </td>
-                    <td>{representative.user_email || '-'}</td>
-                    <td>
-                      {representative.constituency_name ? (
-                        representative.constituency_name
-                      ) : (
-                        <span className={Styles.muted}>Not assigned</span>
-                      )}
-                    </td>
-                    <td>{representative.constituency_ward || '-'}</td>
-                    <td>{representative.district_name || '-'}</td>
-                    <td>
-                      <div className={Styles.termCell}>
-                        <div>
-                          <strong>From:</strong> {representative.start_date || '-'}
-                        </div>
-                        <div>
-                          <strong>To:</strong> {representative.end_date || '-'}
-                        </div>
-                      </div>
-                    </td>
 
-                    <td>
-                      <div className={Styles.actionsRow}>
-                        <button
-                          type="button"
-                          className={Styles.editBtn}
-                          onClick={() => handleEdit(representative)}
-                          title="Edit term"
-                        >
-                          <FaEdit />
-                        </button>
-
-
-
-                        <button
-                          type="button"
-                          className={Styles.deleteBtn}
-                          onClick={() => handleDelete(representative)}
-                          title="Delete representative"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div
+            className={
+              Styles.loadingState
+            }
+          >
+            Loading representatives...
           </div>
+
+        ) : rows.length === 0 ? (
+
+          <p
+            className={
+              Styles.assignHint
+            }
+          >
+            No representatives found.
+          </p>
+
+        ) : (
+
+          <>
+
+            <div
+              className={
+                Styles.tableWrap
+              }
+            >
+
+              <table
+                className={
+                  Styles.table
+                }
+              >
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      Name
+                    </th>
+
+                    <th>
+                      Email
+                    </th>
+
+                    <th>
+                      Type
+                    </th>
+
+                    <th>
+                      Constituency
+                    </th>
+
+                    <th>
+                      Ward
+                    </th>
+
+                    <th>
+                      District
+                    </th>
+
+                    <th>
+                      Term
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
+                    <th>
+                      Actions
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                  {rows.map(
+                    (rep) => {
+
+                      const active =
+                        getActiveStatus(
+                          rep
+                        )
+
+                      return (
+
+                        <tr
+                          key={
+                            rep.id
+                          }
+                        >
+
+                          <td>
+
+                            <strong>
+                              {rep.user_name ||
+                                'Unnamed User'}
+                            </strong>
+
+                          </td>
+
+
+                          <td>
+
+                            {rep.user_email ||
+                              '-'}
+
+                          </td>
+
+
+                          <td>
+
+                            <span
+                              className={
+                                Styles.typeBadge
+                              }
+                            >
+                              {getTypeLabel(
+                                rep
+                              )}
+                            </span>
+
+                          </td>
+
+
+                          <td>
+
+                            {rep.constituency_name ||
+                              (
+                                <span
+                                  className={
+                                    Styles.muted
+                                  }
+                                >
+                                  Not assigned
+                                </span>
+                              )}
+
+                          </td>
+
+
+                          <td>
+                            {rep.constituency_ward ||
+                              '-'}
+                          </td>
+
+
+                          <td>
+                            {rep.district_name ||
+                              '-'}
+                          </td>
+
+
+                          <td>
+
+                            <div
+                              className={
+                                Styles.termCell
+                              }
+                            >
+
+                              <div>
+
+                                <strong>
+                                  From:
+                                </strong>{' '}
+
+                                {rep.start_date ||
+                                  '-'}
+
+                              </div>
+
+                              <div>
+
+                                <strong>
+                                  To:
+                                </strong>{' '}
+
+                                {rep.end_date ||
+                                  '-'}
+
+                              </div>
+
+                            </div>
+
+                          </td>
+
+
+                          <td>
+
+                            <button
+                              type="button"
+                              className={`${Styles.statusToggle} ${
+                                active
+                                  ? Styles.statusActive
+                                  : Styles.statusInactive
+                              }`}
+                              onClick={() =>
+                                handleToggleStatus(
+                                  rep
+                                )
+                              }
+                              title={
+                                active
+                                  ? 'Click to deactivate'
+                                  : 'Click to activate'
+                              }
+                            >
+
+                              <span
+                                className={
+                                  Styles.toggleDot
+                                }
+                              />
+
+                              {active
+                                ? 'Active'
+                                : 'Inactive'}
+
+                            </button>
+
+                          </td>
+
+
+                          {/* NO EDIT OPTION */}
+
+                          <td>
+
+                            <div
+                              className={
+                                Styles.actionsRow
+                              }
+                            >
+
+                              <button
+                                className={
+                                  Styles.deleteBtn
+                                }
+                                type="button"
+                                onClick={() =>
+                                  handleDelete(
+                                    rep
+                                  )
+                                }
+                                title="Delete representative"
+                              >
+
+                                <FaTrash />
+
+                              </button>
+
+                            </div>
+
+                          </td>
+
+                        </tr>
+
+                      )
+
+                    }
+                  )}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+
+            {/* ==================================================
+                PAGINATION
+            ================================================== */}
+
+            <div
+              className={
+                Styles.paginationWrapper
+              }
+            >
+
+              <div>
+
+                Showing{' '}
+
+                <strong>
+                  {
+                    filteredRepresentatives.length
+                      ? (
+                          (currentPage - 1) *
+                            PAGE_SIZE +
+                          1
+                        )
+                      : 0
+                  }
+                </strong>{' '}
+
+                to{' '}
+
+                <strong>
+                  {
+                    Math.min(
+                      currentPage *
+                        PAGE_SIZE,
+                      filteredRepresentatives.length
+                    )
+                  }
+                </strong>{' '}
+
+                of{' '}
+
+                <strong>
+                  {
+                    filteredRepresentatives.length
+                  }
+                </strong>{' '}
+
+                representatives
+
+              </div>
+
+
+              <div
+                className={
+                  Styles.paginationControls
+                }
+              >
+
+                <button
+                  className={
+                    Styles.paginationBtn
+                  }
+                  disabled={
+                    currentPage === 1
+                  }
+                  onClick={() =>
+                    setCurrentPage(
+                      (p) => p - 1
+                    )
+                  }
+                >
+
+                  <FaChevronLeft />
+
+                </button>
+
+
+                {Array.from(
+                  {
+                    length:
+                      totalPages
+                  },
+                  (_, i) =>
+                    i + 1
+                ).map(
+                  (page) => (
+
+                    <button
+                      key={page}
+                      className={`${Styles.pageNumber} ${
+                        currentPage ===
+                        page
+                          ? Styles.activePage
+                          : ''
+                      }`}
+                      onClick={() =>
+                        setCurrentPage(
+                          page
+                        )
+                      }
+                    >
+                      {page}
+                    </button>
+
+                  )
+                )}
+
+
+                <button
+                  className={
+                    Styles.paginationBtn
+                  }
+                  disabled={
+                    currentPage ===
+                    totalPages
+                  }
+                  onClick={() =>
+                    setCurrentPage(
+                      (p) => p + 1
+                    )
+                  }
+                >
+
+                  <FaChevronRight />
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </>
+
         )}
+
       </div>
 
-      {/* ============================================================
-          EDIT MODAL
-      ============================================================ */}
-      {editingRep && (
-        <div className={Styles.modalOverlay} onClick={() => setEditingRep(null)}>
-          <div className={Styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h3>Edit Representative</h3>
-            <p>{editingRep.user_name || 'Representative'}</p>
-
-            <div className={Styles.constituencyInfoBox}>
-              <div>
-                <strong>Constituency:</strong> {editingRep.constituency_name || 'Not assigned'}
-              </div>
-              <div>
-                <strong>Ward:</strong> {editingRep.constituency_ward || '-'}
-              </div>
-              <div>
-                <strong>District:</strong> {editingRep.district_name || '-'}
-              </div>
-            </div>
-
-            <div className={Styles.modalFields}>
-              <label>
-                <span>Term Started On</span>
-                <input
-                  type="date"
-                  value={editForm.start_date}
-                  onChange={(e) => setEditForm({ ...editForm, start_date: e.target.value })}
-                />
-              </label>
-              <label>
-                <span>Term Ends On</span>
-                <input
-                  type="date"
-                  value={editForm.end_date}
-                  onChange={(e) => setEditForm({ ...editForm, end_date: e.target.value })}
-                />
-              </label>
-            </div>
-
-            {editError && <p className={Styles.errorText}>{editError}</p>}
-
-            <div className={Styles.modalActions}>
-              <button type="button" onClick={() => setEditingRep(null)} disabled={savingEdit}>
-                Cancel
-              </button>
-              <button type="button" onClick={handleSaveEdit} disabled={savingEdit}>
-                {savingEdit ? 'Saving...' : 'Save Changes'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </AdminLayout>
   )
 }
+

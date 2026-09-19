@@ -9,7 +9,7 @@ const navItems = [
   { icon: <FaHome />, label: 'Home', path: '2' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/branch/branchdashboard' },
   { icon: <FaUsers />, label: 'Employees', path: '/branch/addemployee' },
-  { icon: <FaClipboardList />, label: 'Complaints', path: '/branch/viewcomplaints' },
+  { icon: <FaClipboardList />, label: 'Complaints', path: '/branch/complaints' },
 ]
 
 function BranchSidebar() {

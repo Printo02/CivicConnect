@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Styles from '../components/module.css/UserSidebar.module.css'
-import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,FaCog, FaSignOutAlt} from 'react-icons/fa'
+import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,FaCog, FaSignOutAlt, FaUniversalAccess, FaUniversity} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { getProfile } from '../../api/services/User/Profile.js' 
 
 const navItems = [
-  { icon: <FaHome />, label: 'Home', path: '1' },
+  { icon: <FaHome />, label: 'Home', path: '/user/userhome' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/user/userdashboard'},
   { icon: <FaBuilding />, label: 'My Ward', path: '/user/user-myWard' },
-  // { icon: <FaUsers />, label: 'Employee List', path: '1' },
-  { icon: <FaClipboardList />, label: 'Complaints', path: '/user/complaint' },
+  { icon: <FaUniversity />, label: 'Nearby Authority', path: '/user/nearby-auths' },
+  { icon: <FaClipboardList />, label: 'Complaints', path: '/user/complaintviews' },
 ]
 
 

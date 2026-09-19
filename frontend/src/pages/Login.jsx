@@ -49,8 +49,14 @@ const Login = () => {
         navigate('/user/userdashboard')
       }
     } catch (err) {
-      console.error('Login failed:', err.response?.data || err.message)
-      setError('Invalid email or password. Please try again.')
+    console.error('Login failed:', err.response?.data || err.message)
+      const backendError = err.response?.data?.message
+      if (backendError) {
+        const errorMessage = typeof backendError === 'object' ? Object.values(backendError).flat().join(' ') : backendError
+        setError(errorMessage)
+      } else {
+        setError('Invalid email or password. Please try again.')
+      }
     }
   }
 

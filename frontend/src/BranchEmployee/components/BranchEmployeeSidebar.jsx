@@ -3,13 +3,13 @@ import Styles from '../components/module.css/BranchEmployeeSidebar.module.css'
 import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,FaCog, FaSignOutAlt } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
-// import { getProfile } from '../../api/services/BranchEmployee/Profile.js' 
+import { getProfile } from '../../api/services/BranchEmployee/Profile.js' 
 
 
 const navItems = [
   // { icon: <FaHome />, label: 'Home', path: '5' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/branchemployee/branchemployeedashboard' },
-  { icon: <FaClipboardList />, label: 'Complaints', path: '/branchemployee/Complaints' },
+  { icon: <FaClipboardList />, label: 'Complaints', path: '/branchemployee/complaints/' },
 ]
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './AdminSidebar.module.css'
-import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding, FaChartBar, FaCog, FaHeadset, FaSignOutAlt } from 'react-icons/fa'
+import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding, FaChartBar, FaCog, FaHeadset, FaSignOutAlt, FaBars,  } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import ViewUsers from './../../pages/ViewUsers';
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,11 @@ import { getProfile } from '../../../api/services/Admin/profileService.js'
 const navItems = [
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/admin/admindashboard' },
   { icon: <FaUsers />, label: 'Representative', path: '/admin/representative' },
-  { icon: <FaBuilding />, label: 'Departments', path: '/admin/department' },
+  { icon: <FaBuilding />, label: 'Departments', path: '/admin/deptview' },
+  { icon: <FaBuilding />, label: 'Branches', path: '/admin/deptview' },
   { icon: <FaUsers />, label: 'Users List', path: '/admin/viewusers' },
   { icon: <FaClipboardList />, label: 'Feedback', path: '/admin/feedback' },
+  { icon:  <FaBars/>     , label: 'Other infos', path: '/admin/infos' },
 ]
 
 function AdminSidebar() {
