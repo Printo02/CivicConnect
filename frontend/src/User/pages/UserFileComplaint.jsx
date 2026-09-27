@@ -1,20 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-  FaMapMarkerAlt,
-  FaPaperPlane,
-  FaTimes,
-  FaBuilding,
-  FaUserTie,
-  FaCheckCircle,
-  FaSearch,
-  FaCamera,
-  FaVideo,
-  FaFileAlt,
-  FaMicrophone,
-  FaStop,
-  FaTrash,
-  FaUpload,
-} from 'react-icons/fa'
+import { FaMapMarkerAlt,FaPaperPlane,FaTimes,FaBuilding,FaUserTie,FaCheckCircle,FaSearch,
+  FaCamera,FaVideo,FaFileAlt,FaMicrophone,FaStop,FaTrash,FaUpload } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 
 import Styles from '../components/module.css/UserFileComplaint.module.css'

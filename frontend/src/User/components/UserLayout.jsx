@@ -10,7 +10,6 @@ function UserLayout({ title, actions, children }) {
   return (
     <div className={Styles.layout}>
       <UserSidebar />
-
       <div className={Styles.main}>
         <div className={Styles.topRow}>
           <h1 className={Styles.pageTitle}>{title}</h1>

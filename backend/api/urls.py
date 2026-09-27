@@ -8,6 +8,11 @@ urlpatterns = [
     path('register/',RegisterAPI.as_view(),name='register'),
     path('login/',LoginAPI.as_view(),name='login'),
     path('district/',DistrictAPI.as_view(),name='district'),
+    ######################################## Forgot Password ########################################
+    path('forgot-password/request-otp/',ForgotPasswordRequestOTPView.as_view(),name='forgot-password-request-otp'),
+    path('forgot-password/verify-otp/',ForgotPasswordVerifyOTPView.as_view(),name='forgot-password-verify-otp'),
+    path('forgot-password/reset/',ForgotPasswordResetView.as_view(),name='forgot-password-reset'),
+    
     
     ######################################## Admin ########################################
     path('admin/profile/', ProfileView.as_view(), name='profile'),
@@ -136,4 +141,43 @@ urlpatterns = [
     name='branch-employee-complaint-responses'),
     
     path('authorities/by-district/', AuthoritiesByDistrictView.as_view(), name='authorities-by-district'),
+    
+    path("myward/feed/", UserMyWardFeedView.as_view(), name="myward-feed"),
+    path("myward/complaints/<int:complaint_id>/share/",UserShareComplaintToMyWardView.as_view(),
+    name="myward-share-complaint"),
+    path("branch/myward/posts/",BranchMyWardPostsView.as_view(),name="branch-myward-posts"),
+    path("representative/myward/posts/",RepresentativeMyWardPostsView.as_view(),name="representative-myward-posts"),
+    
+    ######################################## MYWARD - DISASTERS########################################
+    path("myward/disasters/",UserDisasterReportCreateView.as_view(),name="myward-disaster-create"),
+    path("myward/disasters/feed/",UserMyWardDisasterListView.as_view(),name="myward-disaster-feed"),
+    path("myward/disasters/<int:pk>/",UserMyWardDisasterDetailView.as_view(),name="myward-disaster-detail"),
+    path("myward/disasters/<int:disaster_id>/verify/",UserDisasterVerificationView.as_view(),name="myward-disaster-verify"),
+    path("myward/disasters/<int:disaster_id>/verification/",UserDisasterVerificationDeleteView.as_view(),name="myward-disaster-verification-delete"),
+    path("myward/disasters/<int:disaster_id>/authority-review/",DisasterAuthorityReviewView.as_view(),
+    name="myward-disaster-authority-review"),
+
+    ########################################  REPRESENTATIVE - MYWARD DISASTERS ########################################
+    path("representative/myward/disasters/",RepresentativeMyWardDisasterListView.as_view(),name="representative-myward-disasters"),
+    path("representative/myward/disasters/<int:disaster_id>/",RepresentativeMyWardDisasterDetailView.as_view(),
+    name="representative-myward-disaster-detail"),
+    path("representative/myward/disasters/<int:disaster_id>/review/",RepresentativeDisasterAuthorityReviewView.as_view(),
+    name="representative-myward-disaster-review"),
+
+    ########################################  BRANCH - MYWARD DISASTERS ########################################
+    path("branch/myward/disasters/",BranchMyWardDisasterListView.as_view(),name="branch-myward-disasters"),
+    path("branch/myward/disasters/<int:disaster_id>/",BranchMyWardDisasterDetailView.as_view(),name="branch-myward-disaster-detail"),
+    path("branch/myward/disasters/<int:disaster_id>/review/",BranchDisasterAuthorityReviewView.as_view(),
+    name="branch-myward-disaster-review"),
+    
+    ########################################  BRANCH EMPLOYEE - MYWARD POSTS ########################################
+    path("branchemployee/myward/posts/",BranchEmployeeMyWardPostsView.as_view(),name="branch-employee-myward-posts"),
+    ######################################## BRANCH - MYWARD APPROVALS ########################################
+    path("branch/myward/post-approvals/",BranchMyWardApprovalListView.as_view(),name="branch-myward-post-approvals"),
+    path("branch/myward/post-approvals/<int:pk>/review/",BranchMyWardApprovalReviewView.as_view(),
+    name="branch-myward-post-approval-review"),
+    
+
+
+
 ]

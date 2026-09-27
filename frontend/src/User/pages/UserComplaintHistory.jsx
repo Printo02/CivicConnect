@@ -1,26 +1,10 @@
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
-
-import {
-  FaEye,
-  FaSearch,
-  FaFilter,
-  FaUserTie,
-  FaBuilding,
-} from 'react-icons/fa'
-
+import React, { useEffect,useMemo,useState } from 'react'
+import { FaEye,FaSearch,FaFilter,FaUserTie,FaBuilding,FaShareAlt,FaCheckCircle } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-
 import Styles from '../components/module.css/UserComplaintHistory.module.css'
 import UserLayout from '../components/UserLayout'
-
-import {
-  getmycomplaints,
-} from '../../api/services/User/Complaint.js'
-
+import { getmycomplaints } from '../../api/services/User/Complaint.js'
+import { shareComplaintToMyWard } from '../../api/services/User/MyWard.js'
 
 const UserComplaintHistory = () => {
   const navigate = useNavigate()
@@ -37,6 +21,11 @@ const UserComplaintHistory = () => {
   const [status, setStatus] =
     useState('')
 
+  const [sharingId, setSharingId] =
+    useState(null)
+
+  const [shareError, setShareError] =
+    useState('')
 
   useEffect(() => {
     fetchComplaints()
@@ -53,7 +42,7 @@ const UserComplaintHistory = () => {
       setComplaints(
         Array.isArray(data)
           ? data
-          : []
+          : data?.results || []
       )
     } catch (error) {
       console.error(
@@ -173,6 +162,57 @@ const UserComplaintHistory = () => {
     )
   }
 
+  const handleShareToMyWard = async (complaintId) => {
+    try {
+      setSharingId(complaintId)
+      setShareError('')
+
+      await shareComplaintToMyWard(
+        complaintId
+      )
+
+      // Immediately change Share button -> Shared
+      setComplaints((current) =>
+        current.map((complaint) =>
+          complaint.id === complaintId
+            ? {
+                ...complaint,
+                is_shared_to_myward: true,
+              }
+            : complaint
+        )
+      )
+    } catch (error) {
+      const detail =
+        error?.response?.data?.detail ||
+        'Unable to share complaint to MyWard.'
+
+      if (
+        detail
+          .toLowerCase()
+          .includes('already shared')
+      ) {
+        setComplaints((current) =>
+          current.map((complaint) =>
+            complaint.id === complaintId
+              ? {
+                  ...complaint,
+                  is_shared_to_myward: true,
+                }
+              : complaint
+          )
+        )
+
+        return
+      }
+
+      setShareError(detail)
+    } finally {
+      setSharingId(null)
+    }
+  }
+
+
 
   return (
     <UserLayout>
@@ -234,26 +274,11 @@ const UserComplaintHistory = () => {
                 )
               }
             >
-              <option value="">
-                All Status
-              </option>
-
-              <option value="pending">
-                Pending
-              </option>
-
-              <option value="in_progress">
-                In Progress
-              </option>
-
-              <option value="resolved">
-                Resolved
-              </option>
-
-              <option value="closed">
-                Closed
-              </option>
-
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+              <option value="closed">Closed</option>
               <option value="rejected">
                 Rejected
               </option>
@@ -304,6 +329,12 @@ const UserComplaintHistory = () => {
                 Styles.tableWrapper
               }
             >
+
+              {shareError && (
+                <div className={Styles.shareError}>
+                  {shareError}
+                </div>
+              )}
               <table>
 
                 <thead>
@@ -463,28 +494,57 @@ const UserComplaintHistory = () => {
                         </td>
 
 
-                        {/* View */}
+                        {/* Actions */}
 
                         <td>
+                          <div className={Styles.actionButtons}>
 
-                          <button
-                            type="button"
-                            className={
-                              Styles.viewButton
-                            }
-                            onClick={() =>
-                              navigate(
-                                `/user/complaint-history/${complaint.id}`
-                              )
-                            }
-                          >
-                            <FaEye />
+                            <button type="button" className={Styles.viewButton}
+                              onClick={() => navigate(`/user/complaint-history/${complaint.id}`)}>
+                              <FaEye />
+                              <span>View</span>
+                            </button>
 
-                            <span>
-                              View
-                            </span>
-                          </button>
 
+                            {complaint.is_shared_to_myward ? (
+
+                              <button type="button"
+                                className={Styles.sharedButton}
+                                disabled
+                              >
+                                <FaCheckCircle />
+
+                                <span>
+                                  Shared
+                                </span>
+                              </button>
+
+                            ) : (
+
+                              <button
+                                type="button"
+                                className={Styles.shareButton}
+                                disabled={
+                                  sharingId === complaint.id
+                                }
+                                onClick={() =>
+                                  handleShareToMyWard(
+                                    complaint.id
+                                  )
+                                }
+                              >
+                                <FaShareAlt />
+
+                                <span>
+                                  {sharingId === complaint.id
+                                    ? 'Sharing...'
+                                    : 'Share'}
+                                </span>
+                              </button>
+
+                            )}
+
+                          </div>
                         </td>
 
                       </tr>

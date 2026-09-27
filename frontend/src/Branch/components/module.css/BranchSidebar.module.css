@@ -1,174 +1,703 @@
+/* ============================================================
+   BRANCH SIDEBAR
+============================================================ */
+
 .sidebar {
   width: 260px;
-  flex-shrink: 0;
   height: 100vh;
+
+  flex-shrink: 0;
+
   position: sticky;
   top: 0;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
+
   display: flex;
   flex-direction: column;
-  padding: 20px 14px;
+
+  padding: 18px 14px;
+
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+
+  background: var(--surface);
+
+  border-right:
+    1px solid var(--border);
+
   color: var(--text-primary);
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
+
+
+/* ============================================================
+   BRAND
+============================================================ */
 
 .brand {
   display: flex;
   align-items: center;
+
   gap: 10px;
+
   padding: 4px 8px 18px;
-  font-weight: 700;
+
+  color: var(--text-primary);
+
   font-size: 0.92rem;
+  font-weight: 700;
 }
 
+
 .brandIcon {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  background: #7C5CFC;
-  color: white;
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 7px;
+
+  background: #7c5cfc;
+  color: #fff;
+
   font-size: 0.7rem;
   font-weight: 800;
+
+  letter-spacing: 0.02em;
 }
+
+
+/* ============================================================
+   SEARCH
+============================================================ */
 
 .search {
   position: relative;
-  margin-bottom: 16px;
+
+  margin-bottom: 12px;
 }
+
+
+.search:empty {
+  display: none;
+}
+
 
 .search input {
   width: 100%;
-  padding: 8px 40px 8px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface-sunken);
-  color: var(--text-primary);
-  font-size: 0.82rem;
-  outline: none;
+
+  padding: 9px 40px 9px 12px;
+
   box-sizing: border-box;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background:
+    var(--surface-sunken);
+
+  color:
+    var(--text-primary);
+
+  font-family: inherit;
+  font-size: 0.82rem;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
 }
+
+
+.search input::placeholder {
+  color:
+    var(--text-muted);
+}
+
+
+.search input:focus {
+  border-color: #7c5cfc;
+
+  box-shadow:
+    0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
 
 .kbd {
   position: absolute;
+
   right: 10px;
   top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  padding: 1px 5px;
+
+  transform:
+    translateY(-50%);
+
+  padding: 2px 5px;
+
+  border:
+    1px solid var(--border);
+
   border-radius: 4px;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text-muted);
+
+  font-size: 0.68rem;
 }
+
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
 
 .navList {
-  list-style: none;
-  margin: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  margin: 0 0 10px;
   padding: 0;
+
+  list-style: none;
 }
+
+
+.navList li {
+  width: 100%;
+}
+
 
 .sectionLabel {
-  border-top: 1px solid var(--border);
+  height: 1px;
+
   margin: 14px 6px;
+
+  border: none;
+
+  background:
+    var(--border);
 }
+
 
 .navItem {
+  width: 100%;
+  min-height: 38px;
+
   display: flex;
   align-items: center;
+
   gap: 10px;
+
   padding: 8px 10px;
+
+  box-sizing: border-box;
+
   border-radius: 8px;
+
+  color:
+    var(--text-secondary);
+
+  text-decoration: none;
+
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--text-secondary);
+
   cursor: pointer;
-  text-decoration: none; /* add this — <a> tags underline by default */
-  transition: background-color 0.15s ease, color 0.15s ease;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
+
 
 .navItem:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  background:
+    var(--surface-hover);
+
+  color:
+    var(--text-primary);
 }
 
+
 .active {
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  background:
+    rgba(124, 92, 252, 0.12);
+
+  color: #7c5cfc;
+
   font-weight: 700;
 }
 
-.navIcon {
-  width: 16px;
-  display: flex;
-  justify-content: center;
-  font-size: 0.9rem;
+
+.active .navIcon {
+  color: #7c5cfc;
 }
+
+
+/* ============================================================
+   NAVIGATION ICONS
+============================================================ */
+
+.navIcon {
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: inherit;
+
+  font-size: 0.88rem;
+}
+
+
+/* ============================================================
+   PUBLISH UPDATE DROPDOWN
+============================================================ */
+
+.dropdownContainer {
+  width: 100%;
+}
+
+
+.dropdownContainer>.navItem {
+  padding-right: 5px;
+}
+
+
+.dropdownMainLink {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  color: inherit;
+
+  text-decoration: none;
+}
+
+
+.dropdownMainLink>span:last-child {
+  overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+   DROPDOWN TOGGLE
+============================================================ */
+
+.dropdownToggle {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 7px;
+
+  background:
+    transparent;
+
+  color:
+    var(--text-muted);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.dropdownToggle:hover {
+  border-color:
+    var(--border);
+
+  background:
+    var(--surface-sunken);
+
+  color:
+    var(--text-primary);
+}
+
+
+.dropdownToggle:focus-visible {
+  outline: none;
+
+  border-color: #7c5cfc;
+
+  box-shadow:
+    0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
+
+.dropdownToggle svg {
+  font-size: 0.68rem;
+}
+
+
+/* ============================================================
+   DROPDOWN MENU
+============================================================ */
+
+.dropdownMenu {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+
+  margin: 4px 0 5px 17px;
+
+  padding:
+    2px 0 2px 17px;
+
+  list-style: none;
+}
+
+
+/*
+ * Vertical guide visually connects
+ * the child item to Publish Update.
+ */
+.dropdownMenu::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 1px;
+
+  background:
+    var(--border);
+}
+
+
+.dropdownItem {
+  width: 100%;
+  min-height: 34px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 7px 10px;
+
+  box-sizing: border-box;
+
+  border-radius: 7px;
+
+  color:
+    var(--text-muted);
+
+  text-decoration: none;
+
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.dropdownItem:hover {
+  background:
+    var(--surface-hover);
+
+  color:
+    var(--text-primary);
+}
+
+
+.dropdownActive {
+  background:
+    rgba(124, 92, 252, 0.12);
+
+  color: #7c5cfc;
+
+  font-weight: 700;
+}
+
+
+.dropdownIcon {
+  width: 15px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: inherit;
+
+  font-size: 0.75rem;
+}
+
+
+/* ============================================================
+   ONLINE STATUS
+============================================================ */
 
 .onlineDot {
   margin-left: auto;
-  font-size: 0.68rem;
-  color: #22C55E;
-  display: flex;
+
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
+
+  gap: 5px;
+
+  color: #22c55e;
+
+  font-size: 0.7rem;
+  font-weight: 600;
 }
+
 
 .onlineDot::before {
   content: '';
+
   width: 6px;
   height: 6px;
+
+  flex-shrink: 0;
+
   border-radius: 50%;
-  background: #22C55E;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
+
+/* ============================================================
+   USER CARD
+============================================================ */
+
+.userCard {
+  margin-top: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 12px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 10px;
+
+  background:
+    var(--surface-sunken);
 }
 
 
 .avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #7C5CFC;
-  color: white;
-  font-weight: 700;
-  font-size: 0.8rem;
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #7c5cfc;
+  color: #fff;
+
+  font-size: 0.8rem;
+  font-weight: 700;
 }
+
 
 .userName {
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: var(--text-primary);
-  margin: 0;
+  max-width: 100%;
+
+  margin: 0 0 3px;
+
+  overflow: hidden;
+
+  color:
+    var(--text-primary);
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
+
 
 .userEmail {
-  font-size: 0.7rem;
-  color: var(--text-muted);
+  max-width: 100%;
+
   margin: 0;
+
+  overflow: hidden;
+
+  color:
+    var(--text-muted);
+
+  font-size: 0.72rem;
+  font-weight: 400;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.usercardbtn{
-  background-color:#7C5CFC;
-  color:white;
-  border-radius: 6px;
-  padding: 6px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  margin-top: 10px;
-}
 
-.userCard {
-  margin-top: auto;
-  display: grid;
+/* ============================================================
+   LOGOUT
+============================================================ */
+
+.usercardbtn {
+  width: 100%;
+
+  display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 8px 10px;
+
+  box-sizing: border-box;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #7c5cfc;
+
+  color: #fff;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+
+.usercardbtn:hover {
+  background: #6d4deb;
+}
+
+
+.usercardbtn:active {
+  transform:
+    translateY(1px);
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+============================================================ */
+
+.navItem:focus-visible,
+.dropdownItem:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
+
+/* ============================================================
+   SCROLLBAR
+============================================================ */
+
+.sidebar {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    var(--border) transparent;
+}
+
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+
+.sidebar::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+
+.sidebar::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+
+  background:
+    var(--border);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    width: 230px;
+
+    padding:
+      16px 12px;
+  }
+
+
+  .navItem {
+    font-size: 0.82rem;
+  }
+
 }

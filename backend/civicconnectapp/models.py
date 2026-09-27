@@ -18,6 +18,29 @@ class UserDetail(models.Model):
         return self.user.username    
 
 
+
+class PasswordResetOTP(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="password_reset_otps")
+    otp_hash = models.CharField(max_length=128)
+    attempts = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    verified_at = models.DateTimeField(null=True,blank=True)
+    reset_token_hash = models.CharField(max_length=128,null=True,blank=True)
+    reset_expires_at = models.DateTimeField(null=True,blank=True)
+    used_at = models.DateTimeField(null=True,blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["user", "created_at"]),
+            models.Index(fields=["expires_at"]),
+        ]
+
+    def __str__(self):
+        return f"Password reset - {self.user.email}"
+
+
 class District(models.Model):
     dname = models.CharField(max_length=50,blank=True,null=True)
     
@@ -125,8 +148,6 @@ class LocalBodyRepresentative(models.Model):
     def __str__(self):
         return (f"{self.user_profile.user.get_full_name()} - "
             f"{self.ward.local_body.name} - Ward {self.ward.ward_number}")
-
-
 
 
 class Branch(models.Model):
@@ -416,3 +437,150 @@ class ComplaintAttachment(models.Model):
 
     def __str__(self):
         return f"{self.complaint.id} - {self.original_filename}"
+    
+
+
+class MyWardPost(models.Model):
+    class PostType(models.TextChoices):
+        ALERT = "alert", "Alert"
+        UPDATE = "update", "Update"
+        ACTION = "action", "Action / Work Notice"
+        DISASTER = "disaster", "Disaster Report"
+        GENERAL = "general", "General"
+
+    class AuthorType(models.TextChoices):
+        USER = "user", "User"
+        BRANCH = "branch", "Branch"
+        REPRESENTATIVE = "representative", "Representative"
+        BRANCH_EMPLOYEE = "branch_employee", "Branch Employee"
+
+    class ApprovalStatus(models.TextChoices):
+        PENDING = "pending", "Pending"
+        APPROVED = "approved", "Approved"
+        REJECTED = "rejected", "Rejected"
+
+
+    author = models.ForeignKey(User,on_delete=models.CASCADE,related_name="myward_posts")
+    author_type = models.CharField(max_length=30,choices=AuthorType.choices)
+    post_type = models.CharField(max_length=20,choices=PostType.choices,default=PostType.GENERAL)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    ward = models.ForeignKey(LocalBodyConstituency,on_delete=models.SET_NULL,null=True,blank=True,related_name="myward_posts")
+    constituency = models.ForeignKey(Constituency,on_delete=models.SET_NULL,null=True,blank=True,
+        related_name="myward_posts")
+    target_branch = models.ForeignKey(Branch,on_delete=models.SET_NULL,null=True,blank=True,
+        related_name="myward_disaster_reports")
+    target_representative = models.ForeignKey(Representative,on_delete=models.SET_NULL,null=True,blank=True,
+        related_name="myward_disaster_reports")
+    location = models.CharField(max_length=500,blank=True,null=True)
+    location_point = gis_models.PointField(srid=4326,blank=True,null=True)
+    is_important = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    # BRANCH EMPLOYEE APPROVAL
+    submitted_by_employee = models.ForeignKey(BranchEmployees,on_delete=models.SET_NULL,
+        null=True,blank=True,related_name="submitted_myward_posts")
+    approval_branch = models.ForeignKey(Branch,on_delete=models.SET_NULL,null=True,blank=True,
+        related_name="myward_post_approvals")
+    approval_status = models.CharField(max_length=20,choices=ApprovalStatus.choices,default=ApprovalStatus.APPROVED)
+    reviewed_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,
+        related_name="reviewed_myward_posts")
+    reviewed_at = models.DateTimeField(null=True,blank=True)
+    rejection_reason = models.TextField(blank=True,default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+        indexes = [
+            models.Index(fields=["post_type", "created_at"]),
+            models.Index(fields=["ward", "post_type"]),
+            models.Index(fields=["approval_status", "created_at"]),
+            models.Index(fields=["approval_branch", "approval_status"]),
+        ]
+
+    def __str__(self):
+        return f"{self.title} - {self.post_type}"
+
+
+class MyWardPostAttachment(models.Model):
+    post = models.ForeignKey(MyWardPost,on_delete=models.CASCADE,related_name="attachments")
+    file = models.FileField(upload_to="myward_posts/")
+    original_filename = models.CharField(max_length=255)
+    mime_type = models.CharField(max_length=120,blank=True,null=True)
+    file_size = models.BigIntegerField(default=0)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return (f"{self.post_id} - "
+            f"{self.original_filename}"
+        )
+
+
+class MyWardDisasterVerification(models.Model):
+    class VoteChoices(models.TextChoices):
+        VERIFIED = "verified", "Verified"
+        NOT_VERIFIED = "not_verified", "Not Verified"
+    disaster = models.ForeignKey(MyWardPost,on_delete=models.CASCADE,related_name="disaster_verifications")
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="myward_disaster_verifications")
+    vote = models.CharField(max_length=20,choices=VoteChoices.choices)
+
+    # Store the ward from which the user verified
+    ward = models.ForeignKey(LocalBodyConstituency,on_delete=models.SET_NULL,null=True,blank=True,
+        related_name="disaster_verifications")
+    verified_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["disaster", "user"],
+                name="unique_disaster_vote_per_user"
+            )
+        ]
+
+        ordering = [
+            "-updated_at"
+        ]
+
+    def __str__(self):
+        return (f"{self.user.username} - " f"{self.disaster_id} - " f"{self.vote}")
+
+
+
+
+class MyWardDisasterAuthorityReview(models.Model):
+    class ReviewerType(models.TextChoices):
+        BRANCH = "branch", "Branch"
+        REPRESENTATIVE = "representative", "Representative"
+    disaster = models.ForeignKey(MyWardPost,on_delete=models.CASCADE,related_name="authority_reviews")
+    reviewer = models.ForeignKey(User,on_delete=models.CASCADE,related_name="myward_disaster_authority_reviews")
+    reviewer_type = models.CharField(max_length=30,choices=ReviewerType.choices)
+    comment = models.TextField(blank=True, default="")
+    is_verified = models.BooleanField(null=True,blank=True,default=None)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return (f"{self.disaster_id} - " 
+            f"{self.reviewer.username} - "
+            f"{self.reviewer_type}")
+
+
+
+
+class MyWardComplaintShare(models.Model):
+    complaint = models.OneToOneField(Complaint,on_delete=models.CASCADE,related_name="myward_share")
+    shared_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="shared_myward_complaints")
+    ward = models.ForeignKey(LocalBodyConstituency,on_delete=models.SET_NULL,
+        null=True, blank=True,related_name="shared_complaints")
+    constituency = models.ForeignKey(Constituency,on_delete=models.SET_NULL,null=True, blank=True,
+        related_name="shared_complaints")
+    shared_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-shared_at"]

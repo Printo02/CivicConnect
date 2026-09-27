@@ -1,0 +1,5312 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+
+.content {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.header {
+  margin-bottom: 32px;
+}
+
+.headerEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #7C5CFC;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+
+}
+
+.header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.header p {
+  color: var(--text-secondary);
+  max-width: 650px;
+  margin: 8px 0 0;
+  line-height: 1.65;
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   COMMON SECTION
+========================================================= */
+
+.feedSection {
+  margin-bottom: 36px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.sectionHeader h2 {
+  margin: 3px 0 0;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+.sectionEyebrow {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* display: flex;
+    align-items: center;
+    gap: 8px;
+  
+    color: #7C5CFC;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px; */
+
+
+.resultCount {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.errorBox {
+  padding: 14px 16px;
+  margin-bottom: 20px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+
+  color: #EF4444;
+  background: rgba(239, 68, 68, 0.08);
+
+  font-size: 0.85rem;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loadingCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  padding: 22px;
+}
+
+.loadingCard strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.loadingCard span {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+
+  border: 3px solid var(--border);
+  border-top-color: #7C5CFC;
+  border-radius: 50%;
+
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   WARD POSTS
+========================================================= */
+
+.postGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.postCard {
+  transition: border-color 0.2s ease;
+}
+
+.postCard:hover {
+  border-color: #7C5CFC;
+}
+
+.postIcon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: #7C5CFC;
+  background: rgba(124, 92, 252, 0.12);
+}
+
+.postContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.postTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 6px;
+}
+
+.postType {
+  color: #7C5CFC;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.postCard h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.postAuthor {
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  margin-top: 4px;
+}
+
+.postCard p {
+  margin: 10px 0 0;
+
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-size: 0.86rem;
+}
+
+
+/* =========================================================
+   COMPLAINT LIST
+========================================================= */
+
+.complaintList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.complaintCard {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  padding: 24px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.complaintCard {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  padding: 24px;
+
+  transition: border-color 0.2s ease;
+}
+
+
+
+/* =========================================================
+   COMPLAINT HEADER
+========================================================= */
+
+.complaintHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.complaintIdentity {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.complaintId {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #7C5CFC;
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.citizen {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.citizen>svg {
+  color: var(--text-muted);
+  font-size: 24px;
+}
+
+.citizen span {
+  display: flex;
+  flex-direction: column;
+}
+
+.citizen small {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.citizen strong {
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  margin-top: 1px;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  padding: 6px 10px;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.statusPending {
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.statusProgress {
+  color: #CA8A04;
+  background: rgba(202, 138, 4, 0.15);
+}
+
+.statusResolved {
+  color: #22C55E;
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.statusRejected {
+  color: #EF4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.statusClosed {
+  color: var(--text-secondary);
+  background: var(--surface-sunken);
+}
+
+.statusDefault {
+  color: var(--text-secondary);
+  background: var(--surface-sunken);
+}
+
+
+/* =========================================================
+   COMPLAINT BODY
+========================================================= */
+
+.complaintMain {
+  padding: 20px 0;
+}
+
+.complaintTitle {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.description {
+  margin: 10px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.88rem;
+  line-height: 1.75;
+
+  white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   AUTHORITY BOX
+========================================================= */
+
+.authorityBox {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.authorityIcon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 9px;
+
+  color: #7C5CFC;
+  background: rgba(124, 92, 252, 0.12);
+}
+
+.authorityContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.authorityLabel {
+  font-size: 0.67rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.authorityContent strong {
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+.designation {
+  margin-top: 3px;
+
+  color: #7C5CFC;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ATTACHMENTS
+========================================================= */
+
+.attachmentSection {
+  margin: 18px 0;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.76rem;
+  font-weight: 700;
+
+  margin-bottom: 10px;
+}
+
+.sectionLabel>svg {
+  color: #7C5CFC;
+}
+
+.countBadge {
+  min-width: 19px;
+  height: 19px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+
+  font-size: 0.65rem;
+}
+
+
+/* =========================================================
+   MEDIA ATTACHMENTS
+========================================================= */
+
+.mediaSection {
+  margin: 18px 0;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 10px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.sectionLabel>svg {
+  color: #7C5CFC;
+}
+
+.countBadge {
+  min-width: 19px;
+  height: 19px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 5px;
+
+  border-radius: 999px;
+
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+
+  font-size: 0.65rem;
+}
+
+
+/* IMAGE + VIDEO GRID */
+
+.mediaGrid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 10px;
+}
+
+
+/* MEDIA CONTAINER */
+
+.mediaItem {
+  display: block;
+
+  position: relative;
+
+  overflow: hidden;
+
+  min-height: 180px;
+
+  background: var(--surface-sunken);
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+
+/* IMAGE */
+
+.mediaImage {
+  display: block;
+
+  width: 100%;
+  height: 220px;
+
+  object-fit: cover;
+
+  transition: transform 0.2s ease;
+}
+
+.mediaItem:hover .mediaImage {
+  transform: scale(1.015);
+}
+
+
+/* VIDEO */
+
+.mediaVideo {
+  display: block;
+
+  width: 100%;
+  height: 220px;
+
+  object-fit: cover;
+
+  background: #000;
+}
+
+.externalIcon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   AUTHORITY RESPONSES
+========================================================= */
+
+.responseSection {
+  margin-top: 22px;
+}
+
+.responseToggle {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  padding: 13px 15px;
+
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  cursor: pointer;
+  font-family: inherit;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.responseToggle:hover {
+  background: var(--surface-hover);
+  border-color: rgba(124, 92, 252, 0.5);
+}
+
+.responseToggleLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-align: left;
+}
+
+.responseIcon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  color: #7C5CFC;
+  background: rgba(124, 92, 252, 0.12);
+}
+
+.responseToggleLeft strong {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.responseToggleLeft small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.responseDropdown {
+  margin-top: 8px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.responseCard {
+  padding: 17px;
+
+  background: var(--surface-sunken);
+
+  border-bottom: 1px solid var(--border);
+}
+
+.responseCard:last-child {
+  border-bottom: none;
+}
+
+.responseHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.responseAvatar {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  color: #7C5CFC;
+  background: rgba(124, 92, 252, 0.13);
+}
+
+.responseAuthority {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  min-width: 0;
+}
+
+.responseAuthority strong {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+}
+
+.responseAuthority span {
+  margin-top: 2px;
+
+  color: #7C5CFC;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.responseDate {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.responseText {
+  margin: 13px 0 0 45px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.84rem;
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+}
+
+.responseCard .attachmentSection {
+  margin-left: 45px;
+}
+
+.noResponse {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+
+  padding: 18px;
+
+  background: var(--surface-sunken);
+}
+
+.noResponse>svg {
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.noResponse strong {
+  font-size: 0.8rem;
+}
+
+.noResponse p {
+  margin: 4px 0 0;
+
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.complaintFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-top: 20px;
+  padding-top: 16px;
+
+  border-top: 1px solid var(--border);
+}
+
+.footerInfo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 15px;
+}
+
+.footerInfo span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.supportButton,
+.supportedButton {
+  min-height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 8px;
+
+  padding: 7px 12px;
+
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.supportButton {
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.supportButton:hover {
+  color: #7C5CFC;
+  border-color: #7C5CFC;
+  background: rgba(124, 92, 252, 0.08);
+}
+
+.supportedButton {
+  color: #7C5CFC;
+  border: 1px solid rgba(124, 92, 252, 0.35);
+  background: rgba(124, 92, 252, 0.12);
+}
+
+.supportedButton:hover {
+  background: rgba(124, 92, 252, 0.18);
+}
+
+.supportButton:active,
+.supportedButton:active {
+  transform: scale(0.97);
+}
+
+.supportCount {
+  min-width: 20px;
+  height: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 5px;
+
+  border-radius: 999px;
+
+  background: var(--surface);
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  padding: 45px 20px;
+
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+
+  color: var(--text-muted);
+}
+
+.emptyState>svg {
+  font-size: 27px;
+  color: #7C5CFC;
+  margin-bottom: 12px;
+}
+
+.emptyState h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.emptyState p {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+  .content {
+    padding: 20px 16px;
+  }
+
+  .header h1 {
+    font-size: 1.7rem;
+  }
+
+  .complaintCard {
+    padding: 18px;
+  }
+
+  .complaintHeader {
+    gap: 12px;
+  }
+
+  .complaintFooter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .supportButton,
+  .supportedButton {
+    width: 100%;
+  }
+
+  .attachments {
+    grid-template-columns: 1fr;
+  }
+
+  .responseDate {
+    display: none;
+  }
+
+  .responseText,
+  .responseCard .attachmentSection {
+    margin-left: 0;
+  }
+}
+
+
+/* Add these rules at the END of MyWard.module.css */
+
+
+
+.viewToggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  margin-bottom: 24px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.viewToggleButton,
+.viewToggleActive {
+  min-width: 100px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 7px;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.viewToggleButton {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.viewToggleButton:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.viewToggleActive {
+  background: #7C5CFC;
+  color: #FFFFFF;
+}
+
+.feedToolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.searchGroup {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.searchBox {
+  flex: 1;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+}
+
+.searchBox:focus-within {
+  border-color: #7C5CFC;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+}
+
+.searchBox input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+  font-size: 0.82rem;
+}
+
+.searchBox input::placeholder {
+  color: var(--text-muted);
+}
+
+.clearSearchButton {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.clearSearchButton:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.searchButton {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 15px;
+  border: 1px solid #7C5CFC;
+  border-radius: 8px;
+  background: #7C5CFC;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  background: #6D4DEB;
+  border-color: #6D4DEB;
+}
+
+.sortBox {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sortBox label {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.sortBox select {
+  min-width: 145px;
+  min-height: 40px;
+  padding: 8px 32px 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: 0;
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.sortBox select:focus {
+  border-color: #7C5CFC;
+}
+
+.searchSummary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: -4px 0 16px;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+}
+
+.searchSummary strong {
+  color: var(--text-primary);
+}
+
+.searchSummary button {
+  margin-left: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #7C5CFC;
+  font-family: Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px;
+  margin: 0 0 14px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.locationIcon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+}
+
+.locationRow div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.locationRow small {
+  margin-bottom: 2px;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+}
+
+.locationRow strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+}
+
+.mediaGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.imageThumbnailButton,
+.videoThumbnail {
+  width: 128px;
+  height: 92px;
+  overflow: hidden;
+  padding: 0;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.imageThumbnailButton {
+  cursor: pointer;
+}
+
+.imageThumbnailButton:hover {
+  border-color: #7C5CFC;
+}
+
+.mediaImage,
+.mediaVideo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mediaVideo {
+  background: #000000;
+}
+
+.imageModalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.imageModal {
+  position: relative;
+  max-width: min(900px, 95vw);
+  max-height: 90vh;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.previewImage {
+  display: block;
+  max-width: 100%;
+  max-height: 86vh;
+  object-fit: contain;
+}
+
+.imageModalClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.imageModalClose:hover {
+  background: var(--surface-hover);
+}
+
+.complaintCard,
+.postCard {
+  box-shadow: none;
+  transform: none;
+}
+
+.complaintCard:hover,
+.postCard:hover {
+  box-shadow: none;
+  transform: none;
+  border-color: #7C5CFC;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --myward-sidebar-width: 220px;
+  }
+
+  .feedToolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sortBox,
+  .sortBox select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    display: block;
+  }
+
+  .content {
+    width: 100%;
+    margin-left: 0;
+    padding: 18px 14px;
+  }
+
+  .viewToggle {
+    display: flex;
+  }
+
+  .viewToggleButton,
+  .viewToggleActive {
+    flex: 1;
+  }
+
+  .searchGroup {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .searchButton {
+    width: 100%;
+  }
+
+  .imageThumbnailButton,
+  .videoThumbnail {
+    width: 108px;
+    height: 78px;
+  }
+}
+
+
+/* =========================================================
+   FIX LONG TEXT / HORIZONTAL OVERFLOW
+========================================================= */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: flex-start;
+
+  background: var(--bg);
+  color: var(--text-primary);
+
+  font-family: Arial, sans-serif;
+}
+
+.content {
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.complaintList {
+  width: 100%;
+  min-width: 0;
+}
+
+.complaintCard {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+
+/* Complaint title */
+.complaintTitle {
+  max-width: 100%;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+/* Complaint description */
+.description {
+  max-width: 100%;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  line-height: 1.7;
+}
+
+
+/* Authority / location text */
+.locationRow,
+.authorityBox {
+  min-width: 0;
+}
+
+.locationRow>div,
+.authorityContent {
+  min-width: 0;
+}
+
+.locationRow strong,
+.authorityContent strong,
+.designation {
+  max-width: 100%;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+/* Responses can also contain long strings */
+.responseText {
+  max-width: 100%;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+
+/* =========================================================
+   MY COMPLAINTS PAGE
+========================================================= */
+
+.complaintsPageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 28px;
+}
+
+
+.complaintsPageHeader h1 {
+  margin: 4px 0 0;
+
+  color: var(--text-primary);
+
+  font-size: 1.8rem;
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+
+.complaintsPageHeader p {
+  margin: 8px 0 0;
+
+  max-width: 620px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   TOTAL BOX
+========================================================= */
+
+.complaintTotal {
+  min-width: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 12px 15px;
+
+  background: var(--surface-sunken);
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  color: var(--text-secondary);
+}
+
+
+.complaintTotal>svg {
+  color: #7C5CFC;
+}
+
+
+.complaintTotal span {
+  color: var(--text-primary);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+
+.complaintTotal small {
+  color: var(--text-muted);
+
+  font-size: 0.7rem;
+}
+
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.alertSuccess,
+.alertError {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 12px 14px;
+
+  margin-bottom: 20px;
+
+  border-radius: 8px;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+
+.alertSuccess {
+  color: #22C55E;
+
+  background: rgba(34, 197, 94, 0.08);
+
+  border: 1px solid rgba(34, 197, 94, 0.28);
+}
+
+
+.alertError {
+  color: #EF4444;
+
+  background: rgba(239, 68, 68, 0.08);
+
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+
+/* =========================================================
+   COMPLAINT LIST
+========================================================= */
+
+.myComplaintList {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   COMPLAINT CARD
+========================================================= */
+
+.myComplaintCard {
+  width: 100%;
+  min-width: 0;
+
+  padding: 20px;
+
+  overflow: hidden;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 11px;
+
+  box-shadow: none;
+
+  transition: border-color 0.2s ease;
+}
+
+
+.myComplaintCard:hover {
+  border-color: rgba(124, 92, 252, 0.6);
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.myComplaintTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+
+.myComplaintInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+
+.myComplaintId {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  margin-bottom: 7px;
+
+  color: #7C5CFC;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+
+.myComplaintId svg {
+  font-size: 0.65rem;
+}
+
+
+.myComplaintInfo h2 {
+  max-width: 100%;
+
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.myComplaintBody {
+  padding: 16px 0;
+}
+
+
+.myComplaintBody p {
+  max-width: 100%;
+
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.84rem;
+
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.myComplaintActions {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid var(--border);
+}
+
+
+.shareButton,
+.unshareButton {
+  min-height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 8px 13px;
+
+  border-radius: 8px;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+/* SHARE */
+
+.shareButton {
+  color: #FFFFFF;
+
+  background: #7C5CFC;
+
+  border: 1px solid #7C5CFC;
+}
+
+
+.shareButton:hover:not(:disabled) {
+  background: #6D4DEB;
+
+  border-color: #6D4DEB;
+}
+
+
+/* REMOVE */
+
+.unshareButton {
+  color: var(--text-secondary);
+
+  background: var(--surface-sunken);
+
+  border: 1px solid var(--border);
+}
+
+
+.unshareButton:hover:not(:disabled) {
+  color: #EF4444;
+
+  border-color: rgba(239, 68, 68, 0.5);
+
+  background: rgba(239, 68, 68, 0.06);
+}
+
+
+/* DISABLED */
+
+.shareButton:disabled,
+.unshareButton:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   FIX LONG TEXT
+========================================================= */
+
+.myComplaintCard,
+.myComplaintTop,
+.myComplaintBody,
+.myComplaintInfo {
+  min-width: 0;
+}
+
+
+.myComplaintCard * {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 720px) {
+  .page {
+    display: block;
+  }
+
+  .sidebarSticky {
+    position: static;
+
+    width: 100%;
+    height: auto;
+
+    overflow: visible;
+  }
+
+  .content {
+    width: 100%;
+    max-width: none;
+
+    margin: 0;
+
+    padding: 18px 14px;
+  }
+}
+
+
+/* =========================================================
+   FIXED / STICKY MYWARD SIDEBAR
+========================================================= */
+
+.sidebarSticky {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  flex-shrink: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 100;
+}
+
+
+/* =========================================================
+   ALERT PAGE
+========================================================= */
+
+.alertPageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+
+  margin-bottom: 32px;
+}
+
+.alertPageHeader h1 {
+  margin: 5px 0 6px;
+
+  font-size: 2rem;
+  font-weight: 700;
+
+  color: var(--text-primary, #ffffff);
+}
+
+.alertPageHeader p {
+  margin: 0;
+
+  color: var(--text-secondary, #9ca3af);
+
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+
+.alertEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #7c5cfc;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+.refreshButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 9px 14px;
+
+  background: #1d1d20;
+
+  border: 1px solid #303036;
+  border-radius: 8px;
+
+  color: #d5d5dd;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: #252529;
+  border-color: #7c5cfc;
+}
+
+.refreshButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+.spin {
+  animation: alertSpin 0.8s linear infinite;
+}
+
+@keyframes alertSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   STATE CARD
+========================================================= */
+
+.alertStateCard {
+  width: 100%;
+  min-height: 330px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 50px 30px;
+
+  background: #151517;
+
+  border: 1px solid #28282d;
+  border-radius: 14px;
+}
+
+.alertStateCard h3 {
+  margin: 18px 0 7px;
+
+  color: #ffffff;
+
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.alertStateCard p {
+  max-width: 430px;
+
+  margin: 0;
+
+  color: #8f8f9c;
+
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.emptyAlertIcon {
+  width: 62px;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(124, 92, 252, 0.12);
+  border: 1px solid rgba(124, 92, 252, 0.24);
+
+  color: #7c5cfc;
+
+  font-size: 24px;
+}
+
+
+.safeBadge {
+  margin-top: 20px;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.22);
+
+  color: #22c55e;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.alertErrorIcon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(239, 68, 68, 0.12);
+
+  color: #ef4444;
+
+  font-size: 22px;
+}
+
+
+.alertErrorCard {
+  border-color:
+    rgba(239, 68, 68, 0.22);
+}
+
+
+.stateButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 20px;
+
+  padding: 9px 14px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #7c5cfc;
+
+  color: white;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.stateButton:hover {
+  background: #6d4deb;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loadingSpinner {
+  width: 34px;
+  height: 34px;
+
+  border: 3px solid #2d2d33;
+  border-top-color: #7c5cfc;
+
+  border-radius: 50%;
+
+  animation:
+    alertSpin 0.75s linear infinite;
+}
+
+
+/* =========================================================
+   ALERT LIST
+========================================================= */
+
+.alertList {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   ALERT CARD
+========================================================= */
+
+.alertCard {
+  position: relative;
+
+  padding: 20px 22px;
+
+  background: #151517;
+
+  border: 1px solid #28282d;
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.alertCard::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 3px;
+  height: 100%;
+
+  background: #f59e0b;
+}
+
+.alertCard:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(245, 158, 11, 0.35);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+
+.alertCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 14px;
+}
+
+
+.alertType {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #f59e0b;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+
+.alertTime {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: #777783;
+
+  font-size: 0.72rem;
+}
+
+
+.alertTitle {
+  margin: 0 0 9px;
+
+  color: #ffffff;
+
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+
+.alertDescription {
+  max-width: 850px;
+
+  margin: 0;
+
+  color: #aaaab5;
+
+  font-size: 0.83rem;
+  line-height: 1.65;
+}
+
+
+.alertFooter {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  margin-top: 18px;
+  padding-top: 14px;
+
+  border-top: 1px solid #252529;
+}
+
+
+.alertMetaItem {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #80808c;
+
+  font-size: 0.72rem;
+}
+
+.alertMetaItem svg {
+  color: #7c5cfc;
+}
+
+
+/* =========================================================
+   MYWARD ALERTS - FILTERS / SORT
+   Add to MyWard.module.css
+========================================================= */
+
+.alertsToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.alertViewToggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.alertToggleButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 13px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.alertToggleButton:hover {
+  color: var(--text-primary);
+  background: var(--surface-hover);
+}
+
+.alertToggleActive {
+  background: #7C5CFC;
+  color: #FFFFFF;
+}
+
+.alertToggleActive:hover {
+  background: #6D4DEB;
+  color: #FFFFFF;
+}
+
+.alertSortControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px 7px 12px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+}
+
+.alertSortControl select {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.alertSortControl option {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   ALERT BADGES
+========================================================= */
+
+.alertCardLabels {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mineAlertBadge,
+.importantAlertBadge,
+.officialVerifiedBadge,
+.authorityVerifiedMini {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.mineAlertBadge {
+  color: #3B82F6;
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.importantAlertBadge {
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.officialVerifiedBadge,
+.authorityVerifiedMini {
+  color: #22C55E;
+  background: rgba(34, 197, 94, 0.15);
+}
+
+
+/* =========================================================
+   DISASTER MEDIA
+========================================================= */
+
+.alertMediaGrid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.alertMediaItem {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.alertMediaItem img,
+.alertMediaItem video {
+  display: block;
+  width: 100%;
+  height: 165px;
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   GOOGLE MAP
+========================================================= */
+
+.disasterMapSection {
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.disasterMapHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.76rem;
+}
+
+.disasterMapHeader>div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-secondary);
+}
+
+.disasterMapHeader svg {
+  color: #7C5CFC;
+}
+
+.disasterMapHeader a {
+  color: #7C5CFC;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.disasterMapHeader a:hover {
+  text-decoration: underline;
+}
+
+.disasterMapFrame {
+  display: block;
+  width: 100%;
+  height: 260px;
+  border: 0;
+}
+
+
+/* =========================================================
+   USER VERIFICATION
+========================================================= */
+
+.disasterVerification {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.verificationCounts {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+}
+
+.verificationCounts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.verificationCounts span:first-child svg {
+  color: #22C55E;
+}
+
+.verificationCounts span:last-child svg {
+  color: #EF4444;
+}
+
+.verificationButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.verifyButton,
+.notVerifyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.verifyButton {
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.08);
+  color: #22C55E;
+}
+
+.verifyButton:hover:not(:disabled),
+.verifyButtonActive {
+  background: #22C55E;
+  border-color: #22C55E;
+  color: #FFFFFF;
+}
+
+.notVerifyButton {
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: #EF4444;
+}
+
+.notVerifyButton:hover:not(:disabled),
+.notVerifyButtonActive {
+  background: #EF4444;
+  border-color: #EF4444;
+  color: #FFFFFF;
+}
+
+.verifyButton:disabled,
+.notVerifyButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ownReportNotice {
+  color: var(--text-muted);
+  font-size: 0.73rem;
+}
+
+.verificationError {
+  color: #EF4444;
+  font-size: 0.73rem;
+}
+
+
+/* =========================================================
+   AUTHORITY COMMENTS
+========================================================= */
+
+.authorityReviewSection {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.04);
+}
+
+.authorityReviewHeading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 11px;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.authorityReviewHeading svg {
+  color: #22C55E;
+}
+
+.authorityReview {
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.authorityReview:first-of-type {
+  border-top: none;
+}
+
+.authorityReviewTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.authorityReview strong {
+  color: var(--text-primary);
+  font-size: 0.77rem;
+}
+
+.authorityReview p {
+  margin: 6px 0;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.authorityReview small {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+  .alertsToolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .alertViewToggle {
+    width: 100%;
+  }
+
+  .alertToggleButton {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .alertSortControl {
+    width: fit-content;
+  }
+
+  .disasterMapHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .disasterMapFrame {
+    height: 220px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .alertPageHeader {
+    flex-direction: column;
+  }
+
+  .refreshButton {
+    align-self: flex-start;
+  }
+
+  .alertStateCard {
+    min-height: 280px;
+  }
+
+  .alertCardTop {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .alertFooter {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+
+/* =========================================================
+   MYWARD ALERTS - READABLE / OPTIMIZED UI
+   Add/replace these classes in MyWard.module.css
+========================================================= */
+
+.alertPageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.alertPageHeader h1 {
+  margin: 7px 0 6px;
+  color: var(--text-primary);
+  font-size: 1.8rem;
+  line-height: 1.15;
+}
+
+.alertPageHeader p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.alertEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #7C5CFC;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.refreshButton,
+.stateButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 13px;
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.refreshButton:hover:not(:disabled),
+.stateButton:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+
+.refreshButton:disabled,
+.stateButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spin {
+  animation: alertSpin 0.8s linear infinite;
+}
+
+@keyframes alertSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.alertsToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.alertViewToggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--surface-sunken);
+}
+
+.alertToggleButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  border: 0;
+  border-radius: 7px;
+  padding: 0 12px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.77rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.alertToggleButton:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.alertToggleActive {
+  background: #7C5CFC;
+  color: #FFFFFF;
+}
+
+.alertToggleActive:hover {
+  background: #6D4DEB;
+  color: #FFFFFF;
+}
+
+.toggleCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  padding: 0 6px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.67rem;
+  font-weight: 700;
+}
+
+.alertSortControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 10px;
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  font-size: 0.74rem;
+}
+
+.alertSortControl select {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.alertSortControl option {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   LIST / CARD
+========================================================= */
+
+.alertList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.alertCard {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--surface);
+}
+
+.alertCard::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  content: '';
+}
+
+.disasterAlertCard::before {
+  background: #EF4444;
+}
+
+.officialAlertCard::before {
+  background: #7C5CFC;
+}
+
+.alertCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.alertCardIdentity {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.alertKindIcon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+}
+
+.disasterKindIcon {
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+}
+
+.officialKindIcon {
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+}
+
+.alertBadgeRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.alertKindBadge,
+.mineAlertBadge,
+.officialVerifiedBadge,
+.authorityVerifiedMini {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.disasterKindBadge {
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+}
+
+.officialKindBadge {
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+}
+
+.mineAlertBadge {
+  background: rgba(59, 130, 246, 0.12);
+  color: #3B82F6;
+}
+
+.officialVerifiedBadge,
+.authorityVerifiedMini {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22C55E;
+}
+
+.alertTitle {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.03rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.alertTime {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding-top: 2px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.alertDescription {
+  margin: 15px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.alertMetaGrid {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.alertMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: var(--text-secondary);
+  font-size: 0.74rem;
+}
+
+.alertMetaItem svg {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+}
+
+.alertMetaItem strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   MEDIA
+========================================================= */
+
+.alertMediaGrid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(180px, 1fr));
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.alertMediaItem {
+  overflow: hidden;
+  min-height: 150px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-sunken);
+}
+
+.alertMediaItem img,
+.alertMediaItem video {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+.locationPanel {
+  overflow: hidden;
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.locationPanelTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 13px;
+}
+
+.locationPanelLabel {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.locationPanelLabel>svg {
+  flex: 0 0 auto;
+  color: #7C5CFC;
+}
+
+.locationPanelLabel div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.locationPanelLabel span {
+  color: var(--text-muted);
+  font-size: 0.67rem;
+}
+
+.locationPanelLabel strong {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.locationActions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+
+.secondaryActionButton,
+.mapLinkButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  border-radius: 7px;
+  padding: 0 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.secondaryActionButton {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.secondaryActionButton:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.mapLinkButton {
+  border: 1px solid rgba(124, 92, 252, 0.3);
+  background: rgba(124, 92, 252, 0.1);
+  color: #7C5CFC;
+}
+
+.mapLinkButton:hover {
+  background: rgba(124, 92, 252, 0.16);
+}
+
+.disasterMapFrame {
+  display: block;
+  width: 100%;
+  height: 280px;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   VERIFICATION
+========================================================= */
+
+.verificationPanel {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  background: var(--surface-sunken);
+}
+
+.verificationPanelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.verificationPanelHeader h3 {
+  margin: 0 0 4px;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+}
+
+.verificationPanelHeader p {
+  max-width: 460px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.71rem;
+  line-height: 1.45;
+}
+
+.verificationSummary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.verificationSummary span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.verifiedSummary {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22C55E;
+}
+
+.notVerifiedSummary {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+}
+
+.verificationActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 13px;
+}
+
+.verifyButton,
+.notVerifyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.verifyButton {
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.08);
+  color: #22C55E;
+}
+
+.verifyButton:hover:not(:disabled),
+.verifyButtonActive {
+  background: #22C55E;
+  border-color: #22C55E;
+  color: #FFFFFF;
+}
+
+.notVerifyButton {
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: #EF4444;
+}
+
+.notVerifyButton:hover:not(:disabled),
+.notVerifyButtonActive {
+  background: #EF4444;
+  border-color: #EF4444;
+  color: #FFFFFF;
+}
+
+.verifyButton:disabled,
+.notVerifyButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ownReportNotice {
+  margin-top: 12px;
+  border-radius: 7px;
+  padding: 9px 10px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.verificationError {
+  margin-top: 9px;
+  color: #EF4444;
+  font-size: 0.7rem;
+}
+
+
+/* =========================================================
+   AUTHORITY RESPONSE
+========================================================= */
+
+.authorityReviewSection {
+  margin-top: 16px;
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  border-radius: 10px;
+  padding: 14px;
+  background: rgba(34, 197, 94, 0.04);
+}
+
+.authorityReviewHeading {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #22C55E;
+}
+
+.authorityReviewHeading>div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.authorityReviewHeading strong {
+  color: var(--text-primary);
+  font-size: 0.78rem;
+}
+
+.authorityReviewHeading span {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.authorityReviewList {
+  display: flex;
+  flex-direction: column;
+  margin-top: 11px;
+}
+
+.authorityReview {
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+}
+
+.authorityReviewTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.authorityReviewTop>strong {
+  color: var(--text-primary);
+  font-size: 0.76rem;
+}
+
+.authorityReview p {
+  margin: 6px 0 4px;
+  color: var(--text-secondary);
+  font-size: 0.77rem;
+  line-height: 1.55;
+}
+
+.authorityReview small {
+  color: var(--text-muted);
+  font-size: 0.66rem;
+}
+
+
+/* =========================================================
+   STATES
+========================================================= */
+
+.alertStateCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 230px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 20px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.alertStateCard h3 {
+  margin: 12px 0 5px;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+}
+
+.alertStateCard p {
+  max-width: 430px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.emptyAlertIcon,
+.alertErrorIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.emptyAlertIcon {
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+}
+
+.alertErrorIcon {
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+}
+
+.alertErrorCard .stateButton {
+  margin-top: 14px;
+}
+
+.loadingSpinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--border);
+  border-top-color: #7C5CFC;
+  border-radius: 50%;
+  animation: alertSpin 0.8s linear infinite;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
+  .alertPageHeader {
+    flex-direction: column;
+  }
+
+  .refreshButton {
+    width: 100%;
+  }
+
+  .alertsToolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .alertViewToggle {
+    width: 100%;
+  }
+
+  .alertToggleButton {
+    flex: 1;
+  }
+
+  .alertSortControl {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .alertCardHeader {
+    flex-direction: column;
+  }
+
+  .alertTime {
+    padding-left: 50px;
+  }
+
+  .verificationPanelHeader {
+    flex-direction: column;
+  }
+
+  .locationPanelTop {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .locationActions {
+    width: 100%;
+  }
+
+  .secondaryActionButton,
+  .mapLinkButton {
+    flex: 1;
+  }
+
+  .disasterMapFrame {
+    height: 230px;
+  }
+}
+
+@media (max-width: 520px) {
+  .alertCard {
+    padding: 16px;
+  }
+
+  .alertCardIdentity {
+    gap: 9px;
+  }
+
+  .alertKindIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .alertTitle {
+    font-size: 0.96rem;
+  }
+
+  .alertMediaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .alertMediaItem img,
+  .alertMediaItem video {
+    height: 210px;
+  }
+
+  .verificationActions {
+    flex-direction: column;
+  }
+
+  .verifyButton,
+  .notVerifyButton {
+    width: 100%;
+  }
+
+  .alertTime {
+    padding-left: 43px;
+  }
+}
+
+
+/* =========================================================
+   FIX: MYWARD ALERT IMAGE / VIDEO STRETCHING
+   Replace the existing .alertMediaGrid / .alertMediaItem styles
+   in MyWard.module.css with this block.
+========================================================= */
+
+.alertMediaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,
+      minmax(220px, 320px));
+  gap: 10px;
+  justify-content: start;
+  margin-top: 16px;
+}
+
+.alertMediaItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface-sunken);
+}
+
+/* Keep the original image aspect ratio.
+   Do NOT force a fixed height. */
+.alertMediaItem img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  max-height: 420px;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Videos keep a clean 16:9 area without stretching. */
+.alertMediaItem video {
+  display: block;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  object-fit: contain;
+  object-position: center;
+
+  background: #000;
+}
+
+
+/* Mobile */
+@media (max-width: 520px) {
+
+  .alertMediaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .alertMediaItem img {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+  }
+
+  .alertMediaItem video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+
+
+/* Main MyWard layout */
+.page {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+
+/* Sidebar outer container */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+
+  /* IMPORTANT */
+  height: auto;
+  min-height: 100vh;
+  position: sticky;
+  align-self: stretch;
+
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+/* =========================================================
+   MYWARD LAYOUT / SIDEBAR HEIGHT FIX
+   The sidebar must stretch with the full page content.
+========================================================= */
+
+.page {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/*
+  MyWardSidebar uses sidebarSticky.
+  Do not use height: 100vh here: that limits the sidebar
+  background to only the viewport height.
+*/
+.sidebarSticky {
+  position: relative;
+  top: auto;
+
+  align-self: stretch;
+  flex: 0 0 var(--myward-sidebar-width, 250px);
+
+  width: var(--myward-sidebar-width, 250px);
+  min-height: 100vh;
+  height: auto;
+
+  overflow: visible;
+
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+
+  z-index: 100;
+}
+
+/* Keep compatibility if the sidebar component uses .sidebar. */
+.sidebar {
+  align-self: stretch;
+  flex: 0 0 var(--myward-sidebar-width, 250px);
+
+  width: var(--myward-sidebar-width, 250px);
+  min-height: 100vh;
+  height: auto;
+
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+/* Main content is allowed to make the page taller than the viewport. */
+.content {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+
+/* Mobile layout */
+@media (max-width: 720px) {
+  .page {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .sidebarSticky,
+  .sidebar {
+    position: static;
+
+    width: 100%;
+    min-height: auto;
+    height: auto;
+
+    border-right: 0;
+  }
+
+  .content {
+    width: 100%;
+    min-height: 0;
+  }
+}
+
+/* =========================================================
+   MYWARD ALERTS SIDEBAR - FULL PAGE HEIGHT FIX
+   Append this at the VERY END of MyWard.module.css
+========================================================= */
+
+.page {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* This outer column stretches with the full page height. */
+.sidebarStretch {
+  flex: 0 0 var(--myward-sidebar-width, 250px);
+  width: var(--myward-sidebar-width, 250px);
+  min-height: 100vh;
+
+  align-self: stretch;
+
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+/* Keep the actual navigation visible while the content scrolls. */
+.sidebarInner {
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Avoid the main content forcing the layout wider. */
+.content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Mobile: sidebar becomes normal flow again. */
+@media (max-width: 720px) {
+  .page {
+    display: block;
+  }
+
+  .sidebarStretch {
+    width: 100%;
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebarInner {
+    position: static;
+    min-height: auto;
+  }
+
+  .content {
+    width: 100%;
+  }
+}
+
+
+
+/* ================================
+   MY WARD - UPDATES
+================================ */
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  background: #f7f8fc;
+}
+
+.sidebarStretch {
+  flex-shrink: 0;
+}
+
+.sidebarInner {
+  height: 100%;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 32px 38px 60px;
+  max-width: 1100px;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 30px 32px;
+  margin-bottom: 32px;
+
+  background:
+    linear-gradient(135deg,
+      rgba(124, 92, 252, 0.08),
+      rgba(124, 92, 252, 0.02)),
+    #ffffff;
+
+  border: 1px solid #ebe8ff;
+  border-radius: 18px;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 8px 30px rgba(31, 27, 56, 0.04);
+
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  right: -60px;
+  top: -90px;
+
+  border-radius: 50%;
+
+  background: rgba(124, 92, 252, 0.08);
+}
+
+.headerLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #7057e8;
+}
+
+.header h1 {
+  margin: 0;
+
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 750;
+
+  color: #18181b;
+}
+
+.header p {
+  max-width: 620px;
+
+  margin: 9px 0 0;
+
+  font-size: 14px;
+  line-height: 1.7;
+
+  color: #71717a;
+}
+
+.headerIcon {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  border-radius: 16px;
+
+  background: #7c5cfc;
+  color: white;
+
+  font-size: 23px;
+
+  box-shadow: 0 8px 20px rgba(124, 92, 252, 0.24);
+}
+
+
+/* ================================
+   SECTION HEADER
+================================ */
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+}
+
+.sectionHeader>div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  color: #27272a;
+}
+
+.sectionHeader span {
+  padding: 4px 9px;
+
+  border-radius: 20px;
+
+  background: #efedff;
+  color: #7057e8;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+/* ================================
+   FEED
+================================ */
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+/* ================================
+   UPDATE CARD
+================================ */
+
+.card {
+  position: relative;
+
+  display: flex;
+
+  background: #ffffff;
+
+  border: 1px solid #e8e8ed;
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+
+  border-color: #dcd6ff;
+
+  box-shadow:
+    0 8px 24px rgba(31, 27, 56, 0.07);
+}
+
+.cardAccent {
+  width: 4px;
+  flex-shrink: 0;
+
+  background: #7c5cfc;
+}
+
+.cardContent {
+  flex: 1;
+
+  padding: 20px 22px;
+}
+
+
+/* ================================
+   CARD TOP
+================================ */
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #eeeaff;
+  color: #7057e8;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.authorName {
+  margin-bottom: 3px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #27272a;
+}
+
+.authorRole {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 11px;
+
+  color: #a1a1aa;
+}
+
+.authorRole svg {
+  font-size: 10px;
+}
+
+.updateBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  background: #f0edff;
+  color: #6d52df;
+
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.updateBadge svg {
+  font-size: 9px;
+}
+
+
+/* ================================
+   CARD BODY
+================================ */
+
+.cardBody {
+  margin-top: 17px;
+}
+
+.cardBody h3 {
+  margin: 0 0 8px;
+
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 700;
+
+  color: #18181b;
+}
+
+.cardBody p {
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.7;
+
+  color: #62626c;
+
+  white-space: pre-line;
+}
+
+
+/* ================================
+   CARD FOOTER
+================================ */
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-top: 18px;
+  padding-top: 14px;
+
+  border-top: 1px solid #f0f0f2;
+}
+
+.date,
+.localBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 11px;
+}
+
+.date {
+  color: #a1a1aa;
+}
+
+.date svg {
+  font-size: 10px;
+}
+
+.localBadge {
+  padding: 4px 8px;
+
+  border-radius: 6px;
+
+  background: #f5f5f7;
+
+  color: #71717a;
+
+  font-weight: 600;
+}
+
+.localBadge svg {
+  font-size: 9px;
+}
+
+
+/* ================================
+   EMPTY STATE
+================================ */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 65px 30px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px dashed #d8d8df;
+  border-radius: 16px;
+}
+
+.emptyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  margin-bottom: 17px;
+
+  border-radius: 50%;
+
+  background: #f0edff;
+  color: #765ae8;
+
+  font-size: 21px;
+}
+
+.empty h3 {
+  margin: 0 0 7px;
+
+  font-size: 16px;
+
+  color: #27272a;
+}
+
+.empty p {
+  max-width: 410px;
+
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.6;
+
+  color: #8a8a94;
+}
+
+
+/* ================================
+   LOADING
+================================ */
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 65px 20px;
+
+  color: #71717a;
+
+  font-size: 13px;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+
+  margin-bottom: 13px;
+
+  border: 3px solid #e8e5ff;
+  border-top-color: #765ae8;
+
+  border-radius: 50%;
+
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ================================
+   ERROR
+================================ */
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 55px 25px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #fee2e2;
+  border-radius: 16px;
+}
+
+.errorIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 50px;
+
+  margin-bottom: 14px;
+
+  border-radius: 50%;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  font-size: 19px;
+}
+
+.errorState h3 {
+  margin: 0 0 6px;
+
+  font-size: 15px;
+
+  color: #27272a;
+}
+
+.errorState p {
+  margin: 0;
+
+  font-size: 13px;
+
+  color: #8a8a94;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+  .content {
+    padding: 25px 22px 50px;
+  }
+
+  .header {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 650px) {
+  .content {
+    padding: 20px 15px 40px;
+  }
+
+  .header {
+    padding: 22px;
+  }
+
+  .headerIcon {
+    display: none;
+  }
+
+  .header h1 {
+    font-size: 25px;
+  }
+
+  .cardContent {
+    padding: 17px;
+  }
+
+  .cardTop {
+    gap: 12px;
+  }
+
+  .cardFooter {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+
+
+.card {
+  position: relative;
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: #7C5CFC;
+  transform: translateY(-1px);
+}
+
+.cardContent {
+  flex: 1;
+  padding: 22px 24px;
+}
+
+.cardBody h3 {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.cardBody p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+.authorName {
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.authorRole,
+.date {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(124, 92, 252, 0.15);
+  color: #7C5CFC;
+  font-weight: 700;
+}
+
+.updateBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: rgba(124, 92, 252, 0.15);
+  color: #7C5CFC;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   MY WARD - UPDATES
+========================================================= */
+
+/* ---------------------------------------------------------
+   PAGE / CONTENT
+--------------------------------------------------------- */
+
+.page {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: var(--bg);
+  color: var(--text-primary);
+
+  font-family: Arial, sans-serif;
+}
+
+.content {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  width: 100%;
+  max-width: 1100px;
+
+  padding: 32px 38px 60px;
+
+  overflow-x: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   SIDEBAR
+--------------------------------------------------------- */
+
+.sidebarStretch {
+  flex: 0 0 var(--myward-sidebar-width, 250px);
+
+  width: var(--myward-sidebar-width, 250px);
+  min-height: 100vh;
+
+  align-self: stretch;
+
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+.sidebarInner {
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* ---------------------------------------------------------
+   HEADER
+--------------------------------------------------------- */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 30px;
+}
+
+.headerLabel {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 7px;
+
+  color: #7C5CFC;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.headerLabel svg {
+  font-size: 0.75rem;
+}
+
+.header h1 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 1.8rem;
+  font-weight: 700;
+
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.header p {
+  max-width: 620px;
+
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.headerIcon {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+
+  font-size: 1rem;
+}
+
+
+/* ---------------------------------------------------------
+   SECTION HEADER
+--------------------------------------------------------- */
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 14px;
+}
+
+.sectionHeader>div {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sectionHeader span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 24px;
+
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------
+   FEED
+--------------------------------------------------------- */
+
+.feed {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* ---------------------------------------------------------
+   UPDATE CARD
+--------------------------------------------------------- */
+
+.card {
+  position: relative;
+
+  display: flex;
+
+  width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 11px;
+
+  box-shadow: none;
+
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(124, 92, 252, 0.6);
+
+  box-shadow: none;
+  transform: none;
+}
+
+
+/* Purple indicator */
+
+.cardAccent {
+  width: 3px;
+
+  flex: 0 0 3px;
+
+  background: #7C5CFC;
+}
+
+
+/* ---------------------------------------------------------
+   CARD CONTENT
+--------------------------------------------------------- */
+
+.cardContent {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 20px;
+}
+
+
+/* ---------------------------------------------------------
+   CARD HEADER
+--------------------------------------------------------- */
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+
+/* ---------------------------------------------------------
+   AUTHOR
+--------------------------------------------------------- */
+
+.author {
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+
+  gap: 10px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.authorName {
+  overflow: hidden;
+
+  color: var(--text-primary);
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.authorRole {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 3px;
+
+  color: var(--text-muted);
+
+  font-size: 0.7rem;
+}
+
+.authorRole svg {
+  font-size: 0.65rem;
+}
+
+
+/* ---------------------------------------------------------
+   UPDATE BADGE
+--------------------------------------------------------- */
+
+.updateBadge {
+  display: inline-flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  gap: 5px;
+
+  padding: 5px 8px;
+
+  border-radius: 999px;
+
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+
+  font-size: 0.66rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.updateBadge svg {
+  font-size: 0.62rem;
+}
+
+
+/* ---------------------------------------------------------
+   CARD BODY
+--------------------------------------------------------- */
+
+.cardBody {
+  padding: 16px 0;
+}
+
+.cardBody h3 {
+  max-width: 100%;
+
+  margin: 0 0 8px;
+
+  color: var(--text-primary);
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.cardBody p {
+  max-width: 100%;
+
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.84rem;
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+/* ---------------------------------------------------------
+   CARD FOOTER
+--------------------------------------------------------- */
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  padding-top: 14px;
+
+  border-top: 1px solid var(--border);
+}
+
+.date {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: var(--text-muted);
+
+  font-size: 0.7rem;
+}
+
+.date svg {
+  font-size: 0.66rem;
+}
+
+
+/* ---------------------------------------------------------
+   LOCALITY BADGE
+--------------------------------------------------------- */
+
+.localBadge {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 5px 8px;
+
+  border-radius: 7px;
+
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.localBadge svg {
+  color: #7C5CFC;
+
+  font-size: 0.65rem;
+}
+
+
+/* ---------------------------------------------------------
+   LOADING STATE
+--------------------------------------------------------- */
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 230px;
+
+  padding: 32px 20px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.78rem;
+
+  text-align: center;
+}
+
+.loading p {
+  margin: 12px 0 0;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+
+  border: 3px solid var(--border);
+  border-top-color: #7C5CFC;
+
+  border-radius: 50%;
+
+  animation: updateSpin 0.75s linear infinite;
+}
+
+@keyframes updateSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   EMPTY STATE
+--------------------------------------------------------- */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 230px;
+
+  padding: 40px 20px;
+
+  background: var(--surface);
+
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 10px;
+
+  background: rgba(124, 92, 252, 0.12);
+  color: #7C5CFC;
+
+  font-size: 1rem;
+}
+
+.empty h3 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.empty p {
+  max-width: 410px;
+
+  margin: 6px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+
+/* ---------------------------------------------------------
+   ERROR STATE
+--------------------------------------------------------- */
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 230px;
+
+  padding: 40px 20px;
+
+  background: var(--surface);
+
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  border-radius: 12px;
+
+  text-align: center;
+}
+
+.errorIcon {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 10px;
+
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+
+  font-size: 1rem;
+}
+
+.errorState h3 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.errorState p {
+  max-width: 420px;
+
+  margin: 6px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+  .content {
+    padding: 26px 22px 50px;
+  }
+}
+
+
+@media (max-width: 720px) {
+  .page {
+    display: block;
+  }
+
+  .sidebarStretch {
+    width: 100%;
+    min-height: auto;
+
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebarInner {
+    position: static;
+    min-height: auto;
+  }
+
+  .content {
+    width: 100%;
+    max-width: none;
+
+    padding: 18px 14px 40px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .header h1 {
+    font-size: 1.6rem;
+  }
+
+  .headerIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cardContent {
+    padding: 17px;
+  }
+
+  .cardTop {
+    gap: 10px;
+  }
+}
+
+
+@media (max-width: 520px) {
+  .headerIcon {
+    display: none;
+  }
+
+  .cardTop {
+    flex-direction: column;
+  }
+
+  .updateBadge {
+    align-self: flex-start;
+  }
+
+  .cardFooter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .localBadge {
+    align-self: flex-start;
+  }
+}
+
+
+/* =========================================================
+   FIX - MY WARD HEADER DARK/LIGHT THEME
+========================================================= */
+
+.header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding: 24px 26px;
+  margin-bottom: 28px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  box-shadow: none;
+
+  overflow: hidden;
+}
+
+
+/* Remove old decorative white/light gradient circle */
+.header::before {
+  display: none;
+}
+
+
+/* Small purple label */
+.headerLabel {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 7px;
+
+  color: #7C5CFC;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+/* Main heading */
+.header h1 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 1.8rem;
+  font-weight: 700;
+
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+
+/* Description */
+.header p {
+  max-width: 620px;
+
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+
+/* Right icon */
+.headerIcon {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: rgba(124, 92, 252, 0.15);
+  color: #7C5CFC;
+
+  font-size: 1.1rem;
+
+  box-shadow: none;
+}

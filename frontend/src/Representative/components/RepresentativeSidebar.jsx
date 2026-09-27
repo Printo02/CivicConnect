@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react'
 import Styles from '../components/module.css/RepresentativeSidebar.module.css'
-import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,FaCog, FaSignOutAlt } from 'react-icons/fa'
+import { FaHome, FaTachometerAlt, FaUsers, FaClipboardList, FaBuilding,FaCog, FaSignOutAlt, FaBullhorn, FaList, FaArrowAltCircleRight, FaUniversity } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { getProfile } from '../../api/services/Representative/Profile.js' 
+import { FaTriangleExclamation } from 'react-icons/fa6';
 
 const navItems = [
-  { icon: <FaHome />, label: 'Home', path: '/representative/representativedashboard' },
+  // { icon: <FaHome />, label: 'Home', path: '/representative/representativedashboard' },
   { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/representative/representativedashboard' },
-  { icon: <FaBuilding />, label: 'My ward', path: '/representative/1' },
-  { icon: <FaUsers />, label: 'Departments', path: '/representative/myward' },
+  { icon: <FaBullhorn />, label: 'Publish Update', path: '/representative/myward/create' },
+  { icon: <FaList />, label: 'My post', path: '/representative/myward/alerts' },
+  { icon: <FaArrowAltCircleRight />, label: 'Alerts', path: '/representative/view-alerts' },
+  { icon: <FaTriangleExclamation />, label: 'Disaster Reports', path: '/representative/myward/disasters' },
   { icon: <FaClipboardList />, label: 'Complaints', path: '/representative/complaints/' },
-]
+  { icon: <FaUniversity />, label: 'Nearby Govt Auths.', path: '1' },
 
+]
 
 function RepresentativeSidebar() {
   const [ Pro, setPro] = useState() 
-
   useEffect(()=>{
     const fetchProfile = async () =>{
       try {

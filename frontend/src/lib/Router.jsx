@@ -17,7 +17,7 @@ import DeptView from '../Admin/pages/DeptView.jsx'
 import DepartmentBranches from '../Admin/pages/DepartmentBranches.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
 import AddRepresntatives from '../Admin/pages/AddRepresntatives.jsx'
-import AddConstitunency from '../Admin/pages/AddConstitunency.jsx'
+// import AddConstitunency from '../Admin/pages/AddConstitunency.jsx'
 import DeptDashboard from '../Dept/pages/DeptDashboard.jsx'
 import DeptSetting from '../Dept/pages/DeptSetting.jsx'
 import EmployeeList from '../Dept/pages/EmployeeList.jsx'
@@ -49,6 +49,24 @@ import BranchEmployeeComplaintDetail from '../BranchEmployee/pages/BranchEmploye
 import BranchEmployeeComplaints from '../BranchEmployee/pages/BranchEmployeeComplaints.jsx'
 import BranchComplaints from '../Branch/pages/BranchComplaints.jsx'
 import BranchComplaintDetail from '../Branch/pages/BranchComplaintDetail.jsx'
+import UserMyWardHome from './../User/pages/MyWard/UserMyWardHome';
+import UserMyWardAlerts from '../User/pages/MyWard/UserMyWardAlerts.jsx'
+import UserMyWardUpdates from './../User/pages/MyWard/UserMyWardUpdates';
+import UserMyWardComplaints from './../User/pages/MyWard/UserMyWardComplaints';
+import RepresentativeCreateMyWardPost from '../Representative/pages/MyWard/RepresentativeCreateMyWardPost.jsx'
+import RepresentativeMyWardHome from '../Representative/pages/MyWard/RepresentativeMyWardHome.jsx'
+import BranchCreateMyWardPost from '../Branch/pages/MyWard/BranchCreateMyWardPost.jsx'
+import BranchMyWardHome from '../Branch/pages/MyWard/BranchMyWardHome.jsx'
+import UserReportDisaster from '../User/pages/MyWard/UserReportDisaster.jsx'
+import RepresentativeDisasterReports from '../Representative/pages/MyWard/RepresentativeDisasterReports.jsx'
+import RepresentativePublishAlert from '../Representative/pages/MyWard/RepresentativePublishAlert.jsx'
+import BranchMyWardPosts from '../Branch/pages/MyWard/BranchMyWardPosts.jsx'
+import BranchDisasterReports from '../Branch/pages/MyWard/BranchDisasterReports.jsx'
+import BranchPublishAlert from '../Branch/pages/MyWard/BranchPublishAlert.jsx'
+import UserPublishAlert from '../User/pages/MyWard/UserPublishAlert.jsx'
+import RepAlerts from '../Representative/pages/MyWard/RepAlerts.jsx'
+import BranchEmployeeMyWard from '../BranchEmployee/pages/BranchEmployeeMyWard.jsx'
+import BranchMyWardApprovals from '../Branch/pages/MyWard/BranchMyWardApprovals.jsx'
 
 
 
@@ -283,9 +301,50 @@ const Router = createBrowserRouter([
     </ProtectedRoute>
     )
   },
+  {
+    path: '/branch/update/',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchCreateMyWardPost/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/branch/mypost-updates/',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchMyWardPosts/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/branch/disaster-reports/',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchDisasterReports/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/branch/alerts/',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchPublishAlert/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/branch/employee-post-approve/',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchMyWardApprovals/>
+    </ProtectedRoute>
+    )
+  },
 
 
 
+  
 
   // # ---------------/ BRANCH-EMPLOYEE MODULE \---------------- #
   {
@@ -305,33 +364,15 @@ const Router = createBrowserRouter([
     path: '/branchemployee/complaints/:id',
     element: <BranchEmployeeComplaintDetail/>
   },
-  // {
-  //   path: '/representative/complaints/',
-  //   element:   (
-  //   <ProtectedRoute allowedRoles={["representative"]}> 
-  //     <RepresentativeComplaints/>
-  //   </ProtectedRoute>
-  //   )
-  // },
-  // {
-  //   path: '/representative/complaints/:id',
-  //   element:   (
-  //   <ProtectedRoute allowedRoles={["representative"]}> 
-  //     <RepresentativeComplaintDetail/>
-  //   </ProtectedRoute>
-  //   )
-  // },
+  {
+    path: '/branchemployee/employee-Ward-post',
+    element: <BranchEmployeeMyWard/>
+  },
+  
 
 
 
-  // {
-  //   path: '/dept/deptdashboard',
-  //   element:   (
-  //   <ProtectedRoute allowedRoles={["dept"]}> 
-  //     <DeptDashboard/> 
-  //   </ProtectedRoute>
-  //   )
-  // },
+
 
 
 
@@ -401,6 +442,14 @@ const Router = createBrowserRouter([
     </ProtectedRoute>
     )
   },
+  {
+    path: '/user/view-alerts',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserPublishAlert />
+    </ProtectedRoute>
+    )
+  },
 
 
   // # ---------------/ REPRESENTATIVE MODULE \---------------- #
@@ -444,6 +493,114 @@ const Router = createBrowserRouter([
     </ProtectedRoute>
     )
   },
+
+
+// # ---------------/ REPRESENTATIVE MODULE \---------------- #
+
+  // USER
+  {
+    path: '/user/myward',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserMyWardHome/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/myward/alerts',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserMyWardAlerts/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/myward/updates',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserMyWardUpdates/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/myward/complaints',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserMyWardComplaints/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/myward/report-disaster',
+    element:   (
+    <ProtectedRoute allowedRoles={["user"]}> 
+      <UserReportDisaster/>
+    </ProtectedRoute>
+    )
+  },
+
+
+  // BRANCH
+  {
+    path: '/branch/myward',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchMyWardHome/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/branch/myward/create',
+    element:   (
+    <ProtectedRoute allowedRoles={["branch"]}> 
+      <BranchCreateMyWardPost/> 
+    </ProtectedRoute>
+    )
+  },
+
+
+  // REPRESENTATIVE
+  {
+    path: '/representative/myward',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativeMyWardHome/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/representative/myward/create',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativeCreateMyWardPost/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/representative/myward/disasters',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativeDisasterReports/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/representative/myward/alerts',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepresentativePublishAlert/> 
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: '/representative/view-alerts',
+    element:   (
+    <ProtectedRoute allowedRoles={["representative"]}> 
+      <RepAlerts/> 
+    </ProtectedRoute>
+    )
+  },
+
 
 
 ]);

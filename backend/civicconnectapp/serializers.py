@@ -78,6 +78,43 @@ class DistrictSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+#######################################  FORGOT PASSWORD #######################################
+
+
+class ForgotPasswordRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    def validate_email(self, value):
+        return value.strip().lower()
+
+
+class VerifyPasswordResetOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField(min_length=6,max_length=6)
+
+    def validate_email(self, value):
+        return value.strip().lower()
+
+    def validate_otp(self, value):
+        if not value.isdigit():
+            raise serializers.ValidationError("OTP must contain only numbers.")
+        return value
+
+
+class ResetForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    reset_token = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True,validators=[validate_password])
+    confirm_password = serializers.CharField(write_only=True)
+    
+    def validate_email(self, value):
+        return value.strip().lower()
+
+    def validate(self, data):
+        if data["new_password"] != data["confirm_password"]:
+            raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
+        return data
+
+
 
 ####################################### ADMIN MODULE #######################################
 
@@ -531,29 +568,84 @@ class DeptEditBranchSerializer(serializers.ModelSerializer):
 
 ####################################### BRANCH MODULE #######################################
 # ------------------- BRANCH: Profile ------------------- #
+from django.contrib.gis.geos import Point
+from rest_framework import serializers
+
+
 class BranchProfileSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source="user_details.user.first_name",required=False)
     email = serializers.EmailField(source="user_details.user.email",read_only=True)
     role = serializers.CharField(source="user_details.role",read_only=True)
     user_id = serializers.IntegerField(source="user_details.user.id",read_only=True)
     deptname = serializers.CharField(source="deptid.deptname",read_only=True)
+    # Return stored coordinates
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+    # Accept coordinates from frontend
+    latitude_input = serializers.FloatField(write_only=True,required=False)
+    longitude_input = serializers.FloatField(write_only=True,required=False)
+
     class Meta:
         model = Branch
         fields = [
-            "id","user_id","name","deptname","email","branch_name","phone","location",
-            "website","urls","is_active","placename","created_at","role",
+            "id","user_id","name","deptname","email","branch_name",
+            "phone","location","placename","latitude","longitude","latitude_input",
+            "longitude_input","website","urls","is_active","created_at","role"
         ]
-        read_only_fields = ["id","user_id","deptname","branch_name","email","role","is_active","created_at"]
 
-    def update(self, instance, validated_data):
-        user_details_data  = validated_data.pop("user_details", {})
-        user_data = user_details_data.get("user", {})
+        read_only_fields = [
+            "id","user_id","deptname","branch_name",
+            "email","role","is_active","created_at"
+        ]
+
+    def get_latitude(self, obj):
+        if not obj.location_point:
+            return None
+        return obj.location_point.y
+
+    def get_longitude(self, obj):
+        if not obj.location_point:
+            return None
+        return obj.location_point.x
+
+    def validate_latitude_input(self, value):
+        if not -90 <= value <= 90:
+            raise serializers.ValidationError("Invalid latitude.")
+        return value
+
+    def validate_longitude_input(self, value):
+        if not -180 <= value <= 180:
+            raise serializers.ValidationError("Invalid longitude.")
+        return value
+
+    def update(self,instance,validated_data):
+        # USER DATA
+        user_details_data = validated_data.pop("user_details",{})
+        user_data = user_details_data.get("user",{})
+
         if "first_name" in user_data:
             user = instance.user_details.user
-            user.first_name = user_data["first_name"]
+            user.first_name = (user_data["first_name"])
             user.save(update_fields=["first_name"])
-    
-        return super().update(instance, validated_data)
+
+        # LOCATION
+        latitude = validated_data.pop("latitude_input",None)
+        longitude = validated_data.pop("longitude_input",None)
+
+        # Require both together
+        if (latitude is not None or longitude is not None):
+            if (latitude is None or longitude is None):
+                raise serializers.ValidationError({"detail":"Both latitude and longitude are required."})
+            
+            # GeoDjango Point:
+            instance.location_point = Point(longitude,latitude,srid=4326)
+
+        # NORMAL BRANCH FIELDS
+        for attr, value in validated_data.items():
+            setattr(instance,attr,value)
+
+        instance.save()
+        return instance
 
 
 
@@ -941,48 +1033,42 @@ class ComplaintListSerializer(serializers.ModelSerializer):
     status_display = serializers.CharField(source="get_status_display",read_only=True)
     priority_display = serializers.CharField(source="get_priority_display",read_only=True)
     citizen_name = serializers.CharField(source="citizen.first_name",read_only=True)
-    assigned_employee_name = serializers.CharField(source="assigned_employee.user_details.user.first_name",read_only=True)
-    
+    assigned_employee_name = serializers.CharField(source="assigned_employee.user_details.first_name",read_only=True)
+    is_shared_to_myward = serializers.SerializerMethodField()
+
     class Meta:
         model = Complaint
 
         fields = [
             "id",
-            # citizen
             "citizen",
             "citizen_name",
-            # complaint
             "title",
             "description",
             "category",
-            # branch
             "branch",
             "branch_name",
-            # representative
             "representative",
             "representative_name",
             "representative_constituency",
-            # status
             "status",
             "status_display",
             "priority",
             "priority_display",
-            # assignment
             "assigned_employee",
             "assigned_employee_name",
-            # action
             "action_taken",
             "resolution_notes",
-            # location
             "location",
-            # timestamps
+            "is_shared_to_myward",
             "created_at",
             "updated_at",
             "resolved_at",
         ]
-
         read_only_fields = fields
 
+    def get_is_shared_to_myward(self, obj):
+        return hasattr(obj, "myward_share")
 
 
 # ============================================================================
@@ -1162,23 +1248,26 @@ class ComplaintFeedbackSerializer(serializers.ModelSerializer):
 
 
 ####################################### LOCAL BODY REPRESENTATIVE #######################################
-
 class LocalBodyRepresentativeSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source="user_profile.user.first_name", read_only=True)
     email = serializers.EmailField(source="user_profile.user.email", read_only=True)
     phone = serializers.CharField(source="user_profile.phone", read_only=True)
-    constituency_name = serializers.CharField(source="constituency.name", read_only=True)
-    constituency_type = serializers.CharField(source="constituency.type", read_only=True)
-    district_name = serializers.CharField(source="constituency.district.dname", read_only=True)
+    ward_name = serializers.CharField(source="ward.ward_name", read_only=True)
+    ward_number = serializers.CharField(source="ward.ward_number", read_only=True)
+    local_body_name = serializers.CharField(source="ward.local_body.name", read_only=True)
+    district_name = serializers.CharField(source="ward.local_body.district.dname", read_only=True)
     designation_display = serializers.CharField(source="get_designation_display", read_only=True)
 
     class Meta:
         model = LocalBodyRepresentative
+
         fields = [
             "id", "user_profile", "name", "email", "phone",
-            "constituency", "constituency_name", "constituency_type", "district_name",
-            "designation", "designation_display","start_date", "end_date", "is_current"
+            "ward", "ward_name", "ward_number", "local_body_name",
+            "district_name", "designation", "designation_display",
+            "start_date", "end_date", "is_current"
         ]
+
         read_only_fields = [
             "id", "name", "email", "phone","constituency_name", "constituency_type",
             "district_name", "designation_display"
@@ -1201,7 +1290,6 @@ class LocalBodyRepresentativeSerializer(serializers.ModelSerializer):
 
 
 ####################################### COMPLAINT DETAIL (nested, read-heavy) #######################################
-
 class ComplaintDetailSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source="category.name",read_only=True)
     status_display = serializers.CharField(source="get_status_display",read_only=True)
@@ -1209,7 +1297,7 @@ class ComplaintDetailSerializer(serializers.ModelSerializer):
     citizen_name = serializers.CharField(source="citizen.first_name",read_only=True)
     branch_name = serializers.CharField(source="branch.user_details.user.first_name",read_only=True)
     representative_name = serializers.CharField(source="representative.user_profile.user.first_name",read_only=True)
-    assigned_employee_name = serializers.CharField(source="assigned_employee.user_details.user.first_name",read_only=True)
+    assigned_employee_name = serializers.CharField(source="assigned_employee.user_details.first_name",read_only=True)
     latitude = serializers.SerializerMethodField()
     longitude = serializers.SerializerMethodField()
     has_liked = serializers.SerializerMethodField()
@@ -1658,3 +1746,530 @@ class RepresentativeComplaintResponseCreateSerializer(serializers.ModelSerialize
 class BranchEmployeeComplaintResponseCreateSerializer(RepresentativeComplaintResponseCreateSerializer):
     """ Branch Employee uses the same response text and attachment validation as Representative. """
     pass
+
+
+class MyWardPostAttachmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyWardPostAttachment
+
+        fields = [
+            "id",
+            "file",
+            "original_filename",
+            "mime_type",
+            "file_size",
+            "uploaded_at",
+        ]
+
+        read_only_fields = fields
+
+
+
+class MyWardDisasterAuthorityReviewSerializer(serializers.ModelSerializer):
+    reviewer_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MyWardDisasterAuthorityReview
+
+        fields = [
+            "id",
+            "reviewer",
+            "reviewer_name",
+            "reviewer_type",
+            "comment",
+            "is_verified",
+            "created_at",
+            "updated_at",
+        ]
+
+        read_only_fields = fields
+
+    def get_reviewer_name(self,obj):
+        return (obj.reviewer.get_full_name()
+            or obj.reviewer.first_name
+            or obj.reviewer.username
+        )
+
+
+
+class DisasterAuthorityReviewCreateSerializer(serializers.Serializer):
+    comment = serializers.CharField(required=False,allow_blank=True,max_length=2000)
+    is_verified = serializers.BooleanField(required=False,allow_null=True)
+
+    def validate(self, attrs):
+        comment = attrs.get("comment", "").strip()
+        has_verification_value = "is_verified" in attrs
+
+        if not comment and not has_verification_value:
+            raise serializers.ValidationError("Add a comment or choose Verified / Not Verified.")
+
+        attrs["comment"] = comment
+        return attrs
+
+
+def get_disaster_official_verification(disaster):
+    seen_reviewers = set()
+
+    reviews = disaster.authority_reviews.select_related("reviewer").order_by("-created_at","-id")
+    
+    for review in reviews:
+        if review.reviewer_id in seen_reviewers:
+            continue
+
+        # A comment-only row must not overwrite that reviewer's last decision.
+        if review.is_verified is None:
+            continue
+
+        seen_reviewers.add(review.reviewer_id)
+
+        if review.is_verified is True:
+            return True
+    return False
+
+
+
+
+
+class MyWardPostSerializer(serializers.ModelSerializer):
+    author_name = serializers.SerializerMethodField()
+    ward_name = serializers.CharField(source="ward.ward_name",read_only=True)
+    ward_number = serializers.CharField(source="ward.ward_number",read_only=True)
+    local_body_name = serializers.CharField(source="ward.local_body.name",read_only=True)
+    constituency_name = serializers.CharField(source="constituency.name",read_only=True)
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+    attachments = MyWardPostAttachmentSerializer(many=True,read_only=True)
+    is_mine = serializers.SerializerMethodField()
+    verified_count = serializers.SerializerMethodField()
+    not_verified_count = serializers.SerializerMethodField()
+    my_verification = serializers.SerializerMethodField()
+    officially_verified = serializers.SerializerMethodField()
+    authority_reviews = (MyWardDisasterAuthorityReviewSerializer(many=True,read_only=True))
+    branch_name = serializers.SerializerMethodField()
+    authority_display = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MyWardPost
+
+        fields = [
+            "id",
+            "author",
+            "author_name",
+            "author_type",
+            "post_type",
+            "title",
+            "description",
+            "location",
+            "latitude",
+            "longitude",
+            "ward",
+            "ward_name",
+            "ward_number",
+            "local_body_name",
+            "constituency",
+            "constituency_name",
+            "is_important",
+            "is_active",
+            "is_mine",
+            "verified_count",
+            "not_verified_count",
+            "my_verification",
+            "officially_verified",
+            "authority_reviews",
+            "attachments",
+            "created_at",
+            "updated_at",
+            "branch_name","authority_display",
+        ]
+
+        read_only_fields = [
+            "id",
+            "author",
+            "author_name",
+            "author_type",
+            "latitude",
+            "longitude",
+            "ward",
+            "ward_name",
+            "ward_number",
+            "local_body_name",
+            "constituency",
+            "constituency_name",
+            "is_mine",
+            "verified_count",
+            "not_verified_count",
+            "my_verification",
+            "officially_verified",
+            "authority_reviews",
+            "attachments",
+            "created_at",
+            "updated_at",
+        ]
+
+
+
+
+    def get_branch_name(self, obj):
+        # Employee submission
+        if obj.approval_branch_id:
+            return obj.approval_branch.branch_name
+        # Normal branch post
+        if obj.author_type == MyWardPost.AuthorType.BRANCH:
+            try:
+                return obj.author.profile.branchuser.branch_name
+            except (UserDetail.DoesNotExist,Branch.DoesNotExist,AttributeError):
+                return None
+        return None
+
+
+    def get_authority_display(self, obj):
+        # BRANCH / APPROVED BRANCH EMPLOYEE POST
+        if obj.author_type in {MyWardPost.AuthorType.BRANCH,MyWardPost.AuthorType.BRANCH_EMPLOYEE,}:
+            branch_name = self.get_branch_name(obj)
+            if branch_name:
+                return f"Branch • {branch_name}"
+            return "Branch"
+        # REPRESENTATIVE
+        if (obj.author_type== MyWardPost.AuthorType.REPRESENTATIVE):
+            parts = ["Representative"]
+            if obj.constituency:
+                parts.append(obj.constituency.get_type_display())
+                parts.append(obj.constituency.name)
+            return " • ".join(parts)
+        return "Citizen"
+    
+    
+    def get_author_name(self, obj):
+        if (obj.author_type == MyWardPost.AuthorType.BRANCH_EMPLOYEE):
+            if obj.approval_branch:
+                return obj.approval_branch.branch_name
+            return "Branch"
+        return (obj.author.get_full_name() or obj.author.first_name or obj.author.username)
+
+    def get_latitude(self,obj):
+        if not obj.location_point:
+            return None
+        return obj.location_point.y
+
+    def get_longitude(self,obj):
+        if not obj.location_point:
+            return None
+
+        return obj.location_point.x
+
+    def get_is_mine(self,obj):
+        request = self.context.get("request")
+
+        return bool(request and request.user.is_authenticated
+            and obj.author_id == request.user.id)
+
+    def _verification_list(self,obj):
+        if (obj.post_type != MyWardPost.PostType.DISASTER):
+            return []
+
+        return list(obj.disaster_verifications.all())
+
+    def get_verified_count(self,obj):
+        return sum(
+            1
+            for verification
+            in self._verification_list(obj)
+            if verification.vote
+            == MyWardDisasterVerification.VoteChoices.VERIFIED
+        )
+
+    def get_not_verified_count(self,obj):
+        return sum(
+            1
+            for verification
+            in self._verification_list(obj)
+            if verification.vote
+            == MyWardDisasterVerification.VoteChoices.NOT_VERIFIED
+        )
+
+    def get_my_verification(self,obj):
+        request = self.context.get("request")
+
+        if (not request
+            or not request.user.is_authenticated
+            or obj.post_type
+            != MyWardPost.PostType.DISASTER):
+            return None
+
+        for verification in (self._verification_list(obj)):
+            if (verification.user_id == request.user.id):
+                return verification.vote
+        return None
+
+    def get_officially_verified(self, obj):
+        if obj.post_type != MyWardPost.PostType.DISASTER:
+            return False
+
+        seen_reviewers = set()
+        reviews = sorted(obj.authority_reviews.all(),
+            key=lambda review: (review.created_at,review.id),
+            reverse=True)
+
+        for review in reviews:
+            if review.reviewer_id in seen_reviewers:
+                continue
+
+            if review.is_verified is None:
+                continue
+
+            seen_reviewers.add(review.reviewer_id)
+            if review.is_verified is True:
+                return True
+        return False
+
+
+
+class MyWardComplaintShareSerializer(serializers.ModelSerializer):
+    complaint_detail = ComplaintDetailSerializer(source="complaint", read_only=True)
+
+    class Meta:
+        model = MyWardComplaintShare
+        fields = [
+            "id", "complaint", "complaint_detail","ward", "constituency", "shared_at"
+        ]
+        read_only_fields = ["ward", "constituency", "shared_at"]
+        
+        
+
+
+class UserDisasterCreateSerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=150)
+    description = serializers.CharField()
+    latitude = serializers.FloatField()
+    longitude = serializers.FloatField()
+    location = serializers.CharField(max_length=500,required=False,allow_blank=True)
+    is_important = serializers.BooleanField(required=False,default=True)
+
+    def validate_title(self, value):
+        value = value.strip()
+        if not value:
+            raise serializers.ValidationError("Disaster title is required.")
+        return value
+
+    def validate_description(self, value):
+        value = value.strip()
+
+        if not value:
+            raise serializers.ValidationError("Please describe the disaster.")
+        return value
+
+    def validate_latitude(self, value):
+        if not -90 <= value <= 90:
+            raise serializers.ValidationError("Invalid latitude.")
+        return value
+
+    def validate_longitude(self, value):
+        if not -180 <= value <= 180:
+            raise serializers.ValidationError("Invalid longitude.")
+        return value
+    
+
+
+class DisasterVerificationSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source="user.first_name",read_only=True)
+
+    class Meta:
+        model = MyWardDisasterVerification
+
+        fields = [
+            "id",
+            "disaster",
+            "user_name",
+            "vote",
+            "ward",
+            "verified_at",
+            "updated_at",
+        ]
+
+        read_only_fields = [
+            "id",
+            "disaster",
+            "user_name",
+            "ward",
+            "verified_at",
+            "updated_at",
+        ]
+        
+
+class MyWardDisasterSerializer(serializers.ModelSerializer):
+    author_name = serializers.SerializerMethodField()
+    ward_name = serializers.CharField(source="ward.ward_name",read_only=True)
+    ward_number = serializers.CharField(source="ward.ward_number",read_only=True)
+    local_body_name = serializers.CharField(source="ward.local_body.name",read_only=True)
+    constituency_name = serializers.CharField(source="constituency.name",read_only=True)
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+    attachments = MyWardPostAttachmentSerializer(many=True,read_only=True)
+    verified_count = serializers.SerializerMethodField()
+    not_verified_count = serializers.SerializerMethodField()
+    my_verification = serializers.SerializerMethodField()
+    verification_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MyWardPost
+
+        fields = [
+            "id","author","author_name","author_type","post_type","title",
+            "description","location","latitude","longitude","ward","ward_name",
+            "ward_number","local_body_name","constituency","constituency_name",
+            "is_important","is_active","verified_count","not_verified_count",
+            "verification_count","my_verification","attachments","created_at","updated_at",
+        ]
+
+        read_only_fields = fields
+
+    def get_author_name(self, obj):
+        return (obj.author.get_full_name() or obj.author.first_name or obj.author.username)
+
+    def get_latitude(self, obj):
+        if not obj.location_point:
+            return None
+        return obj.location_point.y
+
+    def get_longitude(self, obj):
+        if not obj.location_point:
+            return None
+        return obj.location_point.x
+
+    def get_verified_count(self, obj):
+        return obj.disaster_verifications.filter(
+            vote=(MyWardDisasterVerification.VoteChoices.VERIFIED)).count()
+
+    def get_not_verified_count(self, obj):
+        return obj.disaster_verifications.filter(
+            vote=(MyWardDisasterVerification.VoteChoices.NOT_VERIFIED)).count()
+
+    def get_verification_count(self, obj):
+        return obj.disaster_verifications.count()
+
+    def get_my_verification(self, obj):
+        request = self.context.get("request")
+
+        if (not request or not request.user.is_authenticated):
+            return None
+        verification = (obj.disaster_verifications.filter(user=request.user).first())
+        return (verification.vote
+            if verification
+            else None
+        )
+        
+
+
+#  BRANCH EMPLOYEE - MYWARD POST
+
+class BranchEmployeeMyWardPostSerializer(serializers.ModelSerializer):
+    employee_name = serializers.SerializerMethodField()
+    employee_designation = serializers.SerializerMethodField()
+    branch_name = serializers.SerializerMethodField()
+    branch_placename = serializers.SerializerMethodField()
+    post_type_display = serializers.CharField(source="get_post_type_display",read_only=True)
+    approval_status_display = serializers.CharField(source="get_approval_status_display",read_only=True)
+    reviewed_by_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MyWardPost
+        fields = [
+            "id",
+            "post_type",
+            "post_type_display",
+            "title",
+            "description",
+            "employee_name",
+            "employee_designation",
+            "branch_name",
+            "branch_placename",
+            "location",
+            "approval_status",
+            "approval_status_display",
+            "rejection_reason",
+            "reviewed_by",
+            "reviewed_by_name",
+            "reviewed_at",
+            "created_at",
+            "updated_at",
+        ]
+
+        read_only_fields = [
+            "id",
+            "post_type_display",
+            "employee_name",
+            "employee_designation",
+            "branch_name",
+            "branch_placename",
+            "location",
+            "approval_status",
+            "approval_status_display",
+            "rejection_reason",
+            "reviewed_by",
+            "reviewed_by_name",
+            "reviewed_at",
+            "created_at",
+            "updated_at",
+        ]
+
+
+    def get_employee_name(self, obj):
+        employee = obj.submitted_by_employee
+        
+        if not employee:
+            return None
+        user = employee.user_details
+        return (user.get_full_name() or user.first_name or user.username)
+
+
+    def get_employee_designation(self, obj):
+        employee = obj.submitted_by_employee
+        
+        if not employee:
+            return None
+        return employee.designation
+
+
+    def get_branch_name(self, obj):
+        
+        if not obj.approval_branch:
+            return None
+        return obj.approval_branch.branch_name
+
+
+    def get_branch_placename(self, obj):
+        
+        if not obj.approval_branch:
+            return None
+        return obj.approval_branch.placename
+
+
+    def get_reviewed_by_name(self, obj):
+        
+        if not obj.reviewed_by:
+            return None
+        return (obj.reviewed_by.get_full_name() or obj.reviewed_by.first_name or obj.reviewed_by.username)
+
+    def validate_post_type(self, value):
+        allowed_types = {
+            MyWardPost.PostType.ALERT,MyWardPost.PostType.UPDATE,
+            MyWardPost.PostType.ACTION,MyWardPost.PostType.GENERAL
+        }
+
+        if value not in allowed_types:
+            raise serializers.ValidationError("Only Alert, Update, Work Notice and General posts are allowed.")
+        return value
+
+    def validate_title(self, value):
+        value = value.strip()
+
+        if not value:
+            raise serializers.ValidationError("Post title is required.")
+        return value
+
+    def validate_description(self, value):
+        value = value.strip()
+
+        if not value:
+            raise serializers.ValidationError("Post description is required.")
+        return value
